@@ -10,6 +10,7 @@ from forecaster.common import conf
 from forecaster.ai.samples_set import SamplesSet
 from forecaster.ai.output.writer import Writer
 
+# uuu
 def run():
     #extractor = Extractor()
     #countries = extractor.fetch_data_per_conf(conf)

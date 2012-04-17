@@ -1,0 +1,1 @@
+include pypissh.py pypissh.pth MANIFEST.in

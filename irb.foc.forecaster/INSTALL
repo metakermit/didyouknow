@@ -1,0 +1,7 @@
+Open a terminal, point it at this path and issue:
+
+sudo python setup.py install
+
+An alternative is to go to the dist folder and issue:
+
+sudo easy_install FOCForecaster-0.1-py2.7.egg

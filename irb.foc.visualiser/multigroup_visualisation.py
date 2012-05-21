@@ -8,10 +8,11 @@ from pylab import *
 from forecaster.sources.extractor import Extractor
 import conf
 from forecaster.common.exceptions import NonExistentDataError
+from ivisualisation import IVisualisation 
 
 import os
 
-class MultigroupVisualiser(object): 
+class MultigroupVisualisation(IVisualisation): 
     def __init__(self):
         self.extractor = Extractor()
         
@@ -77,21 +78,27 @@ class MultigroupVisualiser(object):
             except ValueError:
                 print "Something wrong with data to be plotted"
                 raise
+            
+    def draw(self):
+        hold(True)
+        fig = figure()
+        suptitle(conf.graph_title, fontsize=16)
+        #grid()
+        #colors = ["r","b","g","y"]
+        i = 0
+        for group in conf.groups:
+            self.add_to_graph(group, conf.colors[i], conf.legend[i], conf.indicator_titles, conf.label_dist_factor)
+            i+=1
+        legend(scatterpoints=1, loc=conf.legend_loc, fancybox=True)
+        return fig
+
 
 if __name__ == '__main__':
-    vis = MultigroupVisualiser()
-    print conf.groups
-    hold(True)
-    fig = figure()
-    suptitle(conf.graph_title, fontsize=16)
-    
-    #grid()
-    #colors = ["r","b","g","y"]
-    i = 0
-    for group in conf.groups:
-        vis.add_to_graph(group, conf.colors[i], conf.legend[i], conf.indicator_titles, conf.label_dist_factor)
-        i+=1
-    legend(scatterpoints=1, loc=conf.legend_loc, fancybox=True)
+    """
+    @deprecated: the visualiser + conf file should be used as a main entry point.
+    """
+    vis = MultigroupVisualisation()
+    fig = vis.draw()
     if conf.write_to_file:
         fig.savefig(conf.filename, format=os.path.splitext(conf.filename)[1][1:])
     else:

@@ -3,9 +3,16 @@ Created on 14. 12. 2011.
 
 @author: kermit
 '''
+from multigroup_visualisation import MultigroupVisualisation
+
 ######################################
 # FOC Forcaster - configuration file #
 ######################################
+
+# choose what kind of time series to draw
+# possible arguments are:
+# MultigroupVisualisation
+visualisation = MultigroupVisualisation
 
 # True - all curves plotted on the same graph
 # False - each curve plotted in a separate graph
@@ -42,7 +49,7 @@ __process_indicators = """
 
 # True - graphs written to files
 # False - interactive graphs will be shown in a GUI
-write_to_file = True
+write_to_file = False
 
 filename = "viz4.svg"
 
@@ -64,6 +71,10 @@ legend_loc = "lower right"
 #	upper left
 #	upper center
 #	lower center
+
+# Time-series-specific options
+#######################
+
 
 
 # Multigroup-specific options

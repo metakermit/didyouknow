@@ -6,3 +6,7 @@ Created on 11. 1. 2012.
 class NonExistentDataError(Exception): pass
 
 class UnexpectedDataError(Exception): pass
+
+class NotInitializedError(Exception): pass
+
+class MustOverrideError(Exception): pass

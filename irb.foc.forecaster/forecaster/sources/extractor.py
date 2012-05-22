@@ -9,6 +9,7 @@ import time
 
 from forecaster.model.country import Country
 from forecaster.model.indicator import Indicator
+from forecaster.common.exceptions import NotInitializedError
 import wb
 
 
@@ -19,7 +20,16 @@ class Extractor(object):
     (in case we decide to use several APIs in the future)
     """
     def __init__(self):
-        pass
+        self.countries = None
+    
+    def get_countries(self):
+        """
+        @return: list of countries
+        """
+        if self.countries is not None:
+            return self.countries
+        else:
+            raise NotInitializedError
     
     def process(self, process_indicators):
         for ind_code in self.indicators:
@@ -43,10 +53,12 @@ class Extractor(object):
         show()
     
     def fetch_data_per_conf(self, conf):
-        # automatic function that
-        # fetches all the data specified in the conf file
-        return self.fetch_data(conf.countries, conf.indicators,
-                               conf.start_date, conf.end_date, conf.wb_pause)
+        """
+        automatically fetche all the data specified in the conf file
+        @return: a list of country objects
+        """
+        self.fetch_data(conf.countries, conf.indicators, conf.start_date, conf.end_date, conf.wb_pause)
+        return self.countries
 
     def fetch_data(self, country_codes, indicator_codes, start_date, end_date, pause=0):
         """
@@ -129,8 +141,3 @@ class Extractor(object):
         gets all the indicator data within the period for the _country_
         """ 
         return wb.query_data(country, indicator, start_date, end_date)
-    
-    def run(self, conf):
-        country_list = self.fetch_data_per_conf(conf)
-        self.process(conf.process_indicators)
-        self.draw()

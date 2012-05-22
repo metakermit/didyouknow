@@ -3,7 +3,11 @@ Created on 14. 12. 2011.
 
 @author: kermit
 '''
+# don't look at these imports...
 from multigroup_visualisation import MultigroupVisualisation
+from ts_visualisation import TimeSeriesVisualisation
+from complete_multigroup_visualisation import CompleteMultigroupVisualisation
+# ...now continue reading.
 
 ######################################
 # FOC Forcaster - configuration file #
@@ -12,7 +16,9 @@ from multigroup_visualisation import MultigroupVisualisation
 # choose what kind of time series to draw
 # possible arguments are:
 # MultigroupVisualisation
-visualisation = MultigroupVisualisation
+# TimeSeriesVisualisation
+#
+visualisation = MultigroupVisualisation 
 
 # True - all curves plotted on the same graph
 # False - each curve plotted in a separate graph
@@ -44,6 +50,7 @@ SP.DYN.LE00.MA.IN-Life expectancy at birth, male (years)
 __process_indicators = """
 """
 
+#############################
 # Visualisation options
 #############################
 
@@ -72,11 +79,12 @@ legend_loc = "lower right"
 #	upper center
 #	lower center
 
+#############################
 # Time-series-specific options
-#######################
+#############################
 
 
-
+#############################
 # Multigroup-specific options
 #############################
 
@@ -107,9 +115,16 @@ non-crysis
 years_before=5
 years_after=5
 
+#############################
+# Complete-multigroup-specific options
+#############################
 
+def model(ind1, ind2):
+    return (ind1<0.11 and ind2<0.20)
+
+#############################
 # Performance
-##############
+#############################
 
 # pause in seconds between subsequent World Bank API queries
 wb_pause = 0

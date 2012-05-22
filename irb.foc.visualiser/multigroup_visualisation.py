@@ -12,9 +12,11 @@ from ivisualisation import IVisualisation
 
 import os
 
-class MultigroupVisualisation(IVisualisation): 
-    def __init__(self):
-        self.extractor = Extractor()
+class MultigroupVisualisation(IVisualisation):
+    """
+    A time series marked with crisis and model data
+    for the data defined in the conf file
+    """
         
     def fetch_event_data(self, country_code, start, end):
         """
@@ -79,9 +81,11 @@ class MultigroupVisualisation(IVisualisation):
                 print "Something wrong with data to be plotted"
                 raise
             
-    def draw(self):
-        hold(True)
-        fig = figure()
+    def create(self):
+        """
+        create a time series marked with crisis and model data
+        for the data defined in the conf file
+        """
         suptitle(conf.graph_title, fontsize=16)
         #grid()
         #colors = ["r","b","g","y"]
@@ -90,7 +94,7 @@ class MultigroupVisualisation(IVisualisation):
             self.add_to_graph(group, conf.colors[i], conf.legend[i], conf.indicator_titles, conf.label_dist_factor)
             i+=1
         legend(scatterpoints=1, loc=conf.legend_loc, fancybox=True)
-        return fig
+        return self.figure
 
 
 if __name__ == '__main__':
@@ -98,7 +102,7 @@ if __name__ == '__main__':
     @deprecated: the visualiser + conf file should be used as a main entry point.
     """
     vis = MultigroupVisualisation()
-    fig = vis.draw()
+    fig = vis.create()
     if conf.write_to_file:
         fig.savefig(conf.filename, format=os.path.splitext(conf.filename)[1][1:])
     else:

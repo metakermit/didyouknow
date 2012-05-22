@@ -11,7 +11,7 @@ from forecaster.ai.samples_set import SamplesSet
 from forecaster.ai.output.writer import Writer
 
 # uuu
-def run():
+def draw():
     #extractor = Extractor()
     #countries = extractor.fetch_data_per_conf(conf)
     
@@ -38,4 +38,4 @@ def run():
     print("%.2f s (%.2f min)" % (duration, (duration)/60.))
 
 if __name__ == '__main__':
-    run()
+    draw()

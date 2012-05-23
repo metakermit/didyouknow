@@ -14,6 +14,12 @@ class Test(unittest.TestCase):
         y = [1.5, 1.6, 2.1, 3.0]
         pp = Preprocessor(x,y)
         self.assertEqual(pp.slope(), 0.5)
+    
+    def test_slope2(self):
+        x = range(10006,10010)
+        y = [1.5, 1.6, 2.1, 3.0]
+        pp = Preprocessor(x,y)
+        self.assertEqual(pp.slope(), 0.5)
         
     def test_maximum(self):
         x = range(1,5)

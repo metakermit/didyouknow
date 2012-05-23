@@ -4,6 +4,7 @@ Created on 8. 2. 2012.
 @author: kermit
 '''
 from pylab import *
+import math
 
 from forecaster.sources.extractor import Extractor
 import conf

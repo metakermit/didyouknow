@@ -37,7 +37,7 @@ fin
 # , downloading the meta-file in excel format
 # and copying the codes from the excel table
 __indicators = """
-SP.POP.1564.TO.ZS-pop_15_64-Population ages 15-64 (% of total)
+SP.POP.1564.TO.ZS-Population ages 15-64 (% of total) 
 SP.DYN.LE00.MA.IN-Life expectancy at birth, male (years)
 """
 # population - SP.POP.TOTL
@@ -46,6 +46,7 @@ SP.DYN.LE00.MA.IN-Life expectancy at birth, male (years)
 # unemployment rate - SL.UEM.TOTL.ZS
 # GDP growth (annual %) - NY.GDP.MKTP.KD.ZG
 
+# which indicators to apply slope/derivative to
 __process_indicators = """
 """
 
@@ -57,11 +58,23 @@ __process_indicators = """
 # False - interactive graphs will be shown in a GUI
 write_to_file = True
 
-filename = "viz-complete-fin.svg"
+filename = "viz-complete-fin.png"
 
-graph_title = "Finland - urban population & male life expectancy" 
+graph_title = "Finland - active population & life expectancy" 
 
-label_dist_factor = -4
+# positioning labels next to points...
+# -----------------------------------------------
+# if dist in pixels, set absolute number of pixels to offset labels
+# else use a factor of the distance between last two points 
+dist_pixels = True
+label_dist_x = -0.3
+label_dist_y = 0.5
+
+dist_2d=True
+#if above is true, scale labels by 2 dimensions
+#else just use the same factor (label_dist_factor_x)
+label_dist_factor_x = 1.0
+label_dist_factor_y = 1.8
 
 legend_loc = "lower right"
 # possible:
@@ -127,6 +140,9 @@ def model(all_x, all_x_dates, all_y, all_y_dates):
     ind2 = Preprocessor(dates,values).slope()
     return (ind1<0.11 and ind2<0.20)
 
+#def model(ind1, ind2):
+#    return (ind1<0.11 and ind2<0.20)
+
 # specify manually when has a crysis ocurred in a country
 # list years per country, separated with a *
 __manual_crises = """
@@ -140,13 +156,13 @@ look_back_years = 3
 # see available markers in file "/usr/lib/pymodules/python2.7/matplotlib/markers.py"
 crisis_colour = "red"
 crisis_mark = "d"
-crisis_size = 200
+crisis_size = 250
 model_true_colour = "orange"
 model_true_mark = "^"
 model_true_size = 150
 model_false_colour = "blue"
 model_false_mark = "o"
-model_false_size = 100
+model_false_size = 10
 
 #############################
 # Performance
@@ -175,7 +191,7 @@ indicators = listify_no_tails(__indicators)
 indicators_full = listify_newline(__indicators)
 indicator_title_texts = listify_only_tails(__indicators)
 indicator_titles = dict([(indicators[i], indicator_title_texts[i]) for i in range(len(indicators))])
-process_indicators = set(listify(__process_indicators))
+process_indicators = set(listify_no_tails(__process_indicators))
 groups = [listify(x) for x in __events.split("*")]
 colors = listify(__colors)
 legend = listify(__legend)

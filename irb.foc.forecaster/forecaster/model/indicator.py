@@ -6,6 +6,7 @@ Created on 14. 12. 2011.
 from pylab import *
 
 from forecaster.common.exceptions import NonExistentDataError
+from forecaster.ai.preprocessor import Preprocessor
 
 class Indicator(object):
     '''
@@ -23,7 +24,10 @@ class Indicator(object):
             self.__values = values
         self.code = code
         
-    def apply_derivative(self):
+    def apply_derivative(self, *args):
+        """
+        @param *args: arguments tuple, unused here 
+        """
         new_values = []
         for i in range(1,len(self.dates)):
             value1 = self.values[i-1]
@@ -33,6 +37,29 @@ class Indicator(object):
             self.get_dates().pop(0)
         except:
             pass
+        self.set_values(new_values)
+        
+    def apply_slope(self, *args):
+        """
+        @param *args:
+        look_back_year - integer stating how many
+        values back to look in the slope
+        """
+        look_back_years = args[0]
+        new_values = []
+        past_values = []
+        past_dates = []
+        for i in range(len(self.dates)):
+            past_dates.append(self.dates[i])
+            past_values.append(self.values[i])
+            if i>=look_back_years-1:
+                new_values.append(Preprocessor(past_dates,past_values).slope())
+                past_dates.pop(0)
+                past_values.pop(0)
+        try:
+            [self.get_dates().pop(0) for i in range(look_back_years-1)]
+        except:
+                    pass
         self.set_values(new_values)
         
     def get_value_at(self, date):

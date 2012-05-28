@@ -86,7 +86,7 @@ class Preprocessor(object):
         sum_y = np.sum(self.y)
         # sum of squares of x-values = x1^2 + x2^2+ . . . + xn^2
         sum_xx = np.sum(np.power(self.x,2))
-        slope = (n*sum_xy-sum_x*sum_y)/(n*sum_xx-np.power(sum_x,2)) 
+        slope = 1.0*(n*sum_xy-sum_x*sum_y)/(n*sum_xx-np.power(sum_x,2)) 
         return slope
     
     def preprocess_indicator(self, indicator, interesting_years):

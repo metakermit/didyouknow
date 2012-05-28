@@ -31,11 +31,22 @@ class Extractor(object):
         else:
             raise NotInitializedError
     
-    def process(self, process_indicators):
+    def process(self, process_indicators, method = "derivative", look_back_years = None):
+        """
+        process fetched indicators in place
+        @param method:
+            derivative - difference between every two,
+            slope - slope for the last n values 
+        @param look_back_years: n for slope above     
+        """
+        if method == "derivative":
+            apply_method = Indicator.apply_derivative
+        elif method == "slope":
+            apply_method = Indicator.apply_slope
         for ind_code in self.indicators:
             if ind_code in process_indicators:
                 for country in self.countries:
-                    country.get_indicator(ind_code).apply_derivative()
+                    apply_method(country.get_indicator(ind_code), (look_back_years))
     
     def draw(self):
         hold(True)

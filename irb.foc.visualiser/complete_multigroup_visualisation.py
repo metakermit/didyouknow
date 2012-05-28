@@ -34,7 +34,11 @@ class CompleteMultigroupVisualisation(MultigroupVisualisation):
         #colors = ["r","b","g","y"]
         
         #country = conf.countries[0]
-        countries = self.extractor.fetch_data(conf.countries, conf.indicators, conf.start_date, conf.end_date)
+        self.extractor.fetch_data(conf.countries, conf.indicators, conf.start_date, conf.end_date)
+        self.extractor.process(conf.process_indicators,
+                               method = "slope",
+                               look_back_years=conf.look_back_years)
+        countries = self.extractor.get_countries()
         i = 0
         for country in countries:
             crisis_years = set(conf.manual_crises[i])
@@ -59,22 +63,34 @@ class CompleteMultigroupVisualisation(MultigroupVisualisation):
                     xlabel(conf.indicator_titles[x_ind_code])
                     ylabel(conf.indicator_titles[y_ind_code])
                     legend_label = None
-                    if t in crisis_years:
+                    if t in crisis_years: # crisis
                         label_text = "Crisis: " + str(t)
-                        dist = math.sqrt(math.pow(x-x_ind.get_value_at(t-1),2)
-                                         +math.pow(y-y_ind.get_value_at(t-1),2))*conf.label_dist_factor
-                        annotate(label_text, size="medium" , xy=(x+dist,y+dist))
+                        if conf.dist_pixels:
+                            dist_x = conf.label_dist_x
+                            dist_y = conf.label_dist_y
+                        else:
+                            dist = math.sqrt(math.pow(x-x_ind.get_value_at(t-1),2)
+                                             +math.pow(y-y_ind.get_value_at(t-1),2))
+                            if conf.dist_2d:
+                                dist_x = dist*conf.label_dist_factor_x
+                                dist_y = dist*conf.label_dist_factor_y
+                            else:
+                                dist_y = dist_x = dist*conf.label_dist_factor_x 
+                        annotate(label_text, size="medium" , xy=(x+dist_x,y+dist_y))
                         mark = conf.crisis_mark
                         colour = conf.crisis_colour
                         size = conf.crisis_size
                         if not labeled_crisis: legend_label, labeled_crisis = "crisis", True
                     else:
-                        if len(all_x)>3 and conf.model(all_x, all_x_dates, all_y, all_y_dates):
+                        if len(all_x)>conf.look_back_years and conf.model(all_x, all_x_dates, all_y, all_y_dates):
+                        #if conf.model(x,y):
+                            # model true
                             colour = conf.model_true_colour
                             mark = conf.model_true_mark
                             size = conf.model_true_size
                             if not labeled_model: legend_label, labeled_model = "satisfies model", True
                         else:
+                            # model false
                             colour = conf.model_false_colour
                             mark = conf.model_false_mark
                             size = conf.model_false_size

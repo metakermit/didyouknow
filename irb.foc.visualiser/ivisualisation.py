@@ -12,8 +12,9 @@ class IVisualisation(object):
     '''
     Visualiser interface.
     '''
-    extractor = None
-    figure = None
+    
+    #extractor = None
+    #figure = None
     
     def __init__(self):
         '''

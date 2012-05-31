@@ -11,34 +11,44 @@ from forecaster.ai.preprocessor import Preprocessor
 # FOC Forcaster - configuration file #
 ######################################
 
-# choose what kind of time series to draw
-# possible arguments are:
-# TSV (TimeSeriesVisualisation)
-# MV (MultigroupVisualisation)
-# CMV (CompleteMultigropuVisualisation)
-#
-visualisation = "CMV" 
-
-# True - all curves plotted on the same graph
-# False - each curve plotted in a separate graph
-combine_plots = True
-
 # take data from start_date to end_date
 start_date = 1960
-end_date = 2010
+end_date = 2030
 
 # see codes at http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 __countries = """
+nor
+usa
+chn
+arg
+alb
+bra
+can
+deu
+hrv
+ind
+kor
+lva
+pol
+rou
+rus
 fin
 """
-# good data: can, usa
 
-# see codes by selecting the desired indicators at http://databank.worldbank.org/
+# a file that states when did crises occur in countries
+sample_selection_file = "../irb.foc.forecaster/crises-imf-banking.xls"
+
+# see codes by selecting the desired indicators at
+# http://databank.worldbank.org/
 # , downloading the meta-file in excel format
 # and copying the codes from the excel table
+# or take a look at the last part of the url while browsing
+# http://data.worldbank.org/indicator/
+
+# the part after "-" is the description that goes to the graph 
 __indicators = """
-SP.POP.1564.TO.ZS-Population ages 15-64 (% of total) 
 SP.DYN.LE00.MA.IN-Life expectancy at birth, male (years)
+SP.POP.1564.TO.ZS-Percentage ages 15-64 (%)
 """
 # population - SP.POP.TOTL
 # real interest rate - FR.INR.RINR
@@ -50,18 +60,36 @@ SP.DYN.LE00.MA.IN-Life expectancy at birth, male (years)
 __process_indicators = """
 """
 
-#############################
-# Visualisation options
-#############################
+################
+# Visualisation options   #
+################
 
 # True - graphs written to files
 # False - interactive graphs will be shown in a GUI
+
+# choose what kind of time series to draw
+# possible arguments are:
+# TSV (TimeSeriesVisualisation)
+# MV (MultigroupVisualisation)
+# CMV (CompleteMultigroupVisualisation)
+#
+visualisation = "CMV" 
+
+# True - all curves plotted on the same graph
+# False - each curve plotted in a separate graph
+combine_plots = False
+
 write_to_file = True
 
-filename = "viz-complete-fin.png"
+filename = "./viz/viz-complete.svg"
 
-graph_title = "Finland - active population & life expectancy" 
+# this will be the graph title if auto_title is False
+graph_title = "USA - active population & life expectancy"
 
+# generate the title automatically from country codes...
+auto_title = True 
+# ...and append this to the end 
+title_end = "active population & life expectancy"
 # positioning labels next to points...
 # -----------------------------------------------
 # if dist in pixels, set absolute number of pixels to offset labels
@@ -76,7 +104,7 @@ dist_2d=True
 label_dist_factor_x = 1.0
 label_dist_factor_y = 1.8
 
-legend_loc = "lower right"
+legend_loc = "upper left"
 # possible:
 #----------
 #   right
@@ -138,13 +166,14 @@ def model(all_x, all_x_dates, all_y, all_y_dates):
     values = all_y[-(look_back_years+1):-1]
     dates = all_y_dates[-(look_back_years+1):-1]
     ind2 = Preprocessor(dates,values).slope()
-    return (ind1<0.11 and ind2<0.20)
+    return (ind1<0.20 and ind2<0.11)
 
 #def model(ind1, ind2):
 #    return (ind1<0.11 and ind2<0.20)
 
 # specify manually when has a crysis ocurred in a country
 # list years per country, separated with a *
+# UNUSED! The samples selection XLS file is used
 __manual_crises = """
 1991
 *

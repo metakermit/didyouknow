@@ -17,13 +17,32 @@ class TimeSeriesVisualisation(IVisualisation):
         '''
         IVisualisation.__init__(self)
 
-    def create(self):
+    def _create_figure(self, item):
         """
-        create single time series line plots for the data defined in the conf file
+        Draw all the indicators on the graph for
+        a given country.
+        @param item: a country object
         """
-        self.extractor.fetch_data_per_conf(conf)
-        self.extractor.process(conf.process_indicators)
-        countries = self.extractor.get_countries()
+        country = item
+        # draw
+        grid()
+        if self._should_add_meta_marks(): 
+            xlabel("Year")
+            ylabel("Value")
+        for ind_code in conf.indicators:
+            indicator = country.get_indicator(ind_code)
+            plot(indicator.dates, indicator.values, label =
+                 country.code + " - " + indicator.code)
+        return self.figure
+        
+    def _create_figure_old(self):
+        """
+        _create_figure single time series line plots for the data defined in the conf file
+        @deprecated: used before ivisualisation existed
+        """
+        self._extractor.fetch_data_per_conf(conf)
+        self._extractor.process(conf.process_indicators)
+        countries = self._extractor.get_countries()
         # draw
         grid()
         xlabel("year")
@@ -33,7 +52,7 @@ class TimeSeriesVisualisation(IVisualisation):
                 indicator = country.get_indicator(ind_code)
                 plot(indicator.dates, indicator.values,
                      label = country.code + " - " + indicator.code)
-        legend()
+        #legend()
         return self.figure
 
     

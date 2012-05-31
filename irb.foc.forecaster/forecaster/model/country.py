@@ -19,6 +19,9 @@ class Country(object):
         self.code_iso2 = ""
         self.__indicators = {}
         self.__indicator_codes = []
+    
+    def __str__(self):
+        return self.get_code()
 
     def get_code(self):
         return self.__code

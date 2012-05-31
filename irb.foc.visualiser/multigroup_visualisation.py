@@ -16,18 +16,22 @@ import os
 class MultigroupVisualisation(IVisualisation):
     """
     A time series marked with crisis and model data
-    for the data defined in the conf file
+    plotted in a space of two indicators
+    (time depicted through point size) 
     """
         
     def fetch_event_data(self, country_code, start, end):
         """
         get data for a single event
         """
-        countries = self.extractor.fetch_data([country_code], conf.indicators, start, end, conf.wb_pause)
-        self.extractor.process(conf.process_indicators)
+        countries = self._extractor.fetch_data([country_code], conf.indicators, start, end, conf.wb_pause)
+        self._extractor.process(conf.process_indicators)
         return countries[0]
     
-    def add_to_graph(self, group, color, legend_label, indicator_titles, label_dist_factor):
+    def _add_legend(self):
+        legend(scatterpoints=1, loc=conf.legend_loc, fancybox=True)
+    
+    def _add_to_graph(self, group, color, legend_label, indicator_titles, label_dist_factor):
         drawn_legend=False
         for event in group:
             event_data = event.split("-")
@@ -82,9 +86,9 @@ class MultigroupVisualisation(IVisualisation):
                 print "Something wrong with data to be plotted"
                 raise
             
-    def create(self):
+    def _create_figure(self):
         """
-        create a time series marked with crisis and model data
+        _create_figure a time series marked with crisis and model data
         for the data defined in the conf file
         """
         suptitle(conf.graph_title, fontsize=16)
@@ -92,18 +96,16 @@ class MultigroupVisualisation(IVisualisation):
         #colors = ["r","b","g","y"]
         i = 0
         for group in conf.groups:
-            self.add_to_graph(group, conf.colors[i], conf.legend[i], conf.indicator_titles, conf.label_dist_factor)
+            self._add_to_graph(group, conf.colors[i], conf.legend[i], conf.indicator_titles, conf.label_dist_factor_x)
             i+=1
-        legend(scatterpoints=1, loc=conf.legend_loc, fancybox=True)
         return self.figure
-
 
 if __name__ == '__main__':
     """
     @deprecated: the visualiser + conf file should be used as a main entry point.
     """
     vis = MultigroupVisualisation()
-    fig = vis.create()
+    fig = vis._create_figure()
     if conf.write_to_file:
         fig.savefig(conf.filename, format=os.path.splitext(conf.filename)[1][1:])
     else:

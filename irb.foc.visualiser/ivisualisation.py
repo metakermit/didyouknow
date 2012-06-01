@@ -45,7 +45,7 @@ class IVisualisation(object):
         
     def _auto_graph_title(self):
         if conf.combine_plots:
-            country_representation = ", ".join([code.upper() for code in self._get_items()])
+            country_representation = ", ".join([str(item).upper() for item in self._get_items()])
         else:
             country_representation = str(self._get_items()[self._counter]).upper()
         title = "%s - %s" % (country_representation, conf.title_end) 
@@ -114,6 +114,7 @@ class IVisualisation(object):
             if not conf.combine_plots:
                 self._start_new_figure()
             self._create_figure(item)
+            # this counter is important for subclasses. Be careful!
             self._counter += 1
             if not conf.combine_plots:
                 self._finish_figure()

@@ -17,22 +17,8 @@ end_date = 2030
 
 # see codes at http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 __countries = """
-nor
 usa
-chn
-arg
-alb
-bra
-can
-deu
-hrv
-ind
-kor
-lva
-pol
-rou
-rus
-fin
+nor
 """
 
 # a file that states when did crises occur in countries
@@ -73,13 +59,13 @@ __process_indicators = """
 # MV (MultigroupVisualisation)
 # CMV (CompleteMultigroupVisualisation)
 #
-visualisation = "CMV" 
+visualisation = "MV" 
 
 # True - all curves plotted on the same graph
 # False - each curve plotted in a separate graph
 combine_plots = False
 
-write_to_file = True
+write_to_file = False
 
 filename = "./viz/viz-complete.svg"
 
@@ -104,7 +90,7 @@ dist_2d=True
 label_dist_factor_x = 1.0
 label_dist_factor_y = 1.8
 
-legend_loc = "upper left"
+legend_loc = "upper right"
 # possible:
 #----------
 #   right

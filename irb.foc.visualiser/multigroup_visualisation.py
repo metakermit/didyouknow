@@ -19,7 +19,23 @@ class MultigroupVisualisation(IVisualisation):
     plotted in a space of two indicators
     (time depicted through point size) 
     """
-        
+
+    def _get_items(self):
+        """
+        get a list of groups
+        """
+        return conf.groups
+    
+    def _auto_graph_title(self):
+        if conf.combine_plots:
+            item_repr = ", ".join([("(" +
+                                    ", ".join([subitem for subitem in item])
+                                    + ")").upper() for item in self._get_items()])
+        else:
+            item_repr = ", ".join(self._get_items()[self._counter]).upper()
+        title = "%s - %s" % (item_repr, conf.title_end) 
+        return title
+    
     def fetch_event_data(self, country_code, start, end):
         """
         get data for a single event
@@ -86,18 +102,20 @@ class MultigroupVisualisation(IVisualisation):
                 print "Something wrong with data to be plotted"
                 raise
             
-    def _create_figure(self):
+    
+    def _create_figure(self, unit):
         """
         _create_figure a time series marked with crisis and model data
         for the data defined in the conf file
+        @param unit: a group object
         """
-        suptitle(conf.graph_title, fontsize=16)
-        #grid()
-        #colors = ["r","b","g","y"]
-        i = 0
-        for group in conf.groups:
-            self._add_to_graph(group, conf.colors[i], conf.legend[i], conf.indicator_titles, conf.label_dist_factor_x)
-            i+=1
+#        if not conf.combine_plots:
+#            warnings.warn("Multigroup doesn't work with uncombined plots")
+#            conf.combine_plots = True
+        group = unit
+        # we're at the group no. self._counter
+        i = self._counter
+        self._add_to_graph(group, conf.colors[i], conf.legend[i], conf.indicator_titles, conf.label_dist_factor_x)
         return self.figure
 
 if __name__ == '__main__':

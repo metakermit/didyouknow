@@ -21,7 +21,7 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
                                    look_back_years=conf.look_back_years)
         countries = self._extractor.get_countries()
         
-        repr = []
+        self.vis_data = []
         for country in countries:
             x_ind_code,y_ind_code = country.indicator_codes()[:2]
             x_ind = country.get_indicator(x_ind_code)
@@ -30,7 +30,7 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
             country_repr = {'code': country.code, 'dates': years,
                             'x_ind': x_ind.simple_dict_repr(),
                             'y_ind': y_ind.simple_dict_repr()}
-            repr.append(country_repr)
+            self.vis_data.append(country_repr)
         
-        return repr
+        return self.vis_data
 

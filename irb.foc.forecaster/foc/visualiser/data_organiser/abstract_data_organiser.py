@@ -4,6 +4,8 @@ Created on 26. 6. 2012.
 @author: kermit
 '''
 
+import json
+
 from foc.forecaster.sources.extractor import Extractor
 
 class AbstractDataOrganiser(object):
@@ -17,6 +19,8 @@ class AbstractDataOrganiser(object):
         Constructor
         '''
         self._extractor = Extractor()
+        # will store a dictionary with the necessary data
+        self.vis_data = None
     
     def _write_data(self):
         """
@@ -24,8 +28,9 @@ class AbstractDataOrganiser(object):
         should be stored   
         """
         filename = "data.json"
-        with open(filename) as out_file:
-            out_file
+        with open(filename, "w") as out_file:
+            json_text = json.dumps(self.vis_data, indent=4)
+            out_file.write(json_text)
     
     def _organise_data(self, conf):
         """
@@ -36,5 +41,7 @@ class AbstractDataOrganiser(object):
         pass
     
     def get_representation(self, conf):
-        return self._organise_data(conf)
+        self._organise_data(conf)
+        self._write_data()
+        return self.vis_data
         

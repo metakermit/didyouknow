@@ -4,7 +4,7 @@ Created on 14. 12. 2011.
 @author: kermit
 '''
 # don't look at these imports...
-from forecaster.ai.preprocessor import Preprocessor
+from foc.forecaster.ai.preprocessor import Preprocessor
 # ...now continue reading.
 
 ######################################

@@ -7,9 +7,9 @@ from pprint import pprint
 from pylab import *
 import time
 
-from forecaster.model.country import Country
-from forecaster.model.indicator import Indicator
-from forecaster.common.exceptions import NotInitializedError
+from foc.forecaster.model.country import Country
+from foc.forecaster.model.indicator import Indicator
+from foc.forecaster.common.exceptions import NotInitializedError
 import wb
 
 

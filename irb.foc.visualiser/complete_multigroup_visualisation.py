@@ -9,8 +9,8 @@ import math
 from ivisualisation import *
 from multigroup_visualisation import MultigroupVisualisation
 import conf
-from forecaster.common.exceptions import NonExistentDataError
-from forecaster.ai.crisis_seer import CrisisSeer
+from foc.forecaster.common.exceptions import NonExistentDataError
+from foc.forecaster.ai.crisis_seer import CrisisSeer
 
 class CompleteMultigroupVisualisation(IVisualisation):
     '''

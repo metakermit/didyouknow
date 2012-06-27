@@ -6,7 +6,7 @@ Created on 20. 12. 2011.
 import numpy as np
 import math
 
-from forecaster.common.exceptions import NonExistentDataError
+from foc.forecaster.common.exceptions import NonExistentDataError
 
 # the NA (not available) value
 #TODO: replace with np.NA when numpy >1.7 becomes available

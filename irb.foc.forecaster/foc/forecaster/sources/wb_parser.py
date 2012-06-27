@@ -4,8 +4,8 @@ Created on 5. 4. 2012.
 @author: kermit
 '''
 
-from forecaster.model.indicator import Indicator
-from forecaster.model.country import Country
+from foc.forecaster.model.indicator import Indicator
+from foc.forecaster.model.country import Country
 #TODO: Maybe transfer parsing logic to this class
 
 '''

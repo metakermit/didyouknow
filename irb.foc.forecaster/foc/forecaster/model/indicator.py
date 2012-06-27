@@ -5,8 +5,8 @@ Created on 14. 12. 2011.
 '''
 from pylab import *
 
-from forecaster.common.exceptions import NonExistentDataError
-from forecaster.ai.preprocessor import Preprocessor
+from foc.forecaster.common.exceptions import NonExistentDataError
+from foc.forecaster.ai.preprocessor import Preprocessor
 
 class Indicator(object):
     '''
@@ -23,6 +23,9 @@ class Indicator(object):
             self.__dates=dates
             self.__values = values
         self.code = code
+        
+    def simple_dict_repr(self):
+        return {'code': self.code, 'dates': self.get_dates(), 'values': self.get_values()}
         
     def apply_derivative(self, *args):
         """

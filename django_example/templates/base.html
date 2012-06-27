@@ -1,0 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+	<script src="/static/jquery-1.7.2.js" type="text/javascript"></script>
+	<script src="/static/highcharts.js" type="text/javascript"></script>
+	
+	{% block additional_js %}{% endblock %}
+	
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <h1>{% block page_title %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
+</body>
+</html>

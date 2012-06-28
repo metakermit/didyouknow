@@ -22,6 +22,9 @@ class Country(object):
     
     def __str__(self):
         return self.get_code()
+    
+    def __repr__(self):
+        return self.get_code()
 
     def get_code(self):
         return self.__code

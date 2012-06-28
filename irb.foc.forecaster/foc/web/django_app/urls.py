@@ -1,5 +1,6 @@
 from django.conf.urls import patterns, include, url
 from views import hello
+from api.complete_multigroup_api import get_data
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -17,4 +18,5 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     
     url(r'^hello/', hello),
+    url(r'^getdata/', get_data),
 )

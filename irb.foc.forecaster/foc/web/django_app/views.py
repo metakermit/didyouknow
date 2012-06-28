@@ -13,6 +13,3 @@ def hello(request):
     extractor = Extractor()
     countries = extractor.fetch_data_per_conf(conf)
     return render_to_response('index.html', {'countries': countries})
-
-
-

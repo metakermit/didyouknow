@@ -9,15 +9,22 @@ var chart; // global
 function requestData() {
     $.ajax({
         url: '/getdata/',
-        success: function(point) {
+        success: function(focData) {
             var series = chart.series[0],
                 shift = series.data.length > 20; // shift if the series is longer than 20
-
+			var country = focData[0];
+			var x_ind = country.x_ind;
+			var y_ind = country.y_ind;
+			for (i in x_ind.data) {
+				chart.series[0].addPoint([x_ind.data[i], y_ind.data[i]], true, false);
+			}
             // add the point
-            chart.series[0].addPoint(point, true, shift);
+            //chart.series[0].addPoint(point, true, shift);
+			
+			
             
             // call it again after one second
-            setTimeout(requestData, 1000);    
+            //setTimeout(requestData, 1000);    
         },
         cache: false
     });

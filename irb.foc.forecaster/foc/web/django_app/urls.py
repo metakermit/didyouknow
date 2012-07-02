@@ -1,5 +1,5 @@
 from django.conf.urls import patterns, include, url
-from views import hello
+from views import hello, multiselect
 from api.complete_multigroup_api import get_data
 
 # Uncomment the next two lines to enable the admin:
@@ -19,4 +19,6 @@ urlpatterns = patterns('',
     
     url(r'^hello/', hello),
     url(r'^getdata/', get_data),
+    
+    url(r'^multiselect/', multiselect),
 )

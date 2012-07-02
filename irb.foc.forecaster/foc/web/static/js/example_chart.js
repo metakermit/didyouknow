@@ -2,8 +2,6 @@
 var chart; // global
 var data; // DATA IS DEFINED AFTER AJAX REQUEST, SO DOES IT MAKE SENSE TO CALL IT WHILE DEFINING CHART? 
 
-var indicator = 'asdasdasd'
-
 /**
  * Request data from the server, add it to the graph and set a timeout to request again
  */
@@ -14,45 +12,49 @@ function requestData() {
         url: '/getdata/',
         success: function(focData) {
 			data = focData;
-            var series = chart.series[0],
-                shift = series.data.length > 20; // shift if the series is longer than 20
-			var country = focData[0];
-			var x_ind = country.x_ind;
-			var y_ind = country.y_ind;
-			for (i in x_ind.data) {
-				chart.series[0].addPoint([x_ind.data[i], y_ind.data[i]], true, false);
+			for (j in data) {
+				var seriesOptions = {
+					name: data[j].code,
+					data: []
+				};
+				chart.addSeries(seriesOptions, true);
+				var series = chart.series[j], shift = series.data.length > 20; // shift if the series is longer than 20
+				var country = focData[j];
+				var x_ind = country.x_ind;
+				var y_ind = country.y_ind;
+				for (i in x_ind.data) {
+					chart.series[j].addPoint([x_ind.data[i], y_ind.data[i]], true, false); // [x,y],redraw,shift
+				}
 			}
-            // add the point
-            //chart.series[0].addPoint(point, true, shift);
-			
 			updatePlot();
-            
-            // call it again after one second
-            //setTimeout(requestData, 1000);    
         },
         cache: false
     });
 }
 
 
+// Update labels according to fetched indicators.
 function updatePlot()
 {
 	chart.xAxis[0].axisTitle.attr({ text: data[0].x_ind.code.bold() }) ;
 	chart.yAxis[0].axisTitle.attr({ text: data[0].y_ind.code.bold() }) ;
 	// Alternative:  $(chart.yAxis[0].axisTitle.element).text('New Label');
+	
+	chart.setTitle({ text: 'Complete multigroup for two indicators' });
+	
 }
 
 $(document).ready(function() {
     chart = new Highcharts.Chart({
         chart: {
             renderTo: 'container',
-            defaultSeriesType: 'scatter',
+            defaultSeriesType: 'line',
             events: {
                 load: requestData
             }
         },
         title: {
-            text: 'Live random data'
+            text: ' '
         },
         xAxis: {
             tickPixelInterval: 150,
@@ -77,10 +79,11 @@ $(document).ready(function() {
 					return data[0].x_ind.code.bold() + ':' + this.x.toFixed(2) + '  ' + data[0].y_ind.code.bold() + ': ' + this.y.toFixed(2);
 			}
 		},
-        series: [{
-            name: 'Random data',
-            data: []
-        }]
+		//series: [],
+        //series: [{
+        //    name: '',
+        //    data: []
+        //}]
     });        
 });
 

@@ -10,8 +10,9 @@ from foc.forecaster.sources.extractor import Extractor
 from foc.forecaster.common import conf
 
 def hello(request):
-    extractor = Extractor()
-    countries = extractor.fetch_data_per_conf(conf)
+    #extractor = Extractor()
+    #countries = extractor.fetch_data_per_conf(conf)
+    countries = {}
     return render_to_response('index.html', {'countries': countries})
 
 def multiselect(request):

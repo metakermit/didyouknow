@@ -2,14 +2,55 @@
 var chart; // global
 var data; // DATA IS DEFINED AFTER AJAX REQUEST, SO DOES IT MAKE SENSE TO CALL IT WHILE DEFINING CHART? 
 
+var c = ['BRA','ISL']
+
 /**
  * Request data from the server, add it to the graph and set a timeout to request again
  */
 
+// $.ajax("../getdata/", {data: {countries:["HRV","USA"]}})
+
+function requestData2() {
+	$.ajax({
+		url: "../getdata/", 
+		data: {
+			countries: $("select").val()
+		},
+		success: function(focData) {
+			data = focData;
+			
+			// Remove all series from chart
+			while (chart.series.length > 0)
+			{
+				chart.series[0].remove();
+			}
+			
+			for (j in data) {
+				var seriesOptions = {
+					name: data[j].code,
+					data: []
+				};
+				chart.addSeries(seriesOptions, true);
+				var series = chart.series[j], shift = series.data.length > 20; // shift if the series is longer than 20
+				var country = focData[j];
+				var x_ind = country.x_ind;
+				var y_ind = country.y_ind;
+				for (i in x_ind.data) {
+					chart.series[j].addPoint([x_ind.data[i], y_ind.data[i]], true, false); // [x,y],redraw,shift
+				}
+			}
+			updatePlot();
+        },
+		cache: false,
+	});
+}
 
 function requestData() {
     $.ajax({
         url: '/getdata/',
+		data: {
+			countries: ["BRA", "ITA"]
+		},
         success: function(focData) {
 			data = focData;
 			for (j in data) {
@@ -43,6 +84,8 @@ function updatePlot()
 	chart.setTitle({ text: 'Complete multigroup for two indicators' });
 	
 }
+
+
 
 $(document).ready(function() {
     chart = new Highcharts.Chart({

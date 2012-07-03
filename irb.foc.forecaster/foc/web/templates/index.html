@@ -11,9 +11,23 @@
 	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script> -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/static/js/jquery.multiselect.js"></script>
+	
 	<script type="text/javascript">
 	$(function(){
 		$("select").multiselect();
+		$("#send-request").button();
+		
+		//$("#send-request").click( function(){
+		//	$.ajax("../getdata/", {
+		//		data: {
+		//			countries: $("select").val()
+		//		}
+		//	});
+		//});
+		
+		$("#send-request").click( requestData2 );
+		
+		
 	});
 	</script>
 
@@ -21,32 +35,37 @@
 
 {% block content %}
 
+<!-- 
 Loaded countries:
 <table>
 	{% for v in countries %}
 		<tr><td>{{v}}</td></tr>
 	{% endfor %}
 </table>
+-->
 
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
-<h3>Select countries</h3>
+<h3>Select countries:</h3>
 <p>
+	<table>
+	<tr><td>	
 	<select title="Basic example" multiple="multiple" name="example-basic" size="5">
-	<option value="option1">Option 1</option>
-	<option value="option2">Option 2</option>
-	<option value="option3">Option 3</option>
-	<option value="option4">Option 4</option>
-	<option value="option5">Option 5</option>
-	<option value="option6">Option 6</option>
-	<option value="option7">Option 7</option>
-	<option value="option8">Option 8</option>
-	<option value="option9">Option 9</option>
-	<option value="option10">Option 10</option>
-	<option value="option11">Option 11</option>
-	<option value="option12">Option 12</option>
+	<!-- {% for v in countries %}
+		<option value="{{v}}">{{v}}</option>
+	{% endfor %} -->
+	<option value="HRV">HRV</option>
+	<option value="ITA">ITA</option>
+	<option value="BRA">BRA</option>
+	<option value="USA">USA</option>
 	</select>
+	</td>
+	<td>
+	<button id="send-request">Send request</button>
+	</td></tr>
+	</table>
 </p>
+
 
 {% endblock %}
 

@@ -23,15 +23,19 @@ from foc.forecaster.common import conf
 def get_data(request): 
     organiser = CompleteMultigroupOrganiser()
     
+    
     if request.is_ajax():
         if 'countries[]' in request.GET:
             countries = request.GET.getlist('countries[]')
-            #conf.countries = ['HRV','ITA']
             conf.countries = countries 
+            repr = organiser.get_representation(conf)
+            countries = organiser._extractor.get_countries()
+        # If no countries are recquired return empty json.
         else:
-            conf.countries = ["HRV"]
-    
-    repr = organiser.get_representation(conf)
-    countries = organiser._extractor.get_countries()
+            repr = []
+    # For fetching json from /getdata/ url directly.
+    else:
+        conf.countries = ["HRV"]
+        repr = organiser.get_representation(conf)
 
     return HttpResponse(simplejson.dumps(repr), mimetype="application/json")

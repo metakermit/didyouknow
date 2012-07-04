@@ -16,4 +16,7 @@ def hello(request):
     return render_to_response('index.html', {'countries': countries})
 
 def multiselect(request):
-    return render_to_response('multiselect.html')
+    return render_to_response('highcharts_example1.html')
+
+def d3(request):
+    return render_to_response('d3_example.html')

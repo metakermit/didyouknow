@@ -9,7 +9,7 @@ from django.shortcuts import render_to_response
 from foc.forecaster.sources.extractor import Extractor
 from foc.forecaster.common import conf
 
-def hello(request):
+def foc(request):
     #extractor = Extractor()
     #countries = extractor.fetch_data_per_conf(conf)
     countries = {}

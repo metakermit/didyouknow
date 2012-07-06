@@ -4,7 +4,8 @@ d3.csv("/static/iris.csv", function(flowers) {
   var size = 140,
       padding = 10,
       n = 4,
-      traits = ["sepal length", "sepal width", "petal length", "petal width"];
+      //traits = ["sepal length", "sepal width", "petal length", "petal width"]; // First letters should be lowercase, but somehow it turns them to uppercase!?
+	  traits = ["Sepal Length", "Sepal Width", "Petal Length", "Petal Width"]; // In that case use these.
 
   // Position scales.
   var x = {}, y = {};
@@ -135,4 +136,5 @@ d3.csv("/static/iris.csv", function(flowers) {
     for (i = -1; ++i < n;) for (j = -1; ++j < m;) c.push({x: a[i], i: i, y: b[j], j: j});
     return c;
   }
+
 });

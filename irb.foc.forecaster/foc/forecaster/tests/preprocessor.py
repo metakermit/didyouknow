@@ -4,7 +4,7 @@ Created on 20. 12. 2011.
 @author: kermit
 '''
 import unittest
-from forecaster.ai.preprocessor import *
+from foc.forecaster.ai.preprocessor import *
 
 class Test(unittest.TestCase):
 

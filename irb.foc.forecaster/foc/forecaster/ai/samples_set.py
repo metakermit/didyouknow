@@ -3,15 +3,15 @@ Created on 16. 12. 2011.
 
 @author: kermit
 '''
-from forecaster.common import conf
-from forecaster.ai.input import Input
-from forecaster.sources.extractor import Extractor
-from forecaster.ai.sample import *
-from forecaster.ai.preprocessor import Preprocessor
+from foc.forecaster.common import conf
+from foc.forecaster.ai.input import Input
+from foc.forecaster.sources.extractor import Extractor
+from foc.forecaster.ai.sample import *
+from foc.forecaster.ai.preprocessor import Preprocessor
 
 from random import sample
-from forecaster.common.exceptions import NonExistentDataError
-from forecaster.ai.metadata import Metadata
+from foc.forecaster.common.exceptions import NonExistentDataError
+from foc.forecaster.ai.metadata import Metadata
 
 class SamplesSet(object):
     '''

@@ -5,7 +5,7 @@ Created on 16. 12. 2011.
 '''
 import unittest
 
-from forecaster.ai.samples_set import SamplesSet
+from foc.forecaster.ai.samples_set import SamplesSet
 
 class Test(unittest.TestCase):
 
@@ -13,7 +13,7 @@ class Test(unittest.TestCase):
     def test_build(self):
         look_back_years = 3
         samples_set = SamplesSet(look_back_years)
-        samples_set.t_loc = "./forecaster/tests/test_sample_selection.xls"
+        samples_set.t_loc = "./foc/forecaster/tests/test_sample_selection.xls"
         train_samples, test_samples = samples_set.build_from_crises_file(["USA", "DEU"], ["SP.POP.65UP.TO.ZS"], 0.50)
         self.assertEqual(len(train_samples), 4)
         self.assertEqual(len(test_samples), 3)

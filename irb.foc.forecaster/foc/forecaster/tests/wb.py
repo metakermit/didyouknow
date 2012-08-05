@@ -5,7 +5,7 @@ Created on 15. 12. 2011.
 '''
 import unittest
 
-from forecaster.sources import wb
+from foc.forecaster.sources import wb
 
 class Test(unittest.TestCase):
 

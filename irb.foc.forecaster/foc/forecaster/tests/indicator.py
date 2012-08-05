@@ -4,7 +4,7 @@ Created on 15. 12. 2011.
 @author: kermit
 '''
 import unittest
-from forecaster.model.indicator import Indicator
+from foc.forecaster.model.indicator import Indicator
 
 class Test(unittest.TestCase):
 

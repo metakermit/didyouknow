@@ -5,8 +5,8 @@ Created on 16. 12. 2011.
 '''
 import unittest
 
-from forecaster.sources.extractor import Extractor
-from forecaster.common import conf
+from foc.forecaster.sources.extractor import Extractor
+from foc.forecaster.common import conf
 
 class Test(unittest.TestCase):
     

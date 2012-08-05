@@ -5,9 +5,9 @@ Created on 15. 12. 2011.
 '''
 import unittest
 
-from forecaster.sources import wb_parser
-from forecaster.model.indicator import Indicator
-from forecaster.model.country import Country
+from foc.forecaster.sources import wb_parser
+from foc.forecaster.model.indicator import Indicator
+from foc.forecaster.model.country import Country
 
 class Test(unittest.TestCase):
 

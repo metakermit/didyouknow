@@ -16,7 +16,7 @@ To add a new user called john:
 
 To push to the server simply push to this branch from your client machine:
 
-        bzr+ssh://john@lis.irb.hr//home/dlucanin/django/foc
+        bzr+ssh://john@lis.irb.hr//home/dlucanin/projekti/lp/foc
 
 On the server side do a:
 

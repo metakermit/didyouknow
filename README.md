@@ -29,3 +29,8 @@ Old location, unused atm:
         bzr+ssh://john@lis.irb.hr//var/www/foc/
 
 This is unused, as /var/www/ is stated as an unsafe location [here][https://docs.djangoproject.com/en/1.4/intro/tutorial01/] to store Django code, as it can be browsed on some web servers and publicly reveal the application's source code.
+
+If you don't like entering your password every time, you can copy your ssh keys from the Linux client you are using for submitting changes:
+
+       ssh-copy-id john@lis.irb.hr
+

@@ -28,7 +28,7 @@ class Format(object):
         pass
     
     def write_whole_set(self, samples_set):
-        self.write(samples_set.metadata, samples_set.test_samples, "dataset-test.txt")
-        self.write(samples_set.metadata, samples_set.train_samples, "dataset-train.txt")
+        self.write(samples_set.metadata, samples_set.test_samples, "io/dataset-test.txt")
+        self.write(samples_set.metadata, samples_set.train_samples, "io/dataset-train.txt")
 
     

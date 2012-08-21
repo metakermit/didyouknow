@@ -79,7 +79,7 @@ SP.POP.65UP.TO.ZS
 """
 
 # choose the dates when crises happened in this file
-sample_selection_file = "crises-imf-banking.xls"
+sample_selection_file = "io/crises-imf-banking.xls"
 #sample_selection_file = "../odabir_uzoraka-rucni-mali.xls"
 
 # how many years to look back searching for crises causes

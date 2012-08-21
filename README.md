@@ -32,5 +32,15 @@ This is unused, as /var/www/ is stated as an unsafe location [here][https://docs
 
 If you don't like entering your password every time, you can copy your ssh keys from the Linux client you are using for submitting changes:
 
-       ssh-copy-id john@lis.irb.hr
+        ssh-copy-id john@lis.irb.hr
 
+
+Installing Django
+-----------------
+
+        sudo apt-get install python-django
+
+or to run a dev version:
+
+        git clone git://github.com/django/django.git django-trunk
+        sudo pip install -e django-trunk/

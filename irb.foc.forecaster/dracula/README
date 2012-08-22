@@ -1,0 +1,4 @@
+from dracula import extractor
+
+this = extractor.arg()
+extractor.fetch()

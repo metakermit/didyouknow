@@ -30,6 +30,9 @@ class Test(unittest.TestCase):
         #print indicator.get_values()
         self.assertEqual(indicator.values, [4501000.0, 4554000.0])
         self.assertEqual(indicator.dates, [1998, 1999])
+        
+    def test_cache(self):
+        extractor.set_cache_connection('lis.irb.hr', 27017)
 
 
 if __name__ == "__main__":

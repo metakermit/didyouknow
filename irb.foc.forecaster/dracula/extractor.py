@@ -5,6 +5,10 @@ Created on 22. 8. 2012.
 '''
 import wb.api
 
+_use_cache = False
+_cache_connection_port = None
+_cache_connection_url = None
+
 def arg():
     arg = {"country_codes" : ["hrv", "usa"],
            "indicator_codes" : ["SP.POP.TOTL"],
@@ -32,4 +36,18 @@ def grab(arg=arg(), api=wb.api):
     countries = api.query_multiple_data(
                                            arg["country_codes"], arg["indicator_codes"],
                                            arg["start_date"], arg["end_date"])
+    _cache(countries)
     return countries
+
+def set_cache_connection(url, port):
+    _cache_connection_url = url
+    _cache_connection_port = port
+    _use_cache =True 
+
+def _cache(countries):
+    if _use_cache:
+        pass
+    else: return
+
+def is_cached(countries):
+    return False

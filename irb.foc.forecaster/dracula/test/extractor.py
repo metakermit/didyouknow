@@ -5,12 +5,12 @@ Created on 22. 8. 2012.
 '''
 import unittest
 
-from dracula import extractor
+from dracula.extractor import Extractor
 
 class Test(unittest.TestCase):
-
-
+    
     def test_extractor(self):
+        extractor = Extractor()
         countries = extractor.grab()
         self.assertTrue(len(countries)>0)
 
@@ -32,7 +32,11 @@ class Test(unittest.TestCase):
         self.assertEqual(indicator.dates, [1998, 1999])
         
     def test_cache(self):
-        extractor.set_cache_connection('lis.irb.hr', 27017)
+        extractor = Extractor()
+        extractor.enable_cache('lis.irb.hr', 27017)
+        countries = extractor.grab()
+        self.assertEqual(extractor.is_cached(extractor.arg()), True,
+                         "Countries must be cached after grab")
 
 
 if __name__ == "__main__":

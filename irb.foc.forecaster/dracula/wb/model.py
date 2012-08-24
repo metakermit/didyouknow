@@ -33,6 +33,15 @@ class Country(object):
         self.indicators[indicator.code] = indicator
         self.indicator_codes.append(indicator.code)
         
+    def json_repr(self):
+        indicators_repr = [ind.json_repr() for ind in self.indicators.values()]
+        me = {'code': self.code,
+                'code_iso2': self.code_iso2,
+                'indicators': indicators_repr, 
+                'indicator_codes': self.indicator_codes
+        } 
+        return me
+        
 from dracula.exceptions import NonExistentDataError
 from foc.forecaster.ai.preprocessor import Preprocessor
 
@@ -106,6 +115,10 @@ class Indicator(object):
     def merge_with_indicator(self, indicator):
         for date in indicator.dates():
             self.set_value_at(date, indicator.get_value_at(date))
+            
+    def json_repr(self):
+        me = {'code': self.code, 'dates': self.dates, 'values': self.values}
+        return me
 
     
     

@@ -1,6 +1,12 @@
 # Django settings for focweb project.
 
 import os
+import socket
+production_server = 'lis'
+if socket.gethosntame()==production_server:
+    # production settings
+else:
+    # development settings
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

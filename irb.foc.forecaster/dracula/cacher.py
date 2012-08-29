@@ -20,9 +20,23 @@ class Cacher(object):
         self.countries = self.db.countries
         
     def cache(self, countries):
-            reprs = [country.json_repr() for country in countries]
-            self.db.countries.insert(reprs)
+        reprs = [country.json_repr() for country in countries]
+        self.db.countries.insert(reprs)
             
     def retreive(self, arg):
+        hit = False
+        wanted_countries = set(arg["country_codes"])
+        for country in self.db.countries.find():
+            code = country["code"]
+            try: wanted_countries.remove(code)
+            except KeyError: pass
+        if len(wanted_countries) == 0: # empty
+            # all countries covered
+            hit = True #TODO: check for indicators & dates
+        
+        if hit:
+            countries = self.db.countries.find()#TODO: actually get and deserialzie
+            return countries
+        else:
             return None
     

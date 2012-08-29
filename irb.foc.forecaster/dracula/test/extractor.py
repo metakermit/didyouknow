@@ -32,9 +32,12 @@ class Test(unittest.TestCase):
         self.assertEqual(indicator.dates, [1998, 1999])
         
     def test_cache(self):
+        host = "localhost"
         extractor = Extractor()
-        extractor.enable_cache('lis.irb.hr', 27017)
+        extractor.enable_cache(host, 27017)
+        # grab default data
         countries = extractor.grab()
+        # see if it's cached
         self.assertEqual(extractor.is_cached(extractor.arg()), True,
                          "Countries must be cached after grab")
 

@@ -32,15 +32,30 @@ class Test(unittest.TestCase):
         self.assertEqual(indicator.dates, [1998, 1999])
         
     def test_cache(self):
-        host = "localhost"
+        #host = "localhost"
+        host = "lis.irb.hr"
         extractor = Extractor()
         extractor.enable_cache(host, 27017)
-        # grab default data
-        countries = extractor.grab()
+        # grab some data
+        arg = extractor.arg()
+        arg["country_codes"] = ["hrv", "usa"]
+        arg["interval"] = (1997, 1999)
+        arg["indicators"] = ["SP.POP.TOTL"]
+        countries = extractor.grab(arg)
         # see if it's cached
-        self.assertEqual(extractor.is_cached(extractor.arg()), True,
+        self.assertEqual(extractor.is_cached(arg), True,
                          "Countries must be cached after grab")
-
+        arg["country_codes"].append("fin") 
+        self.assertEqual(extractor.is_cached(arg), False,
+                         "Countries must match to give a cache hit")
+        arg["country_codes"]= ["hrv", "usa"]
+        arg["interval"] = (1996, 1999)
+        self.assertEqual(extractor.is_cached(arg), False,
+                         "Years must match to give a cache hit")
+        arg["interval"] = (1997, 1999)
+        arg["indicators"].append("FR.INR.RINR")
+        self.assertEqual(extractor.is_cached(arg), False,
+                         "Indicators must match to give a cache hit")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testExtractor']

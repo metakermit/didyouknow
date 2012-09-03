@@ -1,0 +1,11 @@
+You can try this to check that your dracula installation is working:
+		
+		from dracula import extractor
+		this = extractor.arg()
+		extractor.fetch(this)
+
+To enable caching you first need to install [MongoDB][] locally
+or on a remote server.
+
+
+[MongoDB]: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-debian-or-ubuntu-linux/ 

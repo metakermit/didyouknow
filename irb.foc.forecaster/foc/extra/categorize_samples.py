@@ -29,7 +29,7 @@ def eventrepl(match):
     
 if __name__ == '__main__':
     #global samples
-    with open("selection.txt") as sel, open("../description-dataset-train.txt") as data:
+    with open("selection.txt") as sel, open("../io/description-dataset-train.txt") as data:
         # parse data
         lines = [x.rstrip() for x in data.readlines()]
         for line in lines:

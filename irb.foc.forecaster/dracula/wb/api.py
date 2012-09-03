@@ -11,7 +11,7 @@ import json
 #from pprint import pprint
 
 
-import wb_parser
+import parser
 
 def _make_request(query):
     """
@@ -95,9 +95,9 @@ def query_data(country, indicator, start_date, end_date):
                               'date':date})
     param = "/countries/%s/indicators/%s?%s" % (country, indicator, args)
     data_list = _abstract_query(param)
-    return wb_parser.parse_single_country(data_list)
+    return parser.parse_single_country(data_list)
 
-def _query_multiple_countries(countries=['all'], indicator='SP.POP.TOTL', start_date=2010, end_date=2011):
+def _query_multiple_countries(countries=['all'], indicator='', start_date=2010, end_date=2011):
     """
     Single query (not counting pages) to get a single country's data.
     @param countires: list of country codes to fetch e.g. ['usa','bra']
@@ -110,18 +110,18 @@ def _query_multiple_countries(countries=['all'], indicator='SP.POP.TOTL', start_
                               'per_page':per_page})
         param = "/countries/%s?%s" % (";".join(countries), args)
         data_list = _abstract_query(param)
-        return wb_parser.parse_multiple_countries_alone(data_list)
+        return parser.parse_multiple_countries_alone(data_list)
     else:
         args = urllib.urlencode({'format':'json',
                               'date':date,
                               'per_page':per_page})
         param = "/countries/%s/indicators/%s?%s" % (";".join(countries), indicator, args)
         data_list = _abstract_query(param)
-        return wb_parser.parse_multiple_countries(data_list)
+        return parser.parse_multiple_countries(data_list)
     #data_list = _abstract_query(param)
     #return parse_single_country(data_list)
 
-def query_multiple_data(country_codes=['all'], indicator_codes=["SP.POP.TOTL"], start_date=2010, end_date=2011):
+def query_multiple_data(country_codes=['all'], indicator_codes=[], start_date=2010, end_date=2011):
     """
     Perform several queries if necessary to get a multiple indicator tables.
     Parse them and return them as country objects
@@ -148,7 +148,7 @@ def query_multiple_data(country_codes=['all'], indicator_codes=["SP.POP.TOTL"], 
             if verbose:
                 print("%d/%d" % (done_queries,num_queries))
             country_indicators.append(countries_with_single_indicator)
-        wb_parser.add_indicators_to_countries(countries, country_indicators)
+        parser.add_indicators_to_countries(countries, country_indicators)
     return countries
 
 def _simple_query(params):

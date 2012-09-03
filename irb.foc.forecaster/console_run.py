@@ -5,10 +5,10 @@ Created on 16. 12. 2011.
 '''
 from time import time
 
-from forecaster.sources.extractor import Extractor
-from forecaster.common import conf
-from forecaster.ai.samples_set import SamplesSet
-from forecaster.ai.output.writer import Writer
+from foc.forecaster.sources.extractor import Extractor
+from foc.forecaster.common import conf
+from foc.forecaster.ai.samples_set import SamplesSet
+from foc.forecaster.ai.output.writer import Writer
 
 # uuu
 def draw():

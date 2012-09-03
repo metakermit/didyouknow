@@ -21,11 +21,11 @@ Running
 =======
 Set the desired preferences in the configuration file:
 
-./common/conf.py
+./foc/forecastercommon/conf.py
 
-Write down the crisis/normal years in the XLS file:
+Write down the crisis/normal years in the XLS file you defined in your conf file, e.g.:
 
-./odabir_uzoraka.xls
+./io/crises-imf-banking.xls
 
 Position yourself inside the irb.foc.forecaster folder (pwd output just to show an example of the correct path):
 
@@ -33,15 +33,16 @@ $ cd irb.foc.forecaster
 $ pwd
 /media/Data/Drazen/Dropbox/dev/eclipse/w2/irb.foc.forecaster
 
-Run the Python interpreter with the entry script run.py as an argument:
+Run the Python interpreter with the entry script console_run.py as an argument:
 
-$ python run.py
+$ python console_run.py
 
 
 Lay of the code
 ===============
 
-forcaster - main module, use it to start the program
+foc.forcaster - main machine learning module, contains all the logic
+--------------------
 
 common
 ------
@@ -67,3 +68,7 @@ ai - classes regarding pattern recognition, train and test building etc.
 
 tests - unit tests for individual modules
 -----
+
+
+foc.visualiser - contains data regarding organisation and local visualisation
+----------------------

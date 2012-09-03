@@ -3,15 +3,15 @@ Created on 16. 12. 2011.
 
 @author: kermit
 '''
-from forecaster.common import conf
-from forecaster.ai.input import Input
-from forecaster.sources.extractor import Extractor
-from forecaster.ai.sample import *
-from forecaster.ai.preprocessor import Preprocessor
+from foc.forecaster.common import conf
+from foc.forecaster.ai.input import Input
+from foc.forecaster.sources.extractor import Extractor
+from foc.forecaster.ai.sample import *
+from foc.forecaster.ai.preprocessor import Preprocessor
 
 from random import sample
-from forecaster.common.exceptions import NonExistentDataError
-from forecaster.ai.metadata import Metadata
+from foc.forecaster.common.exceptions import NonExistentDataError
+from foc.forecaster.ai.metadata import Metadata
 
 class SamplesSet(object):
     '''
@@ -109,12 +109,12 @@ class SamplesSet(object):
         return self.train_samples, self.test_samples
         
     
-    def build_from_crises_file(self, country_codes, feature_indicators, test_percentage, sparse=True):
+    def build_from_crises_file(self, country_codes, feature_indicators, test_percentage, sparse=False):
         """
         Entry method that builds a samples set by fetching the data using the extractor.
         Classes are determined from a crisis XLS file.
         
-        sparse - if True it fetches the data for the necessary years only.
+        sparse - if True it fetches the data for the necessary years only. Shown to be non-efficient.
         """
         # clear the sample sets
         self.crisis_samples = []

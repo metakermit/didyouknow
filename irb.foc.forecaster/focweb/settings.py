@@ -1,6 +1,12 @@
-# Django settings for django_app project.
+# Django settings for focweb project.
 
 import os
+import socket
+production_server = 'lis'
+if socket.gethosntame()==production_server:
+    # production settings
+else:
+    # development settings
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
@@ -14,7 +20,7 @@ MANAGERS = ADMINS
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'D:\\IRB\\FOC\\launchpad-foc\\trunk\\irb.foc.forecaster\\foc\\web\\django_app\\sqlite.db',                      # Or path to database file if using sqlite3.
+        'NAME': 'D:\\IRB\\FOC\\launchpad-foc\\trunk\\irb.foc.forecaster\\foc\\web\\focweb\\sqlite.db',                      # Or path to database file if using sqlite3.
         'USER': '',                      # Not used with sqlite3.
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Set to empty string for localhost. Not used with sqlite3.
@@ -103,10 +109,10 @@ MIDDLEWARE_CLASSES = (
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'django_app.urls'
+ROOT_URLCONF = 'focweb.urls'
 
 # Python dotted path to the WSGI application used by Django's runserver.
-WSGI_APPLICATION = 'django_app.wsgi.application'
+WSGI_APPLICATION = 'focweb.wsgi.application'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".

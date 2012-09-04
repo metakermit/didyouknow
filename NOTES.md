@@ -1,3 +1,14 @@
+
+THIS FILE CONTAINS GENERAL NOTES OF THINGS TO REMEMBER, NOT DIRECTLY RELATED TO THE PROJECT.
+
+PROJECT-RELATED STUFF IS IN:
+
+    irb.foc.forecaster/README
+
+
+Instructions for using Bazaar to publish to a web server
+=================================================
+
 Prerequirements:
 
  - create a group for all users
@@ -22,25 +33,16 @@ On the server side do a:
 
         bzr update
 
-(or install the push-and-update plugin as explained [here][http://wiki.bazaar.canonical.com/BazaarForWebDevs])
+(or install the push-and-update plugin as explained [here](http://wiki.bazaar.canonical.com/BazaarForWebDevs))
 
 Old location, unused atm:
 
         bzr+ssh://john@lis.irb.hr//var/www/foc/
 
-This is unused, as /var/www/ is stated as an unsafe location [here][https://docs.djangoproject.com/en/1.4/intro/tutorial01/] to store Django code, as it can be browsed on some web servers and publicly reveal the application's source code.
+This is unused, as /var/www/ is stated as an unsafe location [here](https://docs.djangoproject.com/en/1.4/intro/tutorial01/) to store Django code, as it can be browsed on some web servers and publicly reveal the application's source code.
 
 If you don't like entering your password every time, you can copy your ssh keys from the Linux client you are using for submitting changes:
 
         ssh-copy-id john@lis.irb.hr
 
 
-Installing Django
------------------
-
-        sudo apt-get install python-django
-
-or to run a dev version:
-
-        git clone git://github.com/django/django.git django-trunk
-        sudo pip install -e django-trunk/

@@ -6,7 +6,7 @@ Created on 26. 6. 2012.
 
 import json
 
-from foc.forecaster.sources.extractor import Extractor
+from dracula.extractor import Extractor
 
 class AbstractDataOrganiser(object):
     '''
@@ -42,6 +42,6 @@ class AbstractDataOrganiser(object):
     
     def get_representation(self, conf):
         self._organise_data(conf)
-        self._write_data()
+        #self._write_data()
         return self.vis_data
         

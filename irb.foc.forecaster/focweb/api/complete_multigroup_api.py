@@ -29,7 +29,8 @@ def get_data(request):
             countries = request.GET.getlist('countries[]')
             conf.countries = countries 
             repr = organiser.get_representation(conf)
-            countries = organiser._extractor.get_countries()
+            print("repr is:")
+            print(repr)
         # If no countries are recquired return empty json.
         else:
             repr = []

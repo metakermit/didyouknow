@@ -11,6 +11,6 @@
 <key>DJANGO_MANAGE_LOCATION</key>
 <value>manage.py</value>
 <key>DJANGO_SETTINGS_MODULE</key>
-<value>django_app.settings</value>
+<value>focweb.settings</value>
 </pydev_variables_property>
 </pydev_project>

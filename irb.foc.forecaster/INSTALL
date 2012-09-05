@@ -1,4 +1,4 @@
-Not suggested atm - the package is not well defined, better to simply run console_run.py:
+Not suggested atm - the pip package is not well defined, better to simply run console_run.py, see the README.md file.
 
 Open a terminal, point it at this path and issue:
 

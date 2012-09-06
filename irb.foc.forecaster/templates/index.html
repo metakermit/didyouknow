@@ -18,10 +18,7 @@
 	$(function(){
 		$("select").multiselect().multiselectfilter();
 		$("#send-request").button();
-		
 		$("#send-request").click( requestData );
-		
-		
 	});
 	</script>
 
@@ -29,7 +26,7 @@
 
 {% block content %}
 
-<!-- 
+<!--
 Loaded countries:
 <table>
 	{% for v in countries %}
@@ -72,6 +69,14 @@ Loaded countries:
 	</table>
 </p>
 
+<p>
+<textarea id="data-table1" readonly="yes" wrap="off"></textarea>
+</p>
+<!--
+<p>
+<textarea id="data-table2" readonly="yes" wrap="off"></textarea>
+</p>
+-->
 
 {% endblock %}
 

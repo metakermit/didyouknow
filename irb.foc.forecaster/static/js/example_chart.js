@@ -30,23 +30,30 @@ function requestData() {
 				chart.series[0].remove();
 			}
 			
+			// For all retrieved countries
 			for (j in data) {
 				var seriesOptions = {
 					name: data[j].code,
 					data: []
 				};
 				chart.addSeries(seriesOptions, true);
-				var series = chart.series[j], shift = series.data.length > 20; // shift if the series is longer than 20
-				var country = focData[j];
+				var series = chart.series[j]; //, shift = series.data.length > 20; // shift if the series is longer than 20
+				var country = data[j];
+				//var country = focData[j];
 				var x_ind = country.x_ind;
 				var y_ind = country.y_ind;
 				var dates = country.dates;
+				
+				// Draw all points for given country 
 				for (i in x_ind.data) {
 					var point = {x: x_ind.data[i], y: y_ind.data[i], date: dates[i]};
 					chart.series[j].addPoint(point, true, false); // point,redraw,shift
 				}
+				
 			}
 			updatePlot();
+			
+			updateTextBox(data);
         },
 		cache: false,
 	});
@@ -62,7 +69,34 @@ function updatePlot()
 	chart.redraw();
 }
 
-
+// Update text box with new data
+function updateTextBox(data)
+{
+	/*
+	$("#data-table2").val("");
+	for (j in data) {
+		$("#data-table2").val( $("#data-table2").val() + "dates: " + data[j].dates + "\n");
+		$("#data-table2").val( $("#data-table2").val() + "x_ind: " + data[j].x_ind.data + "\n");
+		$("#data-table2").val( $("#data-table2").val() + "y_ind: " + data[j].y_ind.data + "\n");
+	}
+	*/
+	
+	// CSV format
+	$("#data-table1").val("code x y date\n");
+	for (j in data) {
+	
+		var code = data[j].code;
+		var x = data[j].x_ind;
+		var y = data[j].y_ind;
+		var dates = data[j].dates;
+		
+		for (i in x.data) {
+			$("#data-table1").val( $("#data-table1").val() + code + " " + x.data[i] + " " + y.data[i] + " " + dates[i] + "\n");
+			//$("#data-table1").val( $("#data-table1").val() + code + "\t\t" + x.data[i] + "\t\t" + y.data[i] + "\t\t" + dates[i] + "\n");
+		}
+	}
+	
+}
 
 $(document).ready(function() {
     chart = new Highcharts.Chart({

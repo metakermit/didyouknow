@@ -30,7 +30,8 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
         
         self.vis_data = []
         for country in countries:
-            x_ind_code,y_ind_code = country.indicator_codes()[:2]
+            #x_ind_code,y_ind_code = country.indicator_codes()[:2] # Throws error: 'list' object is not callable
+            x_ind_code,y_ind_code = country.indicator_codes[:2]
             x_ind = country.get_indicator(x_ind_code)
             y_ind = country.get_indicator(y_ind_code)
             years = range(conf.start_date, conf.end_date)

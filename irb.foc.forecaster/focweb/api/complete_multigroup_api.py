@@ -28,15 +28,15 @@ def get_data(request):
         if 'countries[]' in request.GET:
             countries = request.GET.getlist('countries[]')
             conf.countries = countries 
-            repr = organiser.get_representation(conf)
-            print("repr is:")
-            print(repr)
+            representation = organiser.get_representation(conf)
+            print("representation is:")
+            print(representation)
         # If no countries are recquired return empty json.
         else:
-            repr = []
+            representation = []
     # For fetching json from /getdata/ url directly.
     else:
         conf.countries = ["HRV"]
-        repr = organiser.get_representation(conf)
+        representation = organiser.get_representation(conf)
 
-    return HttpResponse(simplejson.dumps(repr), mimetype="application/json")
+    return HttpResponse(simplejson.dumps(representation), mimetype="application/json")

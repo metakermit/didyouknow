@@ -13,7 +13,7 @@ def foc(request):
     #extractor = Extractor()
     #countries = extractor.fetch_data_per_conf(conf)
     countries = {}
-    return render_to_response('index.html', {'countries': countries})
+    return render_to_response('index.html', {'countries': countries}) # Decide what to do with countries! Remove them?
 
 def multiselect(request):
     return render_to_response('highcharts_example1.html')

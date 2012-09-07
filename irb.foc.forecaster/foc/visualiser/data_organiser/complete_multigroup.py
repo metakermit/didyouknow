@@ -5,6 +5,7 @@ Created on 26. 6. 2012.
 '''
 from foc.visualiser.data_organiser.abstract_data_organiser import AbstractDataOrganiser
 from dracula.exceptions import NonExistentDataError
+from foc.forecaster.ai.crisis_seer import CrisisSeer
 
 class CompleteMultigroupOrganiser(AbstractDataOrganiser):
     '''
@@ -52,7 +53,11 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
                 except NonExistentDataError:
                     continue
             
-            country_repr = {'code': country.code, 'dates': all_x_dates,
+            crisis_seer = CrisisSeer(conf.sample_selection_file)
+            crisis_years = crisis_seer.get_crisis_years(country.code)
+            #'crises': crisis_years,
+            
+            country_repr = {'code': country.code, 'dates': all_x_dates, 'crises': crisis_years,
                             #'x_ind': x_ind.simple_dict_repr(),
                             #'y_ind': y_ind.simple_dict_repr()}
                             'x_ind': {'code': x_ind.code, 'data': all_x},

@@ -16,9 +16,22 @@
 	
 	<script type="text/javascript">
 	$(function(){
-		$("select").multiselect().multiselectfilter();
+		$("#selectCountries").multiselect().multiselectfilter();
+		//$("#selectIndicators").multiselect().multiselectfilter();
 		$("#send-request").button();
 		$("#send-request").click( requestData );
+		
+		$("#selectIndicators").multiselect({ 
+		   header: "Select only TWO indicators!",
+		   click: function(e){
+		       if( $(this).multiselect("widget").find("input:checked").length > 2 ){
+		           //warning.addClass("error").removeClass("success").html("You can only check two checkboxes!");
+		           return false;
+		       } else {
+		           //warning.addClass("success").removeClass("error").html("Check a few boxes.");
+		       }
+		   }
+		});
 	});
 	</script>
 
@@ -37,11 +50,11 @@ Loaded countries:
 
 <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
 
-<h3>Select countries:</h3>
+<h3>Select countries and indicators:</h3>
 <p>
 	<table>
 	<tr><td>	
-	<select title="Basic example" multiple="multiple" name="example-basic" size="5">
+	<select title="Select countries" multiple="multiple" name="select-countries" size="5" id="selectCountries">
 	<!-- {% for v in countries %}
 		<option value="{{v}}">{{v}}</option>
 	{% endfor %} -->
@@ -63,6 +76,17 @@ Loaded countries:
 	<option value="USA">USA</option>
 	</select>
 	</td>
+	<td>	
+	<select title="Select indicators" multiple="multiple" name="select-indicators" size="5" id="selectIndicators">
+	<option value="FR.INR.RINR" selected="selected">FR.INR.RINR</option>
+	<option value="SL.UEM.TOTL.ZS" selected="selected">SL.UEM.TOTL.ZS</option>
+	<option value="SP.POP.TOTL">SP.POP.TOTL</option>
+	<option value="NY.GDP.PCAP.KD">NY.GDP.PCAP.KD</option>
+	<option value="NY.GDP.MKTP.KD.ZG">NY.GDP.MKTP.KD.ZG</option>
+	<option value="test1">test1</option>
+	<option value="test2">test2</option>
+	</select>
+	</td>
 	<td>
 	<button id="send-request">Send request</button>
 	</td></tr>
@@ -70,7 +94,7 @@ Loaded countries:
 </p>
 
 <p>
-<textarea id="data-table1" readonly="yes" wrap="off"></textarea>
+<textarea id="data-table1" readonly="yes" wrap="off" cols="74" rows="5"></textarea>
 </p>
 <!--
 <p>

@@ -90,19 +90,11 @@ function updatePlot()
 // Update text box with new data
 function updateTextBox(data)
 {
-	/*
-	$("#data-table2").val("");
-	for (j in data) {
-		$("#data-table2").val( $("#data-table2").val() + "dates: " + data[j].dates + "\n");
-		$("#data-table2").val( $("#data-table2").val() + "x_ind: " + data[j].x_ind.data + "\n");
-		$("#data-table2").val( $("#data-table2").val() + "y_ind: " + data[j].y_ind.data + "\n");
-	}
-	*/
-	
+
 	// CSV format
 	if (data.length != 0)
 	{
-		$("#data-table1").val("\"code\" \"" + data[0].x_ind.code + "\" \"" + data[0].y_ind.code + "\" \"date\" \"crisis\"\n");
+		$("#data-table").val("\"code\" \"" + data[0].x_ind.code + "\" \"" + data[0].y_ind.code + "\" \"date\" \"crisis\"\n");
 	}
 	for (j in data) {
 	
@@ -118,7 +110,7 @@ function updateTextBox(data)
 			if ($.inArray(dates[i], crises) != -1) {
 				crisisFlag = 1;
 			}
-			$("#data-table1").val($("#data-table1").val() + code + " " + x.data[i] + " " + y.data[i] + " " + dates[i] + " " + crisisFlag + "\n");
+			$("#data-table").val($("#data-table").val() + code + " " + x.data[i] + " " + y.data[i] + " " + dates[i] + " " + crisisFlag + "\n");
 		}
 		
 	}

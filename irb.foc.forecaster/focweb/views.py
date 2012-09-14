@@ -15,6 +15,9 @@ def foc(request):
     countries = {}
     return render_to_response('index.html', {'countries': countries}) # Decide what to do with countries! Remove them?
 
+def foc_d3(request):
+    return render_to_response('index_d3.html')
+
 def multiselect(request):
     return render_to_response('highcharts_example1.html')
 

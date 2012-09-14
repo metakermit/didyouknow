@@ -120,7 +120,8 @@ d3.csv("/static/iris.csv", function(flowers) {
     svg.selectAll(".cell circle").attr("class", function(d) {
       return e[0][0] <= d[p.x] && d[p.x] <= e[1][0]
           && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
-          ? d.species : null;
+		  ? d.Species : null;
+          //? d.species : null; // Why are the class names uppercase when they should be lowercase?!
     });
   }
 

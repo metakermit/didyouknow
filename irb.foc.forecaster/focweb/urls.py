@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
-from views import foc, multiselect, d3
-from api.complete_multigroup_api import get_data
+from views import foc, multiselect, d3, foc_d3
+from api.complete_multigroup_api import get_data, get_data_scatter
 
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
@@ -18,7 +18,9 @@ urlpatterns = patterns('',
     # url(r'^admin/', include(admin.site.urls)),
     
     url(r'^foc/', foc),
+    url(r'^focd3/', foc_d3),
     url(r'^getdata/', get_data),
+    url(r'^getdatascatter/', get_data_scatter),
     
     url(r'^multiselect/', multiselect),
     url(r'^d3/', d3),

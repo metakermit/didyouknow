@@ -5,7 +5,7 @@ Created on 14. 12. 2011.
 '''
 from pylab import *
 
-from foc.forecaster.common.exceptions import NonExistentDataError
+from dracula.exceptions import NonExistentDataError
 from foc.forecaster.ai.preprocessor import Preprocessor
 
 class Indicator(object):

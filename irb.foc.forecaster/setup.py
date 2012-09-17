@@ -22,5 +22,5 @@ setup(
     author = "Drazen Lucanin",
     author_email = "kermit666@gmail.com",
     url = "http://pypi.python.org/pypi/foc-forecaster",
-    long_description=read('README')
+    long_description=read('README.md')
 )

@@ -18,24 +18,50 @@ from pprint import pprint
 #pprint(sys.path)
 
 from foc.visualiser.data_organiser.complete_multigroup import CompleteMultigroupOrganiser
+from foc.visualiser.data_organiser.scatter_matrix import ScatterMatrixOrganiser
 from foc.forecaster.common import conf
 
 def get_data(request): 
     organiser = CompleteMultigroupOrganiser()
     
-    
     if request.is_ajax():
-        if 'countries[]' in request.GET:
+        if 'countries[]' in request.GET and 'indicators[]' in request.GET: # We should check that we got exactly two indicators!
             countries = request.GET.getlist('countries[]')
+            indicators = request.GET.getlist('indicators[]')
             conf.countries = countries 
-            repr = organiser.get_representation(conf)
-            countries = organiser._extractor.get_countries()
-        # If no countries are recquired return empty json.
+            conf.indicators = indicators 
+            representation = organiser.get_representation(conf)
+            print("representation is:")
+            print(representation)
+        # If no countries are required return empty json.
         else:
-            repr = []
+            representation = []
     # For fetching json from /getdata/ url directly.
     else:
-        conf.countries = ["HRV"]
-        repr = organiser.get_representation(conf)
+        conf.countries = ["HRV","USA"]
+        representation = organiser.get_representation(conf)
 
-    return HttpResponse(simplejson.dumps(repr), mimetype="application/json")
+    return HttpResponse(simplejson.dumps(representation), mimetype="application/json")
+
+
+def get_data_scatter(request): 
+    organiser = ScatterMatrixOrganiser()
+    
+    if request.is_ajax():
+        if 'countries[]' in request.GET and 'indicators[]' in request.GET: # We should check that we got exactly two indicators!
+            countries = request.GET.getlist('countries[]')
+            indicators = request.GET.getlist('indicators[]')
+            conf.countries = countries 
+            conf.indicators = indicators 
+            representation = organiser.get_representation(conf)
+            print("representation is:")
+            print(representation)
+        # If no countries are required return empty json.
+        else:
+            representation = []
+    # For fetching json from /getdata/ url directly.
+    else:
+        conf.countries = ["HRV","USA"]
+        representation = organiser.get_representation(conf)
+
+    return HttpResponse(simplejson.dumps(representation), mimetype="application/json")

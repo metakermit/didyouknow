@@ -42,6 +42,6 @@ class AbstractDataOrganiser(object):
     
     def get_representation(self, conf):
         self._organise_data(conf)
-        self._write_data()
+        #self._write_data()
         return self.vis_data
         

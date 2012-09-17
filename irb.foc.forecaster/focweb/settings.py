@@ -3,10 +3,12 @@
 import os
 import socket
 production_server = 'lis'
-if socket.gethosntame()==production_server:
+if socket.gethostname()==production_server:
     # production settings
+    pass
 else:
     # development settings
+    pass
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG

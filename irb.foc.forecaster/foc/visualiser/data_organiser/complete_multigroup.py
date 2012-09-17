@@ -1,10 +1,11 @@
-'''
+ ti '''
 Created on 26. 6. 2012.
 
 @author: kermit
 '''
 from foc.visualiser.data_organiser.abstract_data_organiser import AbstractDataOrganiser
 from dracula.exceptions import NonExistentDataError
+from foc.forecaster.ai.crisis_seer import CrisisSeer
 
 class CompleteMultigroupOrganiser(AbstractDataOrganiser):
     '''
@@ -21,15 +22,17 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
         arg["indicator_codes"] = conf.indicators
         arg["interval"] = (conf.start_date, conf.end_date)
         countries = self._extractor.grab(arg)
-        #TODO: add process functionality again, somehow
-#        self._extractor.process(conf.process_indicators,
-#                                   method = "slope",
-#                                   look_back_years=conf.look_back_years)
-#        countries = self._extractor.get_countries()
+        #TODO: add the process method somewhere inside the preprocessor
+        #self._extractor.process(conf.process_indicators,
+        #                           method = "slope",
+        #                           look_back_years=conf.look_back_years)
+        print("organiser got back:")
+        print(countries)
         
         self.vis_data = []
         for country in countries:
-            x_ind_code,y_ind_code = country.indicator_codes()[:2]
+            #x_ind_code,y_ind_code = country.indicator_codes()[:2] # Throws error: 'list' object is not callable
+            x_ind_code,y_ind_code = country.indicator_codes[:2]
             x_ind = country.get_indicator(x_ind_code)
             y_ind = country.get_indicator(y_ind_code)
             years = range(conf.start_date, conf.end_date)
@@ -50,7 +53,11 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
                 except NonExistentDataError:
                     continue
             
-            country_repr = {'code': country.code, 'dates': all_x_dates,
+            crisis_seer = CrisisSeer(conf.sample_selection_file)
+            crisis_years = crisis_seer.get_crisis_years(country.code)
+            #'crises': crisis_years,
+            
+            country_repr = {'code': country.code, 'dates': all_x_dates, 'crises': crisis_years,
                             #'x_ind': x_ind.simple_dict_repr(),
                             #'y_ind': y_ind.simple_dict_repr()}
                             'x_ind': {'code': x_ind.code, 'data': all_x},

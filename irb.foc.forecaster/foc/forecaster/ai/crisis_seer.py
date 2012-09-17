@@ -3,7 +3,7 @@ Created on 30. 5. 2012.
 
 @author: kermit
 '''
-from forecaster.ai.input import Input
+from foc.forecaster.ai.input import Input
 
 class CrisisSeer(object):
     '''

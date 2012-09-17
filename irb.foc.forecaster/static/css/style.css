@@ -1,9 +1,9 @@
 body {
-  font: 300 36px "Helvetica Neue";
+  /* font: 300 36px "Helvetica Neue"; // Problems with multiselect filter widgets! */
   height: 640px;
   margin: 80px 160px 80px 160px;
-  overflow: hidden;
-  position: relative;
+  /* overflow: hidden; */
+  /* position: relative; // Problems with multiselect filter widgets! */
   width: 960px;
 }
 

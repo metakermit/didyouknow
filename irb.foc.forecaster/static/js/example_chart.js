@@ -12,7 +12,8 @@ function requestData() {
 	$.ajax({
 		url: "../getdata/", 
 		data: {
-			countries: $("select").val()
+			countries: $("#selectCountries").val(),
+			indicators: $("#selectIndicators").val()
 		},
 		success: function(focData) {
 			data = focData;
@@ -30,23 +31,47 @@ function requestData() {
 				chart.series[0].remove();
 			}
 			
+			// For all retrieved countries
 			for (j in data) {
 				var seriesOptions = {
 					name: data[j].code,
 					data: []
 				};
 				chart.addSeries(seriesOptions, true);
-				var series = chart.series[j], shift = series.data.length > 20; // shift if the series is longer than 20
-				var country = focData[j];
+				var series = chart.series[j]; //, shift = series.data.length > 20; // shift if the series is longer than 20
+				var country = data[j];
+				//var country = focData[j];
 				var x_ind = country.x_ind;
 				var y_ind = country.y_ind;
 				var dates = country.dates;
+				var crises = country.crises;
+				
+				// Draw all points for given country 
 				for (i in x_ind.data) {
-					var point = {x: x_ind.data[i], y: y_ind.data[i], date: dates[i]};
+					if ($.inArray(dates[i], crises) != -1) 
+					{ 
+						//var point = {x: x_ind.data[i], y: y_ind.data[i], date: dates[i], marker: {symbol: 'square', radius: 5}};
+						var point = {
+							x: x_ind.data[i],
+							y: y_ind.data[i],
+							date: dates[i],
+							marker: {
+								symbol: 'url(http://www.highcharts.com/demo/gfx/snow.png)'
+							}
+						};
+					} 
+					else 
+					{ 
+						var point = {x: x_ind.data[i], y: y_ind.data[i], date: dates[i]};
+					}
+					//var point = {x: x_ind.data[i], y: y_ind.data[i], date: dates[i]};
 					chart.series[j].addPoint(point, true, false); // point,redraw,shift
 				}
+				
 			}
 			updatePlot();
+			
+			updateTextBox(data);
         },
 		cache: false,
 	});
@@ -62,7 +87,35 @@ function updatePlot()
 	chart.redraw();
 }
 
+// Update text box with new data
+function updateTextBox(data)
+{
 
+	// CSV format
+	if (data.length != 0)
+	{
+		$("#data-table").val("\"code\" \"" + data[0].x_ind.code + "\" \"" + data[0].y_ind.code + "\" \"date\" \"crisis\"\n");
+	}
+	for (j in data) {
+	
+		var code = data[j].code;
+		var x = data[j].x_ind;
+		var y = data[j].y_ind;
+		var dates = data[j].dates;
+		var crises = data[j].crises;
+		
+		for (i in x.data) 
+		{
+			var crisisFlag = 0;
+			if ($.inArray(dates[i], crises) != -1) {
+				crisisFlag = 1;
+			}
+			$("#data-table").val($("#data-table").val() + code + " " + x.data[i] + " " + y.data[i] + " " + dates[i] + " " + crisisFlag + "\n");
+		}
+		
+	}
+	
+}
 
 $(document).ready(function() {
     chart = new Highcharts.Chart({

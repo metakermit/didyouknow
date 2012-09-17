@@ -114,10 +114,12 @@ class Indicator(object):
         
     def get_value_at(self, date):
         try:
-            i = self.dates().index(date)
+            #i = self.dates().index(date)
+            i = self.dates.index(date)
         except ValueError:
             raise NonExistentDataError, "the value at the specified year doesn't exist"
-        return self.values()[i]
+        #return self.values()[i]
+        return self.values[i]
     
     def set_value_at(self, date, value):
         self.dates.append(date)

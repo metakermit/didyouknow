@@ -6,7 +6,7 @@ Created on 26. 6. 2012.
 
 import json
 
-from foc.forecaster.sources.extractor import Extractor
+from dracula.extractor import Extractor
 
 class AbstractDataOrganiser(object):
     '''

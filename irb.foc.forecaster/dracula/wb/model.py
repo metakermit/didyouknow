@@ -34,12 +34,23 @@ class Country(object):
         self.indicator_codes.append(indicator.code)
         
     def json_repr(self):
+        """serialize to json"""
         indicators_repr = [ind.json_repr() for ind in self.indicators.values()]
         me = {'code': self.code,
                 'code_iso2': self.code_iso2,
                 'indicators': indicators_repr, 
                 'indicator_codes': self.indicator_codes
         } 
+        return me
+    
+    @staticmethod
+    def from_json(country_repr):
+        """deserialize from json"""
+        me = Country(country_repr["code"])
+        for indicator_repr in country_repr["indicators"]:
+            indicator = Indicator.from_json(indicator_repr)
+            me.set_indicator(indicator)
+        me.code_iso2=country_repr["code_iso2"]
         return me
         
 from dracula.exceptions import NonExistentDataError
@@ -83,7 +94,7 @@ class Indicator(object):
         look_back_year - integer stating how many
         values back to look in the slope
         """
-        #TODO: move this method to preprocessor
+        #TODO: move this method to preprocessor & get rid of the foc dependency
         look_back_years = args[0]
         new_values = []
         past_values = []
@@ -118,6 +129,13 @@ class Indicator(object):
             
     def json_repr(self):
         me = {'code': self.code, 'dates': self.dates, 'values': self.values}
+        return me
+    
+    @staticmethod
+    def from_json(indicator_repr):
+        me = Indicator(code=indicator_repr["code"],
+                       dates = indicator_repr["dates"],
+                       values = indicator_repr["values"])
         return me
 
     

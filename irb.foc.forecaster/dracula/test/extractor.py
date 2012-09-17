@@ -35,12 +35,14 @@ class Test(unittest.TestCase):
         #host = "localhost"
         host = "lis.irb.hr"
         extractor = Extractor()
-        extractor.enable_cache(host, 27017)
+        # enable cache, but use a test DB
+        extractor.enable_cache(host, 27017, test=True)
+        extractor.clear_cache()
         # grab some data
         arg = extractor.arg()
         arg["country_codes"] = ["hrv", "usa"]
         arg["interval"] = (1997, 1999)
-        arg["indicators"] = ["SP.POP.TOTL"]
+        arg["indicator_codes"] = ["SP.POP.TOTL"]
         countries = extractor.grab(arg)
         # see if it's cached
         self.assertEqual(extractor.is_cached(arg), True,
@@ -53,9 +55,14 @@ class Test(unittest.TestCase):
         self.assertEqual(extractor.is_cached(arg), False,
                          "Years must match to give a cache hit")
         arg["interval"] = (1997, 1999)
-        arg["indicators"].append("FR.INR.RINR")
+        arg["indicator_codes"].append("FR.INR.RINR")
         self.assertEqual(extractor.is_cached(arg), False,
                          "Indicators must match to give a cache hit")
+        # grab some more data and see if there are duplicate countries
+        countries = extractor.grab(arg)
+        country_count = len([c for c in extractor._cacher.db.countries.find()])
+        self.assertEqual(country_count, 2,
+                         "Grabing a wider set must not leave duplicates!")
 
 if __name__ == "__main__":
     #import sys;sys.argv = ['', 'Test.testExtractor']

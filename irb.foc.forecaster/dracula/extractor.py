@@ -19,8 +19,8 @@ class Extractor(object):
         self._cacher = None
         self._arg = {"country_codes" : ["hrv", "usa"],
                "indicator_codes" : ["SP.POP.TOTL"],
-               "start_date":1980,
-               "end_date":2010}
+               "start_date" : 1980,
+               "end_date" : 2010}
 
     def arg(self):
         return copy.deepcopy(self._arg)
@@ -50,7 +50,7 @@ class Extractor(object):
                    "indicator_codes" : ["SP.POP.TOTL"],
                    "interval":(1980,2010)}
         """
-        self.normalize(arg)
+        arg = self.normalize(arg)
         if self._cache_enabled:
             countries = self._cacher.retreive(arg)
             if countries: cache_hit = True
@@ -63,14 +63,25 @@ class Extractor(object):
                 self._cache(countries)
         return countries
     
-    def enable_cache(self, host, port):
+    def enable_cache(self, host="localhost", port=27017, test=False):
+        """
+        @param host: the hostname of the server where mongodb is running
+        @param port: port mongodb is listening on
+        @param test: True if you want to work on a db separate than the main cache
+        """
         self._cache_connection_host = host
-        self._cache_connection_port = port
+        self._cache_connnection_port = port
         self._cache_enabled = True
-        self._cacher = Cacher(self._cache_connection_host, self._cache_connection_port)
+        self._cacher = Cacher(self._cache_connection_host, self._cache_connection_port, test)
         
     def disable_cache(self):
         self._cache_enabled = False
+        
+    def clear_cache(self):
+        """
+        clear everything from the cache
+        """
+        self._cacher.clear()
     
     def _cache(self,countries):
         if self._cache_enabled:
@@ -78,7 +89,7 @@ class Extractor(object):
         else: return
     
     def is_cached(self, arg):
-        self.normalize(arg)
+        arg = self.normalize(arg)
         countries = self._cacher.retreive(arg)
         if countries: return True
         else: return False

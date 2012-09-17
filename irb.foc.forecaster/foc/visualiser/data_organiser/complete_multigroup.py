@@ -4,7 +4,7 @@ Created on 26. 6. 2012.
 @author: kermit
 '''
 from foc.visualiser.data_organiser.abstract_data_organiser import AbstractDataOrganiser
-from foc.forecaster.common.exceptions import NonExistentDataError
+from dracula.exceptions import NonExistentDataError
 
 class CompleteMultigroupOrganiser(AbstractDataOrganiser):
     '''
@@ -16,11 +16,16 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
         AbstractDataOrganiser.__init__(self)
 
     def _organise_data(self, conf):
-        self._extractor.fetch_data(conf.countries, conf.indicators, conf.start_date, conf.end_date)
-        self._extractor.process(conf.process_indicators,
-                                   method = "slope",
-                                   look_back_years=conf.look_back_years)
-        countries = self._extractor.get_countries()
+        arg = self._extractor.arg()
+        arg["country_codes"] = conf.countries
+        arg["indicator_codes"] = conf.indicators
+        arg["interval"] = (conf.start_date, conf.end_date)
+        countries = self._extractor.grab(arg)
+        #TODO: add process functionality again, somehow
+#        self._extractor.process(conf.process_indicators,
+#                                   method = "slope",
+#                                   look_back_years=conf.look_back_years)
+#        countries = self._extractor.get_countries()
         
         self.vis_data = []
         for country in countries:

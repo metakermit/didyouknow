@@ -30,7 +30,7 @@ def draw():
                                        conf.testing_percentage,
                                        sparse=conf.sparse)
     writer = Writer()
-    writer.write(samples_set, conf.output_format)
+    writer.write(samples_set, conf.output_format, conf.output_location)
     t2 = time()
     print("Done!")
     print("Duration:")

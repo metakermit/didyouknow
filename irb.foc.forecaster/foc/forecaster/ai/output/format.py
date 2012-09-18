@@ -4,7 +4,7 @@ Created on 10. 1. 2012.
 @author: kermit
 '''
 
-from forecaster.ai.sample import CRISIS_CLASS, NORMAL_CLASS
+from foc.forecaster.ai.sample import CRISIS_CLASS, NORMAL_CLASS
 
 class Format(object):
     '''
@@ -27,8 +27,13 @@ class Format(object):
     def write(self, metadata, samples, filename):
         pass
     
-    def write_whole_set(self, samples_set):
-        self.write(samples_set.metadata, samples_set.test_samples, "io/dataset-test.txt")
-        self.write(samples_set.metadata, samples_set.train_samples, "io/dataset-train.txt")
+    def _add_extension(self, pth):
+        return pth+".txt"
+    
+    def write_whole_set(self, samples_set, output_location):
+        self.write(samples_set.metadata, samples_set.test_samples,
+                   self._add_extension(output_location+"-test"))
+        self.write(samples_set.metadata, samples_set.train_samples,
+                   self._add_extension(output_location+"-train"))
 
     

@@ -5,9 +5,9 @@ Created on 15. 12. 2011.
 '''
 import unittest
 
-from foc.forecaster.sources import wb_parser
-from foc.forecaster.model.indicator import Indicator
-from foc.forecaster.model.country import Country
+from dracula.wb.model import Indicator, Country
+from dracula.wb import parser
+from dracula.wb import api
 
 class Test(unittest.TestCase):
 
@@ -36,9 +36,14 @@ class Test(unittest.TestCase):
         countries1 = [c1, c2]
         countries2 = [c11, c22]
         country_indicators = [countries1, countries2]
-        wb_parser.add_indicators_to_countries(countries, country_indicators)
+        parser.add_indicators_to_countries(countries, country_indicators)
         self.assertEqual(len(countries), 2)
-        self.assertEqual(len(countries[0].get_indicator("ind1").get_values()), 2)
+        self.assertEqual(len(countries[0].get_indicator("ind1").values), 2)
+        
+    def test_query_multiple_data(self):
+        countries = api.query_multiple_data(country_codes=["usa", "hrv"],
+                                           indicator_codes=['SP.POP.TOTL'])
+        self.assertTrue(len(countries)>1, "")
     
 #    def test_all_indicators(self):
 #        inds = wb.all_indicators()

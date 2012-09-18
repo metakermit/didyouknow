@@ -3,15 +3,15 @@ Created on 16. 3. 2012.
 
 @author: kermit
 '''
-from forecaster.ai.output.format import Format
+from foc.forecaster.ai.output.format import Format
 import numbers
-from forecaster.ai.preprocessor import is_na
-from forecaster.common.exceptions import UnexpectedDataError
+from foc.forecaster.ai.preprocessor import is_na
+from foc.forecaster.common.exceptions import UnexpectedDataError
 
 class SGDFormat(Format):
     '''
     Format suitable for the SGD ML method
-    '''
+    '''    
     
     def write(self, metadata, samples, filename):
         '''

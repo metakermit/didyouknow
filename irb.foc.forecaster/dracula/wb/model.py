@@ -86,7 +86,7 @@ class Indicator(object):
             self.dates.pop(0)
         except:
             pass
-        self.set_values(new_values)
+        self.values = new_values
         
     def apply_slope(self, *args):
         """
@@ -110,7 +110,7 @@ class Indicator(object):
             [self.dates.pop(0) for i in range(look_back_years-1)]
         except:
                     pass
-        self.set_values(new_values)
+        self.values = new_values
         
     def get_value_at(self, date):
         try:

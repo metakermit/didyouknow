@@ -4,7 +4,7 @@ Created on 15. 12. 2011.
 @author: kermit
 '''
 import unittest
-from foc.forecaster.model.indicator import Indicator
+from dracula.wb.model import Indicator
 
 class Test(unittest.TestCase):
 

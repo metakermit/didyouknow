@@ -3,14 +3,14 @@ Created on 16. 12. 2011.
 
 @author: kermit
 '''
+from random import sample
+from dracula.extractor import Extractor
+from dracula.exceptions import NonExistentDataError
+
 from foc.forecaster.common import conf
 from foc.forecaster.ai.input import Input
-from foc.forecaster.sources.extractor import Extractor
 from foc.forecaster.ai.sample import *
 from foc.forecaster.ai.preprocessor import Preprocessor
-
-from random import sample
-from foc.forecaster.common.exceptions import NonExistentDataError
 from foc.forecaster.ai.metadata import Metadata
 
 class SamplesSet(object):
@@ -77,16 +77,7 @@ class SamplesSet(object):
         event_boundaries = {}
         for key, value in all_events.items():
             event_boundaries[key] = self.convert_to_boundaries(value, look_back_years)
-        return event_boundaries    
-    
-    def combine_events(self, t_crises, t_normal):
-        all_events = {}
-        for key in t_crises:
-            years = []
-            years.extend(t_crises[key])
-            years.extend(t_normal[key])
-            all_events[key]=years
-        return all_events
+        return event_boundaries
             
     def divide_single(self, samples, test_percentage):
         # divide a list of samples to train and test samples
@@ -123,27 +114,18 @@ class SamplesSet(object):
         dates_input= Input()
         t_crises, t_normal = dates_input.parse_sample_selection(self.t_loc)
         crises_list, normal_list = dates_input.parse_sample_selection_to_list(self.t_loc)
-        # download the data from the World Bank
-        if sparse:
-            # we fetch only what we need
-            # all the events combined - important so that we can only download data near those years
-            events = self.combine_events(t_crises, t_normal)
-            event_boundaries = self.events_to_boundaries(events,                                                         
-                                                         conf.look_back_years)
-            countries = self.extractor.fetch_data_sparse(country_codes,
-                                                         feature_indicators,
-                                                         event_boundaries,
-                                                         conf.wb_pause)
-        else:
-            # we fetch all the data first
-            # boundaries
-            start_date = min(min(crises_list), min(normal_list))-conf.look_back_years
-            end_date = max(max(crises_list), max(normal_list))
-            countries = self.extractor.fetch_data(country_codes,
-                                                  feature_indicators,
-                                                  start_date,
-                                                  end_date,
-                                                  conf.wb_pause)
+        
+        # we fetch all the data here
+        # boundaries
+        start_date = min(min(crises_list), min(normal_list))-conf.look_back_years
+        end_date = max(max(crises_list), max(normal_list))
+        arg = self.extractor.arg()
+        arg["country_codes"] = country_codes
+        arg["indicator_codes"] = feature_indicators
+        arg["interval"] = (start_date, end_date)
+        arg["pause"] = conf.wb_pause
+        countries = self.extractor.grab(arg)
+        
         # assign the samples
         for country in countries:
             # fetch all the indicators for target country

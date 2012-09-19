@@ -51,6 +51,7 @@ def parse_multiple_countries(data_list):
         country.set_indicator(indicator)
         countries.append(country)
         # remove parsed data from the list
+        #TODO: data_list.remove(i)
         data_list = [item for item in data_list if item not in country_data]
     return countries
 

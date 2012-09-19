@@ -21,6 +21,10 @@ combine_plots = True
 # Data semantics
 ################
 
+# location where to save the data
+# (don't specify the extension, as that is determined by the formatter)
+output_location = "io/dataset"
+
 # take data from start_date to end_date
 start_date = 1965
 end_date = 2009
@@ -96,13 +100,6 @@ output_format = "TSV"
 
 # pause in seconds between subsequent World Bank API queries
 wb_pause = 0
-
-# if this is True, only the neccessary data will be downloaded
-# in multiple queries (but it takes longer),
-# if this is False, the program downloads all the values between
-# start and end years in one query (per indicator per country),
-# which is faster (or so it seems)
-sparse = False
 
 
 ########################################################

@@ -5,6 +5,7 @@ Created on 22. 8. 2012.
 '''
 
 import copy
+import time
 
 import wb.api
 from cacher import Cacher
@@ -20,7 +21,8 @@ class Extractor(object):
         self._arg = {"country_codes" : ["hrv", "usa"],
                "indicator_codes" : ["SP.POP.TOTL"],
                "start_date" : 1980,
-               "end_date" : 2010}
+               "end_date" : 2010,
+               "pause" : 0}
 
     def arg(self):
         return copy.deepcopy(self._arg)
@@ -59,6 +61,8 @@ class Extractor(object):
             countries = api.query_multiple_data(
                                                    arg["country_codes"], arg["indicator_codes"],
                                                    arg["start_date"], arg["end_date"])
+            if arg["pause"]:
+                time.sleep(arg["pause"])
             if self._cache_enabled and not cache_hit:
                 self._cache(countries)
         return countries

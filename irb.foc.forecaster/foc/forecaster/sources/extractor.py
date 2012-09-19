@@ -7,8 +7,7 @@ from pprint import pprint
 from pylab import *
 import time
 
-from foc.forecaster.model.country import Country
-from foc.forecaster.model.indicator import Indicator
+from dracula.wb.model import Country, Indicator
 from foc.forecaster.common.exceptions import NotInitializedError
 import wb
 

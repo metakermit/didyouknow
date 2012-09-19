@@ -5,7 +5,6 @@ Created on 16. 12. 2011.
 '''
 from time import time
 
-from foc.forecaster.sources.extractor import Extractor
 from foc.forecaster.common import conf
 from foc.forecaster.ai.samples_set import SamplesSet
 from foc.forecaster.ai.output.writer import Writer
@@ -24,11 +23,14 @@ def draw():
     
     t1 = time()
     # start work
-    samples_set = SamplesSet(conf.look_back_years)
+    
+    samples_set = SamplesSet(conf.look_back_years,
+                             conf.cache_enabled,
+                             conf.cache_host,
+                             conf.cache_port)
     samples_set.build_from_crises_file(conf.countries,
                                        conf.indicators,
-                                       conf.testing_percentage,
-                                       sparse=conf.sparse)
+                                       conf.testing_percentage)
     writer = Writer()
     writer.write(samples_set, conf.output_format, conf.output_location)
     t2 = time()

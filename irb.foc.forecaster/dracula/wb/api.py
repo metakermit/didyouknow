@@ -117,7 +117,7 @@ def _query_multiple_countries(countries=['all'], indicator='', start_date=2010, 
                               'per_page':per_page})
         param = "/countries/%s/indicators/%s?%s" % (";".join(countries), indicator, args)
         data_list = _abstract_query(param)
-        return parser.parse_multiple_countries(data_list)
+        return parser.parse_multiple_countries(data_list, start_date, end_date)
     #data_list = _abstract_query(param)
     #return parse_single_country(data_list)
 

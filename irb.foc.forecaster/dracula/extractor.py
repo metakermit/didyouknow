@@ -55,15 +55,15 @@ class Extractor(object):
         arg = self.normalize(arg)
         if self._cache_enabled:
             countries = self._cacher.retreive(arg)
-            if countries: cache_hit = True
-            else: cache_hit = False
-        if not self._cache_enabled or not cache_hit:
+            if countries: self.cache_hit = True
+            else: self.cache_hit = False
+        if not self._cache_enabled or not self.cache_hit:
             countries = api.query_multiple_data(
                                                    arg["country_codes"], arg["indicator_codes"],
                                                    arg["start_date"], arg["end_date"])
             if arg["pause"]:
                 time.sleep(arg["pause"])
-            if self._cache_enabled and not cache_hit:
+            if self._cache_enabled and not self.cache_hit:
                 self._cache(countries)
         return countries
     
@@ -74,7 +74,7 @@ class Extractor(object):
         @param test: True if you want to work on a db separate than the main cache
         """
         self._cache_connection_host = host
-        self._cache_connnection_port = port
+        self._cache_connection_port = port
         self._cache_enabled = True
         self._cacher = Cacher(self._cache_connection_host, self._cache_connection_port, test)
         
@@ -97,3 +97,8 @@ class Extractor(object):
         countries = self._cacher.retreive(arg)
         if countries: return True
         else: return False
+    def was_cached(self):
+        """
+        tells if the data was found in the cache on the last grab
+        """
+        return self.cache_hit

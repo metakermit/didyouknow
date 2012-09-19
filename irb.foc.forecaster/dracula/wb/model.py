@@ -61,7 +61,7 @@ class Indicator(object):
     dates and values of an indicator for a country
     '''
 
-    def __init__(self, code=None, dates=None, values=None):
+    def __init__(self, code=None, dates=None, values=None, nominal_start=None, nominal_end=None): 
         if dates==None or values==None:
             self.dates = []
             self.values = []
@@ -69,9 +69,15 @@ class Indicator(object):
             self.dates=dates
             self.values = values
         self.code = code
+        # nominal years for which the data was queried
+        # not all these years are necessarily represented in the data
+        # (for caching purposes) 
+        self.nominal_start = nominal_start
+        self.nominal_end = nominal_end
         
-    def simple_dict_repr(self):
-        return {'code': self.code, 'dates': self.dates, 'values': self.values}
+    def simple_dict_repr(self):#TODO:eliminate and replace with json_repr
+        return {'code': self.code, 'dates': self.dates, 'values': self.values,
+                'nominal_start': self.nominal_start, 'nominal_end': self.nominal_end}
         
     def apply_derivative(self, *args):
         """
@@ -130,14 +136,17 @@ class Indicator(object):
             self.set_value_at(date, indicator.get_value_at(date))
             
     def json_repr(self):
-        me = {'code': self.code, 'dates': self.dates, 'values': self.values}
+        me = {'code': self.code, 'dates': self.dates, 'values': self.values,
+                'nominal_start': self.nominal_start, 'nominal_end': self.nominal_end}
         return me
     
     @staticmethod
     def from_json(indicator_repr):
         me = Indicator(code=indicator_repr["code"],
                        dates = indicator_repr["dates"],
-                       values = indicator_repr["values"])
+                       values = indicator_repr["values"],
+                       nominal_start = indicator_repr["nominal_start"],
+                       nominal_end = indicator_repr["nominal_end"])
         return me
 
     

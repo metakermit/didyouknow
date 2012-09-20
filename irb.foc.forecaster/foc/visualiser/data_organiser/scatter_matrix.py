@@ -3,18 +3,18 @@ Created on 13. 9. 2012.
 
 @author: Matija Piskorec
 '''
-from foc.visualiser.data_organiser.abstract_data_organiser import AbstractDataOrganiser
+from foc.visualiser.data_organiser.iorganiser import IOrganiser
 from dracula.exceptions import NonExistentDataError
 from foc.forecaster.ai.crisis_seer import CrisisSeer
 
-class ScatterMatrixOrganiser(AbstractDataOrganiser):
+class ScatterMatrixOrganiser(IOrganiser):
     '''
     Organises data for a scatter matrix visualization.
     (this is basically just convenient csv representation in json)
     '''
 
     def __init__(self):
-        AbstractDataOrganiser.__init__(self)
+        IOrganiser.__init__(self)
 
     def _organise_data(self, conf):
         arg = self._extractor.arg()

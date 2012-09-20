@@ -71,14 +71,11 @@ class Cacher(object):
                         if interval_satisfied: #all past indicators contained years
                             # now we set the data to be
                             # only the years that were asked for 
-                            index_begin = indicator.dates.index(arg["start_date"])
-                            index_end = indicator.dates.index(arg["end_date"])
-                            indicator.dates = indicator.dates[index_begin:index_end+1]
-                            indicator.values = indicator.values[index_begin:index_end+1]
+                            indicator = indicator.slice(arg["start_date"], arg["end_date"])
                         else:
                             contains_years = False
                     else: # we don't even want that one
-                        country.indicators.remove(indicator)
+                        country.indicators.pop(indicator.code)
                 if len(wanted_indicators)>0: contains_indicators = False
         if len(wanted_countries) > 0: # empty
             # all countries covered

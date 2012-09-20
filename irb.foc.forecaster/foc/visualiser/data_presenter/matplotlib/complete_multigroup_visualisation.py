@@ -4,15 +4,12 @@ Created on 22. 5. 2012.
 @author: kermit
 '''
 
-import math
-
-from ivisualisation import *
-from multigroup_visualisation import MultigroupVisualisation
-import conf
-from foc.forecaster.common.exceptions import NonExistentDataError
+from foc.visualiser.data_presenter.matplotlib.imatplotvis import *
+#from multigroup_visualisation import MultigroupVisualisation
+from dracula.exceptions import NonExistentDataError
 from foc.forecaster.ai.crisis_seer import CrisisSeer
 
-class CompleteMultigroupVisualisation(IVisualisation):
+class CompleteMultigroupVisualisation(IMatplotVis):
     '''
     Multigroup that shows all the years and marks certain
     parts of the line
@@ -41,7 +38,7 @@ class CompleteMultigroupVisualisation(IVisualisation):
         #crisis_years = set(conf.manual_crises[i])
         crisis_years = crisis_seer.get_crisis_years(country.code)
         i = i +1
-        x_ind_code,y_ind_code = country.indicator_codes()[:2]
+        x_ind_code,y_ind_code = country.indicator_codes[:2]
         x_ind = country.get_indicator(x_ind_code)
         y_ind = country.get_indicator(y_ind_code)
         years = range(conf.start_date, conf.end_date)

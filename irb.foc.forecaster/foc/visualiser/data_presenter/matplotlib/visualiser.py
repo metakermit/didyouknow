@@ -4,12 +4,12 @@ Created on 16. 12. 2011.
 @author: kermit
 '''
 
-import conf
-from ts_visualisation import TimeSeriesVisualisation
-from multigroup_visualisation import MultigroupVisualisation
+from foc.visualiser.data_presenter import vis_conf as conf
+#from ts_visualisation import TimeSeriesVisualisation
+#from multigroup_visualisation import MultigroupVisualisation
 from complete_multigroup_visualisation import CompleteMultigroupVisualisation
-from forecaster.common.exceptions import ConfigurationFileError
-from data_organiser.iorganiser import IOrganiser
+from foc.forecaster.common.exceptions import ConfigurationFileError
+from foc.visualiser.data_organiser.complete_multigroup import CompleteMultigroupOrganiser
 #===============================================================================
 # 
 # 
@@ -22,28 +22,42 @@ from data_organiser.iorganiser import IOrganiser
 #    extractor.process(conf.process_indicators)
 #    extractor.create()
 #===============================================================================
-
-def get_workers():
-    vis_str = conf.visualisation
-    if vis_str == "TSV":
-        organiser = IOrganiser()
-        visualisation = TimeSeriesVisualisation()
-    elif vis_str == "MV":
-        visualisation = MultigroupVisualisation()
-    elif vis_str == "CMV":
-        visualisation = CompleteMultigroupVisualisation()
-    else:
-        raise ConfigurationFileError
-    return organiser, visualisation
-
-def draw():
-    """
-    Entry point to the visualiser. Call visualisation method to get the figure and create it (in a file or live). 
-    """
-    organiser, visualisation = get_workers()
-    organiser.organise_data()
-    visualisation.create_all_figures()
+class Visualiser():
+    def __init__(self):
+        pass
+    
+    def get_workers(self):
+        vis_str = conf.visualisation
+        if vis_str == "TSV":
+            #visualisation = TimeSeriesVisualisation()
+            raise NotImplementedError
+        elif vis_str == "MV":
+            #visualisation = MultigroupVisualisation()
+            raise NotImplementedError
+        elif vis_str == "CMV":
+            organiser = CompleteMultigroupOrganiser()
+            visualisation = CompleteMultigroupVisualisation()
+        else:
+            raise ConfigurationFileError
+        return organiser, visualisation
+    
+    def draw(self):
+        """
+        Entry point to the visualiser. Call visualisation method to get the figure and create it (in a file or live). 
+        """
+        self.organiser, self.visualisation = self.get_workers()
+        #TODO: switch to using vis_data from the organiser
+        #self.vis_data = self.organiser.get_representation(conf)
+        #self.visualisation.create_all_figures(self.vis_data)
+        self.visualisation.create_all_figures(None)
+    
+    def show(self):
+        """
+        If it's an interactive plot, this will block the code to show the graph
+        """
+        self.visualisation.show()
 
 if __name__ == '__main__':
-    draw()
+    visualiser = Visualiser()
+    visualiser.draw()
     

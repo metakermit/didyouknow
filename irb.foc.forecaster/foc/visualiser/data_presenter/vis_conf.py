@@ -12,17 +12,20 @@ from foc.forecaster.ai.preprocessor import Preprocessor
 ######################################
 
 # take data from start_date to end_date
-start_date = 1960
-end_date = 2030
+start_date = 1995
+end_date = 2000
 
 # see codes at http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 __countries = """
 usa
 nor
+gbr
+hrv
+alb
 """
 
 # a file that states when did crises occur in countries
-sample_selection_file = "../irb.foc.forecaster/crises-imf-banking.xls"
+sample_selection_file = "./io/crises-imf-banking.xls"
 
 # see codes by selecting the desired indicators at
 # http://databank.worldbank.org/
@@ -59,7 +62,7 @@ __process_indicators = """
 # MV (MultigroupVisualisation)
 # CMV (CompleteMultigroupVisualisation)
 #
-visualisation = "TSV"
+visualisation = "CMV"
 
 # True - all curves plotted on the same graph
 # False - each curve plotted in a separate graph
@@ -67,7 +70,7 @@ combine_plots = True
 
 write_to_file = False
 
-filename = "./viz/viz-complete.svg"
+filename = "./io/viz/viz-complete.svg"
 
 # this will be the graph title if auto_title is False
 graph_title = "USA - active population & life expectancy"
@@ -186,6 +189,12 @@ model_false_size = 10
 # pause in seconds between subsequent World Bank API queries
 wb_pause = 0
 
+# save downloaded data to a caching MongoDB database 
+cache_enabled = True
+# the host that's serving the cache DB
+cache_host = "lis.irb.hr"
+# and the port
+cache_port=27017
 
 ########################################################
 ### INTERNAL STUFF - do not touch or be intimidated by:

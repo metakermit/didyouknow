@@ -34,6 +34,9 @@ __countries = """
 nor
 usa
 bra
+jpn
+svn
+gbr
 """
 # good data: can, usa
 
@@ -102,7 +105,7 @@ output_format = "TSV"
 wb_pause = 0
 
 # save downloaded data to a caching MongoDB database 
-cache_enabled = True
+cache_enabled = False
 # the host that's serving the cache DB
 cache_host = "lis.irb.hr"
 # and the port

@@ -3,7 +3,11 @@ Created on 27. 6. 2012.
 
 @author: kermit
 '''
-from foc.visualiser.data_presenter import default_vis_conf
+import os
+
+import foc.visualiser.data_presenter.vis_conf as conf
+from foc.forecaster.common.exceptions import MustOverrideError
+from dracula.extractor import Extractor
 
 class IVisualisation(object):
     '''
@@ -19,7 +23,11 @@ class IVisualisation(object):
         self._counter = 0
         self._got_items = False
         # initialize default configuration options
-        self.conf = default_vis_conf
+        
+        #TODO: IVisualisation shouldn't use the extractor at all, but rely on a data organiser
+        self._extractor = Extractor()
+        if conf.cache_enabled:
+            self._extractor.enable_cache(conf.cache_host, conf.cache_port)
         
     def get_conf(self):
         return self.conf
@@ -44,33 +52,7 @@ class IVisualisation(object):
         else:
             country_representation = str(self._get_items()[self._counter]).upper()
         title = "%s - %s" % (country_representation, conf.title_end) 
-        return title 
-        
-    def _start_new_figure(self):
-        self.figure = figure()
-        hold(True)
-        suptitle(self.get_title(), fontsize=16)
-    
-    def _finish_figure(self):
-        """
-        save or show the figure.
-        @param item: optional if you want to combine multiple
-        plots so that an individual name can be used 
-        """
-        self._add_legend()
-        if conf.write_to_file: # indeed write to file
-            name, extension = os.path.splitext(conf.filename)
-            extension = extension[1:]
-            if not conf.combine_plots:
-                try:
-                    ending = str(self._get_items()[self._counter-1]).lower()
-                except AttributeError: # except not needed
-                    ending = str(self._counter).lower()
-                name = name + "-" + ending          
-            self.figure.savefig(name + "." + extension, format=extension)
-        elif conf.combine_plots or self._counter == len(self._get_items()):
-            # we'll just plot it live in a new window
-            show()
+        return title
         
     def _get_items(self):
         """
@@ -80,20 +62,45 @@ class IVisualisation(object):
         _create_figure function to draw them on a graph.
         @return: list of items
         """
+        #TODO: this should just get a data list from the data organiser
         if not self._got_items:
-            self._extractor.fetch_data(conf.countries, conf.indicators, conf.start_date, conf.end_date)
-            self._extractor.process(conf.process_indicators,
-                                   method = "slope",
-                                   look_back_years=conf.look_back_years)
+            arg = self._extractor.arg()
+            arg["country_codes"] = conf.countries
+            arg["indicator_codes"] = conf.indicators
+            arg["interval"] = (conf.start_date, conf.end_date)
+            self.countries = self._extractor.grab(arg)
+            #TODO: preprocessor
+#            self._extractor.process(conf.process_indicators,
+#                                   method = "slope",
+#                                   look_back_years=conf.look_back_years)
+            if conf.cache_enabled and self._extractor.was_cached():
+                print("Cache was hit, didn't have to query the World Bank API.")
+            elif conf.cache_enabled:
+                print("Data wasn't cached, queried the World Bank API.")
             self._got_items = True
-        countries = self._extractor.get_countries()
-        return countries
+        return self.countries
+    
+    def _start_new_figure(self):
+        """ a hook for doing pre-plot stuff """
+        raise MustOverrideError
+    
+    def _finish_figure(self):
+        """ a hook for doing post-plot stuff """
+        raise MustOverrideError
     
     def _create_figure(self, item):
         """
         Create a figure and return it as a matplotlib object. Must override.
         """
         raise MustOverrideError
+    
+    def _show(self):
+        """ a hook to actually show the graph (potentially blocking code)"""
+        pass
+    
+    def show(self):
+        if not conf.write_to_file: # interactive
+            self._show()
     
     def create_all_figures(self, vis_data):
         """
@@ -103,8 +110,8 @@ class IVisualisation(object):
         if conf.combine_plots:
             self._start_new_figure()
         # iterate through items (e.g. countries)
-        other_items = conf.countries
-        items = self._get_items(vis_data)
+        #TODO: actually use vis_data here and
+        # in the complete_multigroup_visualisation
         for item in self._get_items():
             if not conf.combine_plots:
                 self._start_new_figure()

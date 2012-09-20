@@ -65,6 +65,13 @@ Point your web browser to [http://127.0.0.1:8000/foc](http://127.0.0.1:8000/foc)
 
          python manage.py runserver 0.0.0.0:8080
 
+Local visualisation (matplotlib)
+--------------------------------
+
+The options are set in .foc/visualiser/data_presenter/vis_conf.py and the script is run by issuing:
+
+         python console_run.py visualise
+
 Lay of the code
 ================
 
@@ -125,7 +132,7 @@ foc.visualiser - organises data (and locally visualises it if matplotlib is used
 |   |- complete_multigroup_visualisation - one of the implementations of the ivisualisation interface
 |   | ...
 | 
-|- default_vis_conf - configuration used by the visualiser
+|- vis_conf - configuration used by the visualiser
 \- ivisualisation - common interface any visualisation subclass must adher to by overriding the _create_figure(self, item) method
 
 

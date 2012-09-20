@@ -8,7 +8,7 @@ import math
 
 from ivisualisation import *
 from multigroup_visualisation import MultigroupVisualisation
-import conf
+#import conf
 from foc.forecaster.common.exceptions import NonExistentDataError
 from foc.forecaster.ai.crisis_seer import CrisisSeer
 

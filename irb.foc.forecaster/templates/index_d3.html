@@ -50,6 +50,12 @@
 				  	         			var min = $("#slider-years").slider( "values", 0 );
 							 			var max = $("#slider-years").slider( "values", 1 );
 				  	         			return (d.date>=min) && (d.date<=max) ? 0 : 1;});
+										
+				d3.selectAll("#data-table2 tr")				  
+				  .classed("hidden-row",function(d){
+				  	         			var min = $("#slider-years").slider( "values", 0 );
+							 			var max = $("#slider-years").slider( "values", 1 );
+				  	         			return (d.date>=min) && (d.date<=max) ? 0 : 1;});
 				  
 			}
 		});
@@ -153,18 +159,13 @@
 			
 			<div id="tabs">
 			<ul>
-				<li><a href="#tabs-1">Text</a></li>
-				<li><a href="#tabs-2">Table</a></li>
+				<li><a href="#tabs-1">Table</a></li>
+				<!-- <li><a href="#tabs-2">Text</a></li> -->
 			</ul>
 			<div id="tabs-1">
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
-			</div>
-			<div id="tabs-2">
 				<table id="data-table2"> </table>	
 			</div>
+			<!-- <div id="tabs-2"> </div> -->
 			</div>
 			
 			

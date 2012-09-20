@@ -140,3 +140,7 @@ circle {
 #tabs {
 	width: 600px;
 }
+
+.hidden-row {
+	display: none;
+}

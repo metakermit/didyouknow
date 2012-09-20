@@ -82,14 +82,17 @@ function updateDataTable(data)
 	}
 	*/
 	
-	d3.select("#data-table2")
+	//var a = [{"code":0,"value":23},{"code":1,"value":26}];
+	//var a = {"code":0,"value":23,"code2":1,"value2":26};
+	var rows = d3.select("#data-table2")
 	.selectAll("tr")
 	.data(data.values)
 	.enter().append("tr")
 	.selectAll("td")
-	.data(function(d){return d;})
+	.data(function(d){return d3.values(d);})
 	.enter().append("td")
 	.text(function(d){return d;});
+
 }
 
 

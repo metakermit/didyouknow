@@ -7,8 +7,10 @@ Created on 26. 6. 2012.
 import json
 
 from dracula.extractor import Extractor
+from foc.forecaster.common.exceptions import MustOverrideError
+from foc.visualiser.data_presenter import vis_conf as conf
 
-class AbstractDataOrganiser(object):
+class IOrganiser(object):
     '''
     Fetches data using the Extractor and organises it
     in json files for an appropriate visualisation presenter.
@@ -38,9 +40,9 @@ class AbstractDataOrganiser(object):
         and format it in a dictionary (store in self.vis_data).
         @attention: must override
         """
-        pass
+        raise MustOverrideError
     
-    def get_representation(self, conf):
+    def get_representation(self):
         self._organise_data(conf)
         #self._write_data()
         return self.vis_data

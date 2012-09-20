@@ -3,18 +3,18 @@ Created on 26. 6. 2012.
 
 @author: kermit
 '''
-from foc.visualiser.data_organiser.abstract_data_organiser import AbstractDataOrganiser
+from foc.visualiser.data_organiser.iorganiser import *
 from dracula.exceptions import NonExistentDataError
 from foc.forecaster.ai.crisis_seer import CrisisSeer
 
-class CompleteMultigroupOrganiser(AbstractDataOrganiser):
+class CompleteMultigroupOrganiser(IOrganiser):
     '''
     Organises data for a complete multigroup vis.
     (time series with marked model and crises info)
     '''
 
     def __init__(self):
-        AbstractDataOrganiser.__init__(self)
+        IOrganiser.__init__(self)
 
     def _organise_data(self, conf):
         arg = self._extractor.arg()
@@ -26,8 +26,6 @@ class CompleteMultigroupOrganiser(AbstractDataOrganiser):
         #self._extractor.process(conf.process_indicators,
         #                           method = "slope",
         #                           look_back_years=conf.look_back_years)
-        print("organiser got back:")
-        print(countries)
         
         self.vis_data = []
         for country in countries:

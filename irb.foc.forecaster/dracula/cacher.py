@@ -75,7 +75,7 @@ class Cacher(object):
                         else:
                             contains_years = False
                     else: # we don't even want that one
-                        country.indicators.remove(indicator)
+                        country.indicators.pop(indicator.code)
                 if len(wanted_indicators)>0: contains_indicators = False
         if len(wanted_countries) > 0: # empty
             # all countries covered

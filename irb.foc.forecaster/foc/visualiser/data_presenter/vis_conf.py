@@ -20,6 +20,8 @@ __countries = """
 usa
 nor
 gbr
+hrv
+alb
 """
 
 # a file that states when did crises occur in countries

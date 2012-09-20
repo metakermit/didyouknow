@@ -46,8 +46,10 @@ class Visualiser():
         Entry point to the visualiser. Call visualisation method to get the figure and create it (in a file or live). 
         """
         self.organiser, self.visualisation = self.get_workers()
-        self.vis_data = self.organiser.get_representation()
-        self.visualisation.create_all_figures(self.vis_data)
+        #TODO: switch to using vis_data from the organiser
+        #self.vis_data = self.organiser.get_representation(conf)
+        #self.visualisation.create_all_figures(self.vis_data)
+        self.visualisation.create_all_figures(None)
     
     def show(self):
         """

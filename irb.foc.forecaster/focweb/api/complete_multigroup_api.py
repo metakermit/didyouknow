@@ -44,7 +44,7 @@ def get_data(request):
     return HttpResponse(simplejson.dumps(representation), mimetype="application/json")
 
 
-def get_data_scatter(request): 
+def get_data_scatter(request):
     organiser = ScatterMatrixOrganiser()
     
     if request.is_ajax():

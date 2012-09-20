@@ -8,7 +8,6 @@ import json
 
 from dracula.extractor import Extractor
 from foc.forecaster.common.exceptions import MustOverrideError
-from foc.visualiser.data_presenter import vis_conf as conf
 
 class IOrganiser(object):
     '''
@@ -42,8 +41,14 @@ class IOrganiser(object):
         """
         raise MustOverrideError
     
-    def get_representation(self):
+    def get_representation(self, conf):
+        if conf.cache_enabled:
+            self._extractor.enable_cache(conf.cache_host, conf.cache_port)
         self._organise_data(conf)
+        if conf.cache_enabled and self._extractor.was_cached():
+            print("Cache was hit, didn't have to query the World Bank API.")
+        elif conf.cache_enabled:
+            print("Data wasn't cached, queried the World Bank API.")
         #self._write_data()
         return self.vis_data
         

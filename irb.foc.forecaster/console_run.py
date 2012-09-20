@@ -18,7 +18,8 @@ import sys
 def run():
     t1 = time()
     print("Configuration loaded from:")
-    visualising = (sys.argv[1]=="visualise") 
+    try: visualising = (sys.argv[1]=="visualise")
+    except IndexError: visualising = False 
     if visualising: # we'll only draw stuff
         print(vis_conf.__file__)
         visualiser = Visualiser()

@@ -13,12 +13,15 @@ class SGDFormat(Format):
     Format suitable for the SGD ML method
     '''    
     
+    def _add_extension(self, pth):
+        return pth+".sgd"
+    
     def write(self, metadata, samples, filename):
         '''
         samples - list of samples
         filename - name of output file
         '''
-        desc_filename = "description-"+filename
+        desc_filename = filename+"-description"
         
         separator = " "
         with open(filename, "w") as out, open(desc_filename, "w") as desc:

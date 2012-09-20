@@ -12,6 +12,8 @@ class TSV(Format):
     '''
     Tab-separated values output for the Orange ML system.
     '''
+    def _add_extension(self, pth):
+        return pth+".tsv"
 
     def write(self, metadata, samples, filename):
         '''

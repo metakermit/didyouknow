@@ -5,9 +5,12 @@
 	<script src="/static/js/jquery-1.7.2.min.js" type="text/javascript"></script>
 	<script src="/static/js/highcharts.js" type="text/javascript"></script>
 	
+	<link rel="stylesheet" type="text/css" href="/static/css/scatter-matrix.css"></script>
+	
 	<link rel="stylesheet" type="text/css" href="/static/css/jquery.multiselect.css" />
 	<link rel="stylesheet" type="text/css" href="/static/css/jquery.multiselect.filter.css" />
 	<link rel="stylesheet" type="text/css" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1/themes/ui-lightness/jquery-ui.css" />
+	
 	<!-- <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.js"></script> -->
 	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/static/js/jquery.multiselect.js"></script>
@@ -33,149 +36,31 @@
 		$("#change-mode").buttonset();
 		$("#change-mode").change( changeMode );
 		
+		
+		$( "#slider-years" ).slider({
+			range: true,
+			min: 1950,
+			max: 2012,
+			values: [ 1950, 2012 ],
+			slide: function( event, ui ) {
+				$( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+
+				d3.selectAll(".cell circle")
+				  .classed("hidden",function(d){
+				  	         			var min = $("#slider-years").slider( "values", 0 );
+							 			var max = $("#slider-years").slider( "values", 1 );
+				  	         			return (d.date>=min) && (d.date<=max) ? 0 : 1;});
+				  
+			}
+		});
+		$( "#amount" ).val( $( "#slider-years" ).slider( "values", 0 ) + " - " + $( "#slider-years" ).slider( "values", 1 ) );
+		
+		
 	});
 	</script>
 
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 	<link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
-	
-	 <style type="text/css">
-	
-	svg {
-	  font-size: 14px;
-	}
-	
-	.axis {
-	  shape-rendering: crispEdges;
-	}
-	
-	.axis line {
-	  stroke: #ddd;
-	  stroke-width: .5px;
-	}
-	
-	.axis path {
-	  display: none;
-	}
-	
-	rect.extent {
-	  fill: #000;
-	  fill-opacity: .125;
-	  stroke: #fff;
-	}
-	
-	rect.frame {
-	  fill: #fff;
-	  fill-opacity: .7;
-	  stroke: #aaa;
-	}
-	
-	circle {
-	  fill: #ccc;
-	  fill-opacity: .5;
-	}
-	
-	.legend circle {
-	  fill-opacity: 1;
-	}
-	
-	.legend text {
-	  font-size: 18px;
-	  font-style: oblique;
-	}
-	
-	.cell text {
-	  pointer-events: none;
-	}
-	
-	.setosa {
-	  fill: #800;
-	}
-	
-	.versicolor {
-	  fill: #080;
-	}
-	
-	.virginica {
-	  fill: #008;
-	}
-	
-	
-	.ALB {
-	  fill: #800;
-	}
-	
-	.ARG {
-	  fill: #080;
-	}
-	
-	.AUT {
-	  fill: #008;
-	}
-	
-	.BRA {
-	  fill: #088;
-	}
-	
-	.ESP {
-	  fill: #808;
-	}
-	
-	.GBR {
-	  fill: #880;
-	}
-	
-	.GRC {
-	  fill: #033;
-	}
-	
-	.HRV {
-	  fill: #303;
-	}
-
-	.ITA {
-	  fill: #330;
-	}
-
-	.JPN {
-	  fill: #003;
-	}
-
-	.MEX {
-	  fill: #030;
-	}
-
-	.NOR {
-	  fill: #300;
-	}
-	
-	.SAU {
-	  fill: #408;
-	}
-	
-	.SWE {
-	  fill: #840;
-	}
-	
-	.TUR {
-	  fill: #480;
-	}
-	
-	.USA {
-	  fill: #048;
-	}
-	
-	.crisis-no {
-	  fill: #ccc;
-	  fill-opacity: .5;
-	}
-	
-	.crisis-yes {
-	  fill: #800;
-	}
-	
-
-    </style>
 	
 	<!--
 	<style type="text/css">
@@ -193,6 +78,10 @@
 	<script type="text/javascript" src="/static/js/csv.js"></script>
 	<script type="text/javascript" src="/static/js/parse.js"></script>
 
+	<style>
+		#demo-frame > div.demo { padding: 10px !important; };
+	</style>
+
 </head>
 
 <body>
@@ -202,7 +91,7 @@
 		<div class="content">
 			
 			<div id="chart"> </div>
-			<link type="text/css" rel="stylesheet" href="/static/css/splom.css">
+			<!-- <link type="text/css" rel="stylesheet" href="/static/css/splom.css"> -->
 			<script type="text/javascript" src="/static/js/scatter-matrix.js"></script>
 		
 			<!-- <h3>Select countries and indicators:</h3> -->
@@ -252,7 +141,16 @@
 				<input type="radio" id="radio2" name="radio" value="crisis" /><label for="radio2">Crisis mode</label>
 			</div>
 			
+			<p>
+				<label for="amount">Year range:</label>
+				<input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
+			</p>
+			<div id="slider-years"></div>
+			
+			<div id="empty-div" style="width:500px; height:50px"></div>
+			
 		</div>
+		
 		
 	</div>
 

@@ -1,4 +1,4 @@
- ti '''
+'''
 Created on 26. 6. 2012.
 
 @author: kermit

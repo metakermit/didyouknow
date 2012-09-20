@@ -6,7 +6,6 @@
 #pprint(sys.path)
 
 from django.shortcuts import render_to_response
-from foc.forecaster.sources.extractor import Extractor
 from foc.forecaster.common import conf
 
 def foc(request):

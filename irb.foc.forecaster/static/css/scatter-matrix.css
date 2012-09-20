@@ -1,0 +1,132 @@
+
+svg {
+  font-size: 14px;
+  font: 10px sans-serif;
+}
+
+.axis {
+  shape-rendering: crispEdges;
+}
+
+.axis line {
+  stroke: #ddd;
+  stroke-width: .5px;
+}
+
+.axis path {
+  display: none;
+}
+
+rect.extent {
+  fill: #000;
+  fill-opacity: .125;
+  stroke: #fff;
+}
+
+rect.frame {
+  fill: #fff;
+  fill-opacity: .7;
+  stroke: #aaa;
+}
+
+circle {
+  fill: #ccc;
+  fill-opacity: .6;
+}
+
+.legend circle {
+  fill-opacity: 1;
+}
+
+.legend text {
+  font-size: 18px;
+  font-style: oblique;
+}
+
+.cell text {
+  pointer-events: none;
+}
+
+
+.ALB {
+  fill: #800;
+}
+
+.ARG {
+  fill: #080;
+}
+
+.AUT {
+  fill: #008;
+}
+
+.BRA {
+  fill: #088;
+}
+
+.ESP {
+  fill: #808;
+}
+
+.GBR {
+  fill: #880;
+}
+
+.GRC {
+  fill: #033;
+}
+
+.HRV {
+  fill: #303;
+}
+
+.ITA {
+  fill: #330;
+}
+
+.JPN {
+  fill: #003;
+}
+
+.MEX {
+  fill: #030;
+}
+
+.NOR {
+  fill: #300;
+}
+
+.SAU {
+  fill: #408;
+}
+
+.SWE {
+  fill: #840;
+}
+
+.TUR {
+  fill: #480;
+}
+
+.USA {
+  fill: #048;
+}
+
+
+.crisis-no {
+  fill: #ccc;
+  fill-opacity: .5;
+}
+
+.crisis-yes {
+  fill: #800;
+}
+
+.hidden {
+  fill: #ccc;
+  fill-opacity: .5;
+}
+
+#slider-years {
+	width: 600px;
+}

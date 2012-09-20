@@ -54,7 +54,17 @@ function changeMode()
 {
 	if ($("#selectCountries").val() != null && data != null) 
 	{ 
-		console.log($("#change-mode :radio:checked").attr("value"));
+
+		if ( $("#change-mode :radio:checked").attr("value") == "crisis" )
+		{
+			d3.selectAll(".cell circle").filter(function(d){return d.crisis;}).classed("crisis-yes",1);
+			d3.selectAll(".cell circle").filter(function(d){return !d.crisis;}).classed("crisis-no",1);
+		}
+		if ( $("#change-mode :radio:checked").attr("value") == "normal" )
+		{
+			d3.selectAll(".cell circle").filter(function(d){return d.crisis;}).classed("crisis-yes",0);
+			d3.selectAll(".cell circle").filter(function(d){return !d.crisis;}).classed("crisis-no",0);
+		}
 	}
 	
 }
@@ -131,7 +141,7 @@ function drawScatterMatrix(focData) {
 	      .attr("transform", function(d, i) { return "translate(0," + i * size + ")"; })
 	      .each(function(d) { d3.select(this).call(axis.scale(y[d]).orient("right")); });
 
-		 // Cell and plot.
+	  // Cell and plot.
 	  var cell = svg.selectAll("g.cell")
 	      .data(cross(data.indicators, data.indicators))
 	    .enter().append("svg:g")
@@ -157,11 +167,10 @@ function drawScatterMatrix(focData) {
 	        .attr("width", size - padding)
 	        .attr("height", size - padding);
 	
-	    // Plot dots.
+	    // Plot only the dots that have values for both indicators.
 	    cell.selectAll("circle")
-	        .data(data.values)
+	        .data(data.values.filter(function(d){return (d[p.x]!="" && d[p.y]!="") ? 1 : 0;}))
 	      .enter().append("svg:circle")
-			//.attr("class", function(d) { return "country" + data.countries.indexOf(d.country); })
 			.attr("class", function(d) { return d.country; })
 	        .attr("cx", function(d) { return x[p.x](d[p.x]); })
 	        .attr("cy", function(d) { return y[p.y](d[p.y]); })
@@ -179,7 +188,7 @@ function drawScatterMatrix(focData) {
 	    }
 	  }
 	
-	
+	  /*
 	  // Highlight the selected circles.
 	  function brush(p) {
 	    var e = brush.extent();
@@ -189,13 +198,32 @@ function drawScatterMatrix(focData) {
 			  ? d.country : null;
 	    });
 	  }
-	
+	  */
+	 
+	  // Highlight the selected circles.
+	  function brush(p) {
+	    var e = brush.extent();
+	    svg.selectAll(".cell circle").classed("hidden", function(d) {
+	      return e[0][0] <= d[p.x] && d[p.x] <= e[1][0]
+	          && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
+			  ? 0 : 1;
+	    });
+	  }
+	 
+	  /*
 	  // If the brush is empty, select all circles.
 	  function brushend() {
 	    if (brush.empty()) svg.selectAll(".cell circle").attr("class", function(d) {
 		  return d.country;
 	    });
 	  }
+	  */
+	 
+	 // If the brush is empty, select all circles.
+	  function brushend() {
+	    if (brush.empty()) svg.selectAll(".cell circle").classed("hidden", 0);
+	  }
+	 
 	
 	  function cross(a, b) {
 	    var c = [], n = a.length, m = b.length, i, j;

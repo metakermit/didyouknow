@@ -36,18 +36,33 @@ class ScatterMatrixOrganiser(AbstractDataOrganiser):
             crisis_seer = CrisisSeer(conf.sample_selection_file)
             crisis_years = crisis_seer.get_crisis_years(country.code)
 
+            #all_x = []
+            #for t in years:
+            #    x = {}
+            #    try:
+            #        x['country'] = country.code
+            #        x['date'] = t
+            #        x['crisis'] = t in crisis_years
+            #        for indicator_code in country.indicator_codes:
+            #            indicator = country.get_indicator(indicator_code)
+            #            x[indicator_code] = indicator.get_value_at(t)      
+            #    except NonExistentDataError:
+            #        continue
+            #    all_x.append(x)
+                
             all_x = []
             for t in years:
                 x = {}
-                try:
-                    x['country'] = country.code
-                    x['date'] = t
-                    x['crisis'] = t in crisis_years
-                    for indicator_code in country.indicator_codes:
-                        indicator = country.get_indicator(indicator_code)
+
+                x['country'] = country.code
+                x['date'] = t
+                x['crisis'] = t in crisis_years
+                for indicator_code in country.indicator_codes:
+                    indicator = country.get_indicator(indicator_code)
+                    try:
                         x[indicator_code] = indicator.get_value_at(t)      
-                except NonExistentDataError:
-                    continue
+                    except NonExistentDataError:
+                        x[indicator_code] = ""
                 all_x.append(x)
 
             values = values + all_x

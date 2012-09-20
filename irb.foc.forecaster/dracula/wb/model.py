@@ -3,6 +3,7 @@ Created on 22. 8. 2012.
 
 @author: kermit
 '''
+import copy
 
 class Country(object):
     '''
@@ -134,6 +135,26 @@ class Indicator(object):
     def merge_with_indicator(self, indicator):
         for date in indicator.dates():
             self.set_value_at(date, indicator.get_value_at(date))
+    
+    def slice(self, start, end):#TODO: unittest
+        """ @return: a copy of indicator extra data with sliced off """
+        new_indicator = copy.deepcopy(self)
+        new_indicator.dates = []
+        new_indicator.values = []
+        if start<self.dates[0]:
+            index_start = 0
+        else:
+            try:
+                index_start = self.dates.index(start)
+            except ValueError: # the range contains nothing
+                return new_indicator
+        if end>self.dates[-1]: 
+            index_end = -1 # the last position
+        else:
+            index_end = self.dates.index(end) 
+        new_indicator.dates = self.dates[index_start:index_end+1]
+        new_indicator.values = self.values[index_start:index_end+1]
+        return new_indicator
             
     def json_repr(self):
         me = {'code': self.code, 'dates': self.dates, 'values': self.values,

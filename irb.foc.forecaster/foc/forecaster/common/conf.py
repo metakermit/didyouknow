@@ -34,6 +34,9 @@ __countries = """
 nor
 usa
 bra
+jpn
+svn
+gbr
 """
 # good data: can, usa
 

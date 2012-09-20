@@ -1,4 +1,1 @@
 EVENTS	AGR_EMP_t_3	AGR_EMP_t_2	AGR_EMP_t_1	AGR_EMP_max	AGR_EMP_index_max	AGR_EMP_min	AGR_EMP_index_min	AGR_EMP_average	AGR_EMP_slope	CRED_t_3	CRED_t_2	CRED_t_1	CRED_max	CRED_index_max	CRED_min	CRED_index_min	CRED_average	CRED_slope	FDI_t_3	FDI_t_2	FDI_t_1	FDI_max	FDI_index_max	FDI_min	FDI_index_min	FDI_average	FDI_slope	class
-BRA-1990	24.60	24.20	23.20	24.60	0	23.20	2	24.00	-0.70	?	98.35	127.75	127.75	2	98.35	1	113.05	?	0.40	0.85	0.27	0.85	1	0.27	2	0.50	-0.07	crisis
-USA-1998	2.90	2.80	2.70	2.90	0	2.70	2	2.80	-0.10	135.51	143.39	152.28	152.28	2	135.51	0	143.73	8.38	0.79	1.12	1.28	1.28	2	0.79	0	1.06	0.25	normal
-USA-1978	?	?	?	?	?	?	?	?	?	93.90	93.08	93.23	93.90	0	93.08	1	93.40	-0.34	0.16	0.18	0.14	0.18	1	0.14	2	0.16	-0.01	normal

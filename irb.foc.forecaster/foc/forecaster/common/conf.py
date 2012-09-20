@@ -26,8 +26,8 @@ combine_plots = True
 output_location = "io/dataset"
 
 # take data from start_date to end_date
-start_date = 1965
-end_date = 2009
+start_date = 1990
+end_date = 2000
 
 # see codes at http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
 __countries = """
@@ -100,6 +100,13 @@ output_format = "TSV"
 
 # pause in seconds between subsequent World Bank API queries
 wb_pause = 0
+
+# save downloaded data to a caching MongoDB database 
+cache_enabled = True
+# the host that's serving the cache DB
+cache_host = "lis.irb.hr"
+# and the port
+cache_port=27017
 
 
 ########################################################

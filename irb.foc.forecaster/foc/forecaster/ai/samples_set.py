@@ -19,12 +19,15 @@ class SamplesSet(object):
     '''
 
 
-    def __init__(self, look_back_years):
+    def __init__(self, look_back_years, cache_enabled = False, cache_host = "localhost", cache_port=27017):
         '''
         Constructor
         '''
         self.t_loc = conf.sample_selection_file
         self.extractor = Extractor()
+        self.cache_enabled = cache_enabled
+        if self.cache_enabled:
+            self.extractor.enable_cache(cache_host, cache_port)
         self.look_back_years = look_back_years
         self.preprocessor = Preprocessor()
         # sample set placeholders
@@ -100,7 +103,7 @@ class SamplesSet(object):
         return self.train_samples, self.test_samples
         
     
-    def build_from_crises_file(self, country_codes, feature_indicators, test_percentage, sparse=False):
+    def build_from_crises_file(self, country_codes, feature_indicators, test_percentage):
         """
         Entry method that builds a samples set by fetching the data using the extractor.
         Classes are determined from a crisis XLS file.
@@ -125,6 +128,10 @@ class SamplesSet(object):
         arg["interval"] = (start_date, end_date)
         arg["pause"] = conf.wb_pause
         countries = self.extractor.grab(arg)
+        if self.cache_enabled and self.extractor.was_cached():
+            print("Cache was hit, didn't have to query the World Bank API.")
+        elif self.cache_enabled:
+            print("Data wasn't cached, queried the World Bank API.")
         
         # assign the samples
         for country in countries:

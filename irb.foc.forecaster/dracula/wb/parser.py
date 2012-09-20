@@ -11,7 +11,10 @@ from model import Indicator, Country
 This module parses World Bank API responses.
 '''
 
-def parse_single_country(data_list):
+def parse_single_country(data_list, nominal_start=None, nominal_end=None):
+    """
+    @return: single indicator, belonging to one country
+    """
     values=[]
     dates=[]
     # sort the list by date
@@ -29,11 +32,13 @@ def parse_single_country(data_list):
     #pprint(dates)
     #pprint(values)
     code = data_list[0]['indicator']['id']
-    indicator = Indicator(code, dates, values)
+    indicator = Indicator(code, dates, values, nominal_start, nominal_end)
     return indicator
 
-def parse_multiple_countries(data_list):
+def parse_multiple_countries(data_list, nominal_start=None, nominal_end=None):
     """
+    @param nominal_start: what start year did the query ask for (not necessarily get)
+    @param nominal_end: what end year did the query ask for (not necessarily get)
     @return: list of countries
     """
     #get_country_id = lambda item : item['country']['id']
@@ -47,7 +52,7 @@ def parse_multiple_countries(data_list):
         # we now basically don't know the country's "real" (iso3) id
         country = Country("")
         country.code_iso2=current_id_iso2
-        indicator = parse_single_country(country_data)
+        indicator = parse_single_country(country_data, nominal_start, nominal_end)
         country.set_indicator(indicator)
         countries.append(country)
         # remove parsed data from the list

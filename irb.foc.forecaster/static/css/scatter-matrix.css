@@ -130,3 +130,13 @@ circle {
 #slider-years {
 	width: 600px;
 }
+
+#tabs-1, #tabs-2 {
+	height: 100px;
+	overflow-y: auto;
+	padding: 0.2em 0.2em; 
+}
+
+#tabs {
+	width: 600px;
+}

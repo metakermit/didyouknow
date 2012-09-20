@@ -55,6 +55,8 @@
 		});
 		$( "#amount" ).val( $( "#slider-years" ).slider( "values", 0 ) + " - " + $( "#slider-years" ).slider( "values", 1 ) );
 		
+		$( "#tabs" ).tabs();
+		
 		
 	});
 	</script>
@@ -146,6 +148,27 @@
 				<input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
 			</p>
 			<div id="slider-years"></div>
+			
+			<div style="width:500px; height:20px"></div>
+			
+			<div id="tabs">
+			<ul>
+				<li><a href="#tabs-1">Text</a></li>
+				<li><a href="#tabs-2">Table</a></li>
+			</ul>
+			<div id="tabs-1">
+				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
+				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
+				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
+				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
+			</div>
+			<div id="tabs-2">
+				<table id="data-table2"> </table>	
+			</div>
+			</div>
+			
+			
+			
 			
 			<div id="empty-div" style="width:500px; height:50px"></div>
 			

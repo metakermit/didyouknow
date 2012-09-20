@@ -21,6 +21,7 @@ function requestData() {
 			
 			drawScatterMatrix(data);
 			updateTextBox(data);
+			updateDataTable(data);
 			
         },
 		cache: false,
@@ -49,6 +50,49 @@ function updateTextBox(data)
 	}
 	
 }
+
+
+// Update data table with new data
+function updateDataTable(data)
+{
+	$("#data-table2").empty();
+	
+	/*
+	// CSV format
+	var indicatorsString = "";
+	for (i in data.indicators)
+	{
+		indicatorsString = indicatorsString + "<td>\"" + data.indicators[i] + "\"</td>"; 
+	}
+	$("#data-table2").append("<tr><td>\"code\"</td>" + indicatorsString + "<td>\"date\"</td><td>\"crisis\"</td></tr>");
+	
+	var row = "<tr><td>" + data.values[i].country + "</td>";
+	for (i in data.values) 
+	{
+		//$("#data-table2").append("<tr><td>" + data.values[i].country + "</td>");
+		for (j in data.indicators)
+		{
+			//$("#data-table2").append("<td>" + data.values[i][data.indicators[j]] + "</td>"); 
+			row = row + "<td>" + data.values[i][data.indicators[j]] + "</td>";
+		} 
+		//$("#data-table2").append("<td>" + data.values[i].date + "</td><td>" + data.values[i].crisis + "</td></tr>");
+		row = row + "<td>" + data.values[i].date + "</td><td>" + data.values[i].crisis + "</td></tr>";
+		
+		$("#data-table2").append(row);
+	}
+	*/
+	
+	d3.select("#data-table2")
+	.selectAll("tr")
+	.data(data.values)
+	.enter().append("tr")
+	.selectAll("td")
+	.data(function(d){return d;})
+	.enter().append("td")
+	.text(function(d){return d;});
+}
+
+
 
 function changeMode()
 {

@@ -57,12 +57,15 @@ class ScatterMatrixOrganiser(IOrganiser):
                 x['country'] = country.code
                 x['date'] = t
                 x['crisis'] = t in crisis_years
+                emptyIndicators = 0
                 for indicator_code in country.indicator_codes:
                     indicator = country.get_indicator(indicator_code)
                     try:
                         x[indicator_code] = indicator.get_value_at(t)      
                     except NonExistentDataError:
                         x[indicator_code] = ""
+                        emptyIndicators = emptyIndicators + 1
+                if (len(country.indicator_codes)==emptyIndicators): continue
                 all_x.append(x)
 
             values = values + all_x

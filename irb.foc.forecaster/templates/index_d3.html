@@ -59,6 +59,10 @@
 				d3.selectAll("#data-list > p:not(:first-child)")				  
 				  .classed("hidden-row",function(d){
 				  	         			return ((d.date>=lowValue) && (d.date<=highValue)) ? 0 : 1;});
+										
+				d3.selectAll("#years-table > p > span")				  
+				  .classed("highlighted-year",function(d){ 
+				  						return ((d>=lowValue) && (d<=highValue)) ? 1 : 0;});
 				  
 			}
 		});
@@ -83,6 +87,9 @@
 										
 				d3.selectAll("#data-list > p:not(:first-child)")				  
 				  .classed("hidden-row",function(d){ return (d.date==ui.value) ? 0 : 1; });
+				  
+				d3.selectAll("#years-table > p > span")				  
+				  .classed("highlighted-year",function(d){ return (d==ui.value) ? 1 : 0; });
 				  
 			}
 		});
@@ -186,7 +193,8 @@
 			
 			
 			
-			<table id="years-table"> <tbody> <tr></tr> </tbody> </table>
+			<!-- <table id="years-table"> <tbody> <tr></tr> </tbody> </table> -->
+			<div id="years-table"> <p></p> </div> 
 			
 			<div style="width:500px; height:20px"></div>
 			

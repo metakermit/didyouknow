@@ -31,7 +31,7 @@ function requestData() {
 	});
 }
 
-
+/*
 function updateYearsTable(data)
 {
 	
@@ -60,6 +60,39 @@ function updateYearsTable(data)
  			})
 	.text(function(d){return d;});
 }
+*/
+
+
+
+function updateYearsTable(data)
+{
+	$("#years-table > p").empty();
+	
+	var dates = $.map(data.values, function(d,i){return d.date;});
+	dates = dates.sort();
+	var lastDate = dates[0];
+	var uniqueDates = [lastDate];
+	for (i=1;i<=dates.length;i++)
+	{
+		if (dates[i] == dates[i-1]) { continue; }
+		else { lastDate = dates[i]; uniqueDates.push(lastDate); }
+	}
+	
+	d3.select("#years-table > p ")
+	.selectAll("span")
+	.data(uniqueDates)
+	.enter().append("span").on("click",
+		function(date){
+			d3.selectAll(".cell circle").classed("hidden",function(d){return (date==d.date) ? 0 : 1;}); 
+			d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			$( "#slider" ).slider( "option", "value", date );
+			$( "#year" ).val( $( "#slider" ).slider( "value" ));
+			d3.selectAll("#years-table > p > span").classed("highlighted-year",function(d){ return (date==d) ? 1 : 0; });
+ 			})
+	.text(function(d){return d + " ";});
+}
+
 
 
 // Update textarea with new data

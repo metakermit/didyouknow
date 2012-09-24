@@ -124,7 +124,7 @@ circle {
 
 .hidden {
   fill: #ccc;
-  fill-opacity: .5;
+  fill-opacity: .2;
 }
 
 .hidden-row {
@@ -159,7 +159,7 @@ circle {
 	border-collapse:collapse;
 }
 
-#data-table tr td , #years-table > tbody > tr > td {
+#data-table tr td {
 	border:1px solid orange;
 }
 
@@ -168,7 +168,7 @@ circle {
 }
 
 
-#data-table > tr:hover , #data-list > p:hover , #years-table > tbody > tr > td:hover
+#data-table > tr:hover , #data-list > p:hover , #years-table > p > span:hover
 {
 	color:red;
 	cursor:default;
@@ -178,5 +178,10 @@ circle {
 {
 	font-family:"Courier New", Courier, monospace;
 	font-size: 11px;
+	width: 600px;
+}
+
+.highlighted-year {
+	color:red;
 }
 

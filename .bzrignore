@@ -1,3 +1,4 @@
 ./irb.foc.visualiser/viz
+./irb.foc.forecaster/io/*
 *.json
 pymongo

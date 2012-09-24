@@ -141,13 +141,16 @@ class Indicator(object):
         new_indicator = copy.deepcopy(self)
         new_indicator.dates = []
         new_indicator.values = []
-        if start<self.dates[0]:
-            index_start = 0
-        else:
-            try:
-                index_start = self.dates.index(start)
-            except ValueError: # the range contains nothing
-                return new_indicator
+        try:
+            if start<self.dates[0]:
+                index_start = 0
+            else:
+                try:
+                    index_start = self.dates.index(start)
+                except ValueError: # the range contains nothing
+                    return new_indicator
+        except IndexError: # the range contains nothing
+            return new_indicator
         if end>self.dates[-1]: 
             index_end = -1 # the last position
         else:

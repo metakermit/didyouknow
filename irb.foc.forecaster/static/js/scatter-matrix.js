@@ -20,33 +20,67 @@ function requestData() {
 			data = focData;
 			
 			drawScatterMatrix(data);
-			updateTextBox(data);
+			updateTextarea(data);
 			updateDataTable(data);
+			updateDataList(data);
+			
+			updateYearsTable(data);
 			
         },
 		cache: false,
 	});
 }
 
-// Update text box with new data
-function updateTextBox(data)
+
+function updateYearsTable(data)
+{
+	
+	var dates = $.map(data.values, function(d,i){return d.date;});
+	dates = dates.sort();
+	var lastDate = dates[0];
+	var uniqueDates = [lastDate];
+	for (i=1;i<=dates.length;i++)
+	{
+		if (dates[i] == dates[i-1]) { continue; }
+		else { lastDate = dates[i]; uniqueDates.push(lastDate); }
+	}
+	
+	console.log(uniqueDates);
+	
+	d3.select("#years-table > tbody > tr ")
+	.selectAll("td")
+	.data(uniqueDates)
+	.enter().append("td").on("click",
+		function(date){
+			d3.selectAll(".cell circle").classed("hidden",function(d){return (date==d.date) ? 0 : 1;}); 
+			d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			$( "#slider" ).slider( "option", "value", date );
+			$( "#year" ).val( $( "#slider" ).slider( "value" ));
+ 			})
+	.text(function(d){return d;});
+}
+
+
+// Update textarea with new data
+function updateTextarea(data)
 {
 	// CSV format
 	indicatorsString = "";
 	for (i in data.indicators)
 	{
-		indicatorsString = indicatorsString + "\"" + data.indicators[i] + "\" "; 
+		indicatorsString = indicatorsString + "\"" + data.indicators[i] + "\" ; "; 
 	}
-	$("#data-table").val("\"code\" " + indicatorsString + "\"date\" \"crisis\"\n");
+	$("#data-textarea").val("\"code\" ; " + indicatorsString + "\"date\" ; \"crisis\"\n");
 	
 	for (i in data.values) 
 	{
-		$("#data-table").val($("#data-table").val() + data.values[i].country + " ");
+		$("#data-textarea").val($("#data-textarea").val() + data.values[i].country);
 		for (j in data.indicators)
 		{
-			$("#data-table").val($("#data-table").val() + " " + data.values[i][data.indicators[j]]);    
+			$("#data-textarea").val($("#data-textarea").val() + " ; " + data.values[i][data.indicators[j]]);    
 		} 
-		$("#data-table").val($("#data-table").val() + " " + data.values[i].date + " " + data.values[i].crisis + "\n");
+		$("#data-textarea").val($("#data-textarea").val() + " ; " + data.values[i].date + " ; " + data.values[i].crisis + "\n");
 	}
 	
 }
@@ -55,43 +89,61 @@ function updateTextBox(data)
 // Update data table with new data
 function updateDataTable(data)
 {
-	$("#data-table2").empty();
+	$("#data-table").empty();
 	
-	/*
-	// CSV format
-	var indicatorsString = "";
-	for (i in data.indicators)
-	{
-		indicatorsString = indicatorsString + "<td>\"" + data.indicators[i] + "\"</td>"; 
-	}
-	$("#data-table2").append("<tr><td>\"code\"</td>" + indicatorsString + "<td>\"date\"</td><td>\"crisis\"</td></tr>");
-	
-	var row = "<tr><td>" + data.values[i].country + "</td>";
-	for (i in data.values) 
-	{
-		//$("#data-table2").append("<tr><td>" + data.values[i].country + "</td>");
-		for (j in data.indicators)
-		{
-			//$("#data-table2").append("<td>" + data.values[i][data.indicators[j]] + "</td>"); 
-			row = row + "<td>" + data.values[i][data.indicators[j]] + "</td>";
-		} 
-		//$("#data-table2").append("<td>" + data.values[i].date + "</td><td>" + data.values[i].crisis + "</td></tr>");
-		row = row + "<td>" + data.values[i].date + "</td><td>" + data.values[i].crisis + "</td></tr>";
-		
-		$("#data-table2").append(row);
-	}
-	*/
-	
-	//var a = [{"code":0,"value":23},{"code":1,"value":26}];
-	//var a = {"code":0,"value":23,"code2":1,"value2":26};
-	var rows = d3.select("#data-table2")
+	d3.select("#data-table")
 	.selectAll("tr")
+	.data([d3.keys(data.values[0])])
+	.enter().append("tr")
+	.selectAll("td")
+	.data(function(d){return d;})
+	.enter().append("td")
+	.text(function(d){return d;});
+	
+	var rows = d3.select("#data-table")
+	.selectAll("tr:not(:first-child)")
 	.data(data.values)
 	.enter().append("tr")
 	.selectAll("td")
 	.data(function(d){return d3.values(d);})
 	.enter().append("td")
-	.text(function(d){return d;});
+	.text(function(d){
+             return ($.isNumeric(d)) ? (Math.floor(d)-d!=0) ? d.toFixed(2) : d : d; 
+			 });
+
+}
+
+
+// Update data list with new data
+function updateDataList(data)
+{
+	$("#data-list").empty();
+	
+	var rows = d3.select("#data-list")
+	.selectAll("p")
+	.data([d3.keys(data.values[0])])
+	.enter().append("p")
+	.text(function(d){ return d; });
+	
+	var rows = d3.select("#data-list")
+	.selectAll("p:not(:first-child)")
+	.data(data.values)
+	.enter().append("p")
+	//.on("click", function(dp){
+	//					d3.selectAll(".cell circle").classed("hidden",function(dc){return (dp.date==dc.date) ? 0 : 1;}); 
+ 	//					})
+	.text(function(d,i){ 
+			var line = ""; 
+			var values = d3.values(d); 
+			for (i in values) { 
+				var temp1 = values[i];
+				// If temp1 is numeric but NOT integer round it to 2 decimal places.
+				var temp2 = $.isNumeric(temp1) ? (Math.floor(temp1)-temp1!=0) ? temp1.toFixed(2) : temp1 : temp1 ;
+				if (i == 0) { line = line + temp2; }
+				else { line = line + "," + temp2; }
+			} 
+			return line;
+			});
 
 }
 
@@ -255,6 +307,16 @@ function drawScatterMatrix(focData) {
 	          && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
 			  ? 0 : 1;
 	    });
+		d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row", function(d) {
+	      return e[0][0] <= d[p.x] && d[p.x] <= e[1][0]
+	          && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
+			  ? 0 : 1;
+	    });
+		d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row", function(d) {
+	      return e[0][0] <= d[p.x] && d[p.x] <= e[1][0]
+	          && e[0][1] <= d[p.y] && d[p.y] <= e[1][1]
+			  ? 0 : 1;
+	    });
 	  }
 	 
 	  /*
@@ -268,7 +330,12 @@ function drawScatterMatrix(focData) {
 	 
 	 // If the brush is empty, select all circles.
 	  function brushend() {
-	    if (brush.empty()) svg.selectAll(".cell circle").classed("hidden", 0);
+	    if (brush.empty()) {
+			svg.selectAll(".cell circle").classed("hidden", 0);
+			d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row", 0);
+			d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row", 0);
+		}
+		
 	  }
 	 
 	

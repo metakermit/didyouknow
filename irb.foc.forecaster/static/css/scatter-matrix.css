@@ -127,20 +127,56 @@ circle {
   fill-opacity: .5;
 }
 
-#slider-years {
-	width: 600px;
-}
-
-#tabs-1, #tabs-2 {
-	height: 100px;
-	overflow-y: auto;
-	padding: 0.2em 0.2em; 
-}
-
-#tabs {
-	width: 600px;
-}
-
 .hidden-row {
 	display: none;
 }
+
+
+
+#slider-years , #slider {
+	width: 600px;
+}
+
+
+
+#tabs {
+	width: 600px;
+	height: 400px;
+	font-size: 12px;
+}
+
+
+#tabs-1, #tabs-2, #tabs-3 {
+	height: 350px;
+	padding: 0.4em 0.4em; 
+	font-family:"Courier New", Courier, monospace;
+	font-size: 11px;
+	overflow-y: auto;
+}
+
+
+#data-table {
+	border-collapse:collapse;
+}
+
+#data-table tr td , #years-table > tbody > tr > td {
+	border:1px solid orange;
+}
+
+#data-list p {
+	line-height: 75%;
+}
+
+
+#data-table > tr:hover , #data-list > p:hover , #years-table > tbody > tr > td:hover
+{
+	color:red;
+	cursor:default;
+}
+
+#years-table
+{
+	font-family:"Courier New", Courier, monospace;
+	font-size: 11px;
+}
+

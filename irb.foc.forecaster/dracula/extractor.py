@@ -67,6 +67,17 @@ class Extractor(object):
                 self._cache(countries)
         return countries
     
+    def grab_metadata(self, what="countries", api = wb.api):
+        """
+        @param what: string of what to get
+         - 'countries' - list of countries
+         - 'indicators' - list of indicators
+        """
+        if what=="countries":
+            return api.all_countries()
+        elif what=="indicators":
+            return api.all_indicators()
+    
     def enable_cache(self, host="localhost", port=27017, test=False):
         """
         @param host: the hostname of the server where mongodb is running

@@ -1,0 +1,20 @@
+Metadata-Version: 1.0
+Name: Dracula
+Version: 0.1.0
+Summary: A cache-enabled wrapper for some public APIs (currently, only the World Bank).
+Home-page: UNKNOWN
+Author: DraÅ¾en LuÄanin
+Author-email: kermit666@gmail.com
+License: http://www.gnu.org/licenses/gpl-3.0.html
+Description: You can try this to check that your dracula installation is working:
+        		
+        		from dracula import extractor
+        		this = extractor.arg()
+        		extractor.fetch(this)
+        
+        To enable caching you first need to install [MongoDB][] locally
+        or on a remote server.
+        
+        
+        [MongoDB]: http://docs.mongodb.org/manual/tutorial/install-mongodb-on-debian-or-ubuntu-linux/ 
+Platform: UNKNOWN

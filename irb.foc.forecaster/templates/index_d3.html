@@ -43,13 +43,26 @@
 			max: 2012,
 			values: [ 1950, 2012 ],
 			slide: function( event, ui ) {
-				$( "#amount" ).val( ui.values[ 0 ] + " - " + ui.values[ 1 ] );
+				var lowValue = ui.values[ 0 ];
+				var highValue = ui.values[ 1 ];
+				
+				$( "#amount" ).val( lowValue + " - " + highValue );
 
 				d3.selectAll(".cell circle")
 				  .classed("hidden",function(d){
-				  	         			var min = $("#slider-years").slider( "values", 0 );
-							 			var max = $("#slider-years").slider( "values", 1 );
-				  	         			return (d.date>=min) && (d.date<=max) ? 0 : 1;});
+				  	         			return (d.date>=lowValue) && (d.date<=highValue) ? 0 : 1;});
+										
+				d3.selectAll("#data-table > tr:not(:first-child)")				  
+				  .classed("hidden-row",function(d,i){
+				  	         			return (d.date>=lowValue) && (d.date<=highValue) ? 0 : 1;});
+										
+				d3.selectAll("#data-list > p:not(:first-child)")				  
+				  .classed("hidden-row",function(d){
+				  	         			return ((d.date>=lowValue) && (d.date<=highValue)) ? 0 : 1;});
+										
+				d3.selectAll("#years-table > p > span")				  
+				  .classed("highlighted-year",function(d){ 
+				  						return ((d>=lowValue) && (d<=highValue)) ? 1 : 0;});
 				  
 			}
 		});
@@ -58,23 +71,37 @@
 		$( "#tabs" ).tabs();
 		
 		
+		
+		$( "#slider" ).slider({
+			min: 1950,
+			max: 2012,
+			value: 1950,
+			slide: function( event, ui ) {
+				$( "#year" ).val( ui.value );
+
+				d3.selectAll(".cell circle")
+				  .classed("hidden",function(d){ return (d.date==ui.value) ? 0 : 1; });
+										
+				d3.selectAll("#data-table > tr:not(:first-child)")				  
+				  .classed("hidden-row",function(d,i){ return (d.date==ui.value) ? 0 : 1; });
+										
+				d3.selectAll("#data-list > p:not(:first-child)")				  
+				  .classed("hidden-row",function(d){ return (d.date==ui.value) ? 0 : 1; });
+				  
+				d3.selectAll("#years-table > p > span")				  
+				  .classed("highlighted-year",function(d){ return (d==ui.value) ? 1 : 0; });
+				  
+			}
+		});
+		
+		$( "#year" ).val( $( "#slider" ).slider( "value" ));
+		
+		
 	});
 	</script>
 
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8"/>
 	<link type="text/css" rel="stylesheet" href="/static/css/style.css"/>
-	
-	<!--
-	<style type="text/css">
-	    /* make default button size sane */
-	    .ui-button-text {
-	        font-size: .6em;
-	    }
-		ui-multiselect-menu ui-widget ui-widget-content ui-corner-all {
-			font-size: .6em;
-		}
-	</style>
-	-->
 	
 	<script type="text/javascript" src="/static/js/d3.v2.js"></script>
 	<script type="text/javascript" src="/static/js/csv.js"></script>
@@ -136,7 +163,7 @@
 			</td></tr>
 			</table>
 			
-			<textarea id="data-table" readonly="yes" wrap="off" cols="74" rows="5"></textarea>
+			<!-- <textarea id="data-table" readonly="yes" wrap="off" cols="74" rows="5"></textarea> -->
 			
 			<div id="change-mode">
 				<input type="radio" id="radio1" name="radio" value="normal" checked="checked" /><label for="radio1">Normal mode</label>
@@ -149,28 +176,50 @@
 			</p>
 			<div id="slider-years"></div>
 			
+			
+			
+			
+			
 			<div style="width:500px; height:20px"></div>
+			
+			<p>
+				<label for="year">Year:</label>
+				<input type="text" id="year" style="border:0; color:#f6931f; font-weight:bold;" />
+			</p>
+			<div id="slider"></div>
+			
+			<div style="width:500px; height:20px"></div>
+			
+			
+			
+			
+			<!-- <table id="years-table"> <tbody> <tr></tr> </tbody> </table> -->
+			<div id="years-table"> <p></p> </div> 
+			
+			<div style="width:500px; height:20px"></div>
+			
+			
 			
 			<div id="tabs">
 			<ul>
-				<li><a href="#tabs-1">Text</a></li>
-				<li><a href="#tabs-2">Table</a></li>
+				<li><a href="#tabs-1">Table</a></li>
+				<li><a href="#tabs-2">Text</a></li>
+				<li><a href="#tabs-3">Raw text</a></li>
 			</ul>
 			<div id="tabs-1">
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
-				<p>djkfjk sdkjf kjsdjkf ksjdfjk sd</p>
+				<table id="data-table"> </table>	
 			</div>
 			<div id="tabs-2">
-				<table id="data-table2"> </table>	
+				<div id="data-list"> </div> 
+			</div>
+			<div id="tabs-3">
+				<textarea id="data-textarea" readonly="yes" wrap="off" cols="80" rows="20"></textarea>
 			</div>
 			</div>
 			
 			
 			
-			
-			<div id="empty-div" style="width:500px; height:50px"></div>
+			<div id="empty-div" style="width:500px; height:200px"></div>
 			
 		</div>
 		

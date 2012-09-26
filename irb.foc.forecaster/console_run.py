@@ -45,7 +45,8 @@ def run():
                                            conf.indicators,
                                            conf.testing_percentage)
         writer = Writer()
-        writer.write(samples_set, conf.output_format, conf.output_location)
+        separate_train_test = (conf.testing_percentage!=0.0)
+        writer.write(samples_set, conf.output_formats, conf.output_location, separate_train_test)
     t2 = time()
     print("Done!")
     print("Duration:")

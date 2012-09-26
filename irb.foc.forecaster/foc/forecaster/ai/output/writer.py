@@ -18,10 +18,11 @@ class Writer(object):
         '''
         pass
     
-    def write(self, samples_set, output_format, output_location):
-        formatter = None
-        if output_format == "TSV":
-            formatter = TSV()
-        elif output_format == "SGD":
-            formatter = SGDFormat()
-        formatter.write_whole_set(samples_set, output_location)
+    def write(self, samples_set, output_formats, output_location, separate_train_test = True):
+        for output_format in output_formats:
+            formatter = None
+            if output_format == "TSV":
+                formatter = TSV()
+            elif output_format == "SGD":
+                formatter = SGDFormat()
+            formatter.write_whole_set(samples_set, output_location, separate_train_test)

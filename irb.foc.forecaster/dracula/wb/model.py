@@ -136,25 +136,34 @@ class Indicator(object):
         for date in indicator.dates():
             self.set_value_at(date, indicator.get_value_at(date))
     
-    def slice(self, start, end):#TODO: unittest
+    def slice(self, start, end):#TODO: unittest or use Pandas and their built-in slicing
         """ @return: a copy of indicator extra data with sliced off """
         new_indicator = copy.deepcopy(self)
         new_indicator.dates = []
         new_indicator.values = []
-        try:
-            if start<self.dates[0]:
-                index_start = 0
-            else:
-                try:
-                    index_start = self.dates.index(start)
-                except ValueError: # the range contains nothing
-                    return new_indicator
-        except IndexError: # the range contains nothing
-            return new_indicator
-        if end>self.dates[-1]: 
-            index_end = -1 # the last position
+        index_start, index_end = None, None
+        if len(self.dates) == 0:
+            return new_indicator # the range contains nothing
+        # find first position
+        if start<self.dates[0]:
+            index_start = 0
         else:
-            index_end = self.dates.index(end) 
+            for i in range(0, len(self.dates)):
+                if self.dates[i]>=start:
+                    index_start = i
+                    break
+            return new_indicator
+        # find last position
+        if end>self.dates[-1]: 
+            index_end = -1 
+        else:
+            for i in range(len(self.dates), 0):
+                if self.dates[i]<=end:
+                    index_end = i
+                    break
+        if index_start==None or index_end==None:
+            return new_indicator # the intersection is empty
+        # take slice
         new_indicator.dates = self.dates[index_start:index_end+1]
         new_indicator.values = self.values[index_start:index_end+1]
         return new_indicator

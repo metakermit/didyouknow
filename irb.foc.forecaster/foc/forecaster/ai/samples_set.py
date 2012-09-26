@@ -118,6 +118,13 @@ class SamplesSet(object):
         t_crises, t_normal = dates_input.parse_sample_selection(self.t_loc)
         crises_list, normal_list = dates_input.parse_sample_selection_to_list(self.t_loc)
         
+        if country_codes[0]=="EVERYTHING": # we take everything available in the samples set
+            wb_countries = self.extractor.grab_metadata("countries")
+            wb_country_codes = set([country.code for country in wb_countries])
+            samples_definition_codes = set(t_crises.keys()) | set(t_normal.keys())
+            country_codes = list(wb_country_codes & samples_definition_codes)
+            country_codes.sort()
+        
         # we fetch all the data here
         # boundaries
         start_date = min(min(crises_list), min(normal_list))-conf.look_back_years
@@ -141,7 +148,10 @@ class SamplesSet(object):
                 indicator = country.get_indicator(ind_code)
                 indicators.append(indicator)
             # create samples from those indicators - in crises...
-            crisis_years = t_crises[country.code]
+            try:
+                crisis_years = t_crises[country.code]
+            except KeyError:
+                continue # we skip this country
             new_samples = self.assign_samples(indicators,
                                               crisis_years,
                                               CRISIS_CLASS,

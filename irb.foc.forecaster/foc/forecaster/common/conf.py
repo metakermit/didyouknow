@@ -7,129 +7,23 @@ Created on 14. 12. 2011.
 # FOC Forcaster - configuration file #
 ######################################
 
-# Graphs 
-########
-
-# True - graphs written to files
-# False - interactive graphs will be shown in a GUI
-write_to_file = True
-
-# True - all curves plotted on the same graph
-# False - each curve plotted in a separate graph
-combine_plots = True
-
 # Data semantics
 ################
 
 # location where to save the data
 # (don't specify the extension, as that is determined by the formatter)
-output_location = "io/data_105_banking"
+output_location = "io/data_105_2012_delta_banking+currency+debt"
 
 # take data from start_date to end_date
 start_date = 1950
 end_date = 2015
 
 # see codes at http://en.wikipedia.org/wiki/ISO_3166-1_alpha-3
+# a special value of EVERYTHING (as a first country) takes everything that has a crisis or normal year
+# defined in the sample definition XLS file intersected with the countries offered
+# by the World Bank
 __countries = """
-alb
-dza
-arg
-arm
-aze
-bgd
-blr
-ben
-bmu
-bih
-bra
-bgr
-bfa
-bdi
-cmr
-cpv
-caf
-tcd
-chl
-chn
-col
-cod
-cog
-cri
-civ
-hrv
-cze
-dji
-dom
-ecu
-egy
-slv
-gnq
-eri
-est
-fin
-geo
-gha
-gin
-gnb
-guy
-hti
-hun
-ind
-idn
-isr
-jam
-jpn
-jor
-ken
-kor
-kwt
-kgz
-lva
-lbn
-lbr
-ltu
-mkd
-mdg
-mys
-mli
-mrt
-mex
-mar
-moz
-npl
-nic
-ner
-nga
-nor
-pan
-pry
-per
-phl
-pol
-rou
-rus
-stp
-sen
-sle
-svk
-svn
-esp
-lka
-swz
-swe
-tza
-tha
-tgo
-tun
-tur
-uga
-ukr
-gbr
-usa
-ury
-yem
-zmb
-zwe
+EVERYTHING
 """
 # good data: can, usa
 
@@ -279,7 +173,7 @@ SP.POP.65UP.TO.ZS
 """
 
 # choose the dates when crises happened in this file
-sample_selection_file = "io/crises-imf-banking.xls"
+sample_selection_file = "io/imf/2012_delta/crisis-imf-2012-delta-banking+currency+debt.xls"
 #sample_selection_file = "../odabir_uzoraka-rucni-mali.xls"
 
 # how many years to look back searching for crises causes
@@ -288,8 +182,8 @@ look_back_years = 3
 # what percentage of the dataset to use _only_ for testing
 testing_percentage = 0.0
 
-# output format: TSV or SGD
-output_format = "TSV"
+# output formats available: TSV or SGD
+output_formats = ["SGD","TSV"]
 
 # Performance
 ##########

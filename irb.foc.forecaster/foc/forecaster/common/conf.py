@@ -278,6 +278,16 @@ __state_indicators = """
 SP.POP.65UP.TO.ZS
 """
 
+__rca_indicators = """
+0011
+0012
+0013
+0014
+"""
+
+# location of the RCA.txt file
+rca_location = "io/RCA.txt"
+
 # choose the dates when crises happened in this file
 sample_selection_file = "io/crises-imf-banking.xls"
 #sample_selection_file = "../odabir_uzoraka-rucni-mali.xls"
@@ -298,7 +308,7 @@ output_format = "TSV"
 wb_pause = 0
 
 # save downloaded data to a caching MongoDB database 
-cache_enabled = True
+cache_enabled = False
 # the host that's serving the cache DB
 cache_host = "lis.irb.hr"
 # and the port

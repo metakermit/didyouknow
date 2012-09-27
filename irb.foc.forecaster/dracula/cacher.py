@@ -5,7 +5,7 @@ Created on 24. 8. 2012.
 '''
 from pymongo import Connection
 
-from dracula.wb.model import Country
+from dracula.model import Country
 
 class Cacher(object):
     '''

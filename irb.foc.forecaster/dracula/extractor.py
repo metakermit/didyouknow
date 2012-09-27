@@ -8,6 +8,7 @@ import copy
 import time
 
 import wb.api
+import local_storage.rca.api
 from cacher import Cacher
 
 
@@ -36,7 +37,25 @@ class Extractor(object):
         arg["country_codes"] = capitalize_list(arg["country_codes"])
         return arg
     
-    def grab(self, arg=None, api=wb.api):
+    def grab(self, arg=None):
+        rca_indicators = []
+        wb_indicators = []
+        available_rca_indicators = set(local_storage.rca.api.all_indicators()) 
+        for indicator_code in arg["indicator_codes"]:
+            if indicator_code in available_rca_indicators:
+                rca_indicators.append(indicator_code)
+            else:
+                wb_indicators.append(indicator_code)
+        rca_arg = copy.deepcopy(arg)
+        rca_arg["indicator_codes"] = rca_indicators
+        rca_countries = self._grab_from_api(rca_arg, local_storage.rca.api)
+        wb_arg = copy.deepcopy(arg)
+        wb_arg["indicator_codes"] = wb_indicators
+        wb_countries = self._grab_from_api(wb_arg, wb.api)
+        #TODO: merge
+        return rca_countries
+    
+    def _grab_from_api(self, arg=None, api=wb.api):
         #TODO: think about using kwargs
         """
         possible args are:

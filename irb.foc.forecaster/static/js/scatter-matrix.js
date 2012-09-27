@@ -14,7 +14,8 @@ function requestData() {
 		url: "../getdatascatter/", 
 		data: {
 			countries: $("#selectCountries").val(),
-			indicators: $("#selectIndicators").val()
+			wbIndicators: $("#selectWBIndicators").val(),
+			rcaIndicators: $("#selectRCAIndicators").val()
 		},
 		success: function(focData) {
 			data = focData;

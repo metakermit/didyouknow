@@ -19,7 +19,8 @@
 	<script type="text/javascript">
 	$(function(){
 		$("#selectCountries").multiselect().multiselectfilter();
-		$("#selectIndicators").multiselect().multiselectfilter();
+		$("#selectWBIndicators").multiselect().multiselectfilter();
+		$("#selectRCAIndicators").multiselect().multiselectfilter();
 		$("#send-request").button();
 		$("#send-request").click( requestData );
 		
@@ -145,17 +146,25 @@
 			<option value="NOR">NOR</option>
 			<option value="SAU">SAU</option>
 			<option value="SWE">SWE</option>
-			<option value="TUR">TUR</option>
-			<option value="USA">USA</option>
+			<option value="TUR" selected="selected">TUR</option>
+			<option value="USA" selected="selected">USA</option>
 			</select>
 			</td>
 			<td>	
-			<select title="Select indicators" multiple="multiple" name="select-indicators" size="5" id="selectIndicators">
+			<select title="Select WB indicators" multiple="multiple" name="select-wb-indicators" size="5" id="selectWBIndicators">
 			<option value="FR.INR.RINR" selected="selected">FR.INR.RINR</option>
 			<option value="SL.UEM.TOTL.ZS" selected="selected">SL.UEM.TOTL.ZS</option>
 			<option value="SP.POP.TOTL">SP.POP.TOTL</option>
 			<option value="NY.GDP.PCAP.KD">NY.GDP.PCAP.KD</option>
 			<option value="NY.GDP.MKTP.KD.ZG">NY.GDP.MKTP.KD.ZG</option>
+			</select>
+			</td>
+			<td>	
+			<select title="Select RCA indicators" multiple="multiple" name="select-rca-indicators" size="5" id="selectRCAIndicators">
+			<option value="0010" selected="selected">0010</option>
+			<option value="0011">0011</option>
+			<option value="0012">0012</option>
+			<option value="0013">0013</option>
 			</select>
 			</td>
 			<td>

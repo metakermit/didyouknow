@@ -4,7 +4,7 @@ Created on 5. 4. 2012.
 @author: kermit
 '''
 
-from model import Indicator, Country
+from dracula.model import Indicator, Country
 #TODO: Maybe transfer parsing logic to this class
 
 '''

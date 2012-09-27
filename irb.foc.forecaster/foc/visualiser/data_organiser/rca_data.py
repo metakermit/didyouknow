@@ -1,31 +1,41 @@
 '''
-Created on 13. 9. 2012.
+Created on 25. 9. 2012.
 
 @author: Matija Piskorec
 '''
-from foc.visualiser.data_organiser.iorganiser import IOrganiser
-from dracula.exceptions import NonExistentDataError
-from foc.forecaster.ai.crisis_seer import CrisisSeer
 
+from dracula.exceptions import NonExistentDataError
 from csv import reader
 from pandas import MultiIndex, Series
 
-class ScatterMatrixOrganiser(IOrganiser):
+class RCADataOrganiser(object):
     '''
-    Organises data for a scatter matrix visualization.
-    (this is basically just convenient csv representation in json)
+    TODO: Abandon! Move everything to scatter_matrix!
     '''
 
     def __init__(self):
-        IOrganiser.__init__(self)
-        
+        location = "io/RCA.txt"
+        index_tuples = []
+        values = []
+        with open(location,"rb") as csv_file:
+            raw_data = reader(csv_file, delimiter=" ", skipinitialspace=True)
+            for line in raw_data:
+                product, country, year = line[0], line[1], int(line[2])
+                current_ind = (country,product,year)
+                index_tuples.append(current_ind)
+                try:
+                    values.append(float(line[3]))
+                except ValueError:
+                    values.append(None)
+        multi_index = MultiIndex.from_tuples(index_tuples, names = ["country", "product", "year"])
+        s = Series(values, index = multi_index)
+        # Sorting is important in order for multiple indexing to work properly!
+        s = s.sortlevel(level=0) # Sort by first column.
 
-    def _organise_data(self, conf):
-        
+    def get_rca_data(self, rcaIndicators):
         arg = self._extractor.arg()
         arg["country_codes"] = conf.countries
         arg["indicator_codes"] = conf.indicators
-        #arg["rca_indicator_codes"] = conf.rcaIndicators
         arg["interval"] = (conf.start_date, conf.end_date)
         countries = self._extractor.grab(arg)
         #TODO: add the process method somewhere inside the preprocessor
@@ -39,8 +49,6 @@ class ScatterMatrixOrganiser(IOrganiser):
         
         for country in countries:
             years = range(conf.start_date, conf.end_date)
-            crisis_seer = CrisisSeer(conf.sample_selection_file)
-            crisis_years = crisis_seer.get_crisis_years(country.code)
                 
             all_x = []
             for t in years:
@@ -64,5 +72,6 @@ class ScatterMatrixOrganiser(IOrganiser):
         
         self.vis_data = {'countries': conf.countries, 'indicators': conf.indicators, 'values': values}
         
-        return self.vis_data
+        #return self.vis_data
+        return {}
 

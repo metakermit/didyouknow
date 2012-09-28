@@ -44,6 +44,15 @@ class Country(object):
         } 
         return me
     
+    def merge_with_country(self, new_country):
+        """ Merge indicators from other country object."""
+        #TODO: Check the codes to see if they are really the same country.
+        for new_indicator in new_country.indicator_codes:
+            if new_indicator in self.indicator_codes:
+                pass
+            else:
+                self.set_indicator(new_country.indicators[new_indicator])
+    
     @staticmethod
     def from_json(country_repr):
         """deserialize from json"""

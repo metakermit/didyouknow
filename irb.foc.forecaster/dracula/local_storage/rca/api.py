@@ -60,6 +60,10 @@ def query_multiple_data(country_codes=['all'], indicator_codes=[], start_date=20
             #indicator_data = indicator_data_full[start_date:end_date]
             wanted_years = np.arange(start_date,end_date)
             indicator_data = indicator_data_full.ix[wanted_years].dropna()
+            
+            #TODO: Figure out how to treat zeros in RCA data (for now I am treating them as missing values).
+            indicator_data = indicator_data[ indicator_data != 0 ]
+            
             dates=list(indicator_data.index)
             values=list(indicator_data.values)
             indicator = Indicator(code=indicator_code, dates=dates, values=values, nominal_start=start_date, nominal_end=end_date)

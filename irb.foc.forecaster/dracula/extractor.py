@@ -40,20 +40,56 @@ class Extractor(object):
     def grab(self, arg=None):
         rca_indicators = []
         wb_indicators = []
+        
+        # Check if indicator is in RCA dataset, if not then it must be in WB.
+        # TODO: Make indicator type checking universal.
         available_rca_indicators = set(local_storage.rca.api.all_indicators()) 
         for indicator_code in arg["indicator_codes"]:
             if indicator_code in available_rca_indicators:
                 rca_indicators.append(indicator_code)
             else:
                 wb_indicators.append(indicator_code)
+        
+        # Grab RCA data.        
         rca_arg = copy.deepcopy(arg)
         rca_arg["indicator_codes"] = rca_indicators
         rca_countries = self._grab_from_api(rca_arg, local_storage.rca.api)
+        
+        # Grab WB data.
         wb_arg = copy.deepcopy(arg)
         wb_arg["indicator_codes"] = wb_indicators
         wb_countries = self._grab_from_api(wb_arg, wb.api)
-        #TODO: merge
-        return rca_countries
+        
+        #TODO: Separate function for merging two or more list of countries.
+        # Not assuming that wb and rca countries are in corresponding order in lists.
+        all_codes = set()
+        wb_dict = {}
+        for wb_country in wb_countries:
+            all_codes.add(wb_country.code)
+            wb_dict[wb_country.code] = wb_country
+        rca_dict = {}
+        for rca_country in rca_countries:
+            all_codes.add(rca_country.code)
+            rca_dict[rca_country.code] = rca_country
+        combined_countries = []
+        for code in all_codes:
+            current_countries = []
+            try: current_countries.append(wb_dict[code])
+            except KeyError: pass
+            try: current_countries.append(rca_dict[code])
+            except KeyError: pass
+            if len(current_countries)!=0:
+                if len(current_countries)>1:
+                    current_countries[0].merge_with_country(current_countries[1])
+                combined_countries.append(current_countries[0])
+        return combined_countries
+                
+#        #TODO: Merge RCA and WB data.
+#        # Assumptions is that rca_countries and wb_countries have elements in same order (maybe write unit test for that).
+#        for wb_country,rca_country in zip(wb_countries,rca_countries):
+#            wb_country.merge_with_country(rca_country)
+#        
+#        return wb_countries
     
     def _grab_from_api(self, arg=None, api=wb.api):
         #TODO: think about using kwargs

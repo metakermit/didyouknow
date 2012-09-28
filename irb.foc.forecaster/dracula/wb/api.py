@@ -167,4 +167,6 @@ def all_indicators():
     return _simple_query("/indicators")
 
 def all_countries():
-    return _simple_query("/countries")
+    data_list = _simple_query("/countries")
+    countries = parser.parse_multiple_countries_alone(data_list)
+    return countries

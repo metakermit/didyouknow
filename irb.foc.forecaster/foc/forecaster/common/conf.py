@@ -183,7 +183,8 @@ __rca_indicators = """
 rca_location = "io/RCA.txt"
 
 # choose the dates when crises happened in this file
-sample_selection_file = "io/imf/2012_delta/crisis-imf-2012-delta-banking+currency+debt.xls"
+#sample_selection_file = "io/imf/2012_delta/crisis-imf-2012-delta-banking+currency+debt.xls"
+sample_selection_file = "io/crises-imf-banking.xls"
 #sample_selection_file = "../odabir_uzoraka-rucni-mali.xls"
 
 # how many years to look back searching for crises causes

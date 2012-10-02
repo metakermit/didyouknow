@@ -120,13 +120,38 @@
 		
 		<div class="content">
 			
-			<div id="chart"> </div>
+			<div class="topbar">
+			<a href="http://lis.irb.hr/foc/index.html">Home</a>
+			<a href="http://lis.irb.hr/foc/methods/methods.html">Methods</a>
+			<a href="http://lis.irb.hr:8080/focd3/">Widgets</a>
+			<!-- <a href="http://127.0.0.1:8080/focd3/">Widgets</a> -->
+			<a href="http://lis.irb.hr/foc/sources/sources.html">Data Sources</a>
+			<a href="http://lis.irb.hr/foc/data/data.html">Datasets Download</a>
+			<a href="http://lis.irb.hr/foc/publications/publications.html">Publications</a>
+			<a href="http://lis.irb.hr/foc/people/people.html">People</a>
+			</div>
+			
+			<h1>Scatterplot matrix</h1>
+			
+			<span class="description">
+			<p>This is the visualization of World Bank and RCA data on a scatter plot matrix. 
+			World Bank data is retrieved directly from the <a href="http://data.worldbank.org">data.worldbank.org</a>,
+			while RCA data is retrieved locally from file that is available on C. Hidalgo's <a href="http://www.chidalgo.com/productspace/data.htm">page</a>. </p>
+			</span>
+			
+			<div id="chart">  <div id="screen"></div>
+			<div id="placeholder" style="height:400px;width:600px;border:1px dashed;border-radius:5px;border-color:gray;padding:20px;"> 
+			<p style="color:gray;font-family:Courier;margin:0;">Select some countries and indicators...</p>
+			</div> 
+			</div>
+			
 			<!-- <link type="text/css" rel="stylesheet" href="/static/css/splom.css"> -->
 			<script type="text/javascript" src="/static/js/scatter-matrix.js"></script>
 		
 			<!-- <h3>Select countries and indicators:</h3> -->
 			
-			<table>
+			<table style="margin-top:20px">
+			<tr class="select-description"> <td>Countries:</td> <td>World Bank indicators:</td> <td>RCA indicators:</td> <td></td> </tr>
 			<tr><td>	
 			<select title="Select countries" multiple="multiple" name="select-countries" size="5" id="selectCountries">
 			<!-- {% for v in countries %}
@@ -161,8 +186,8 @@
 			</td>
 			<td>	
 			<select title="Select RCA indicators" multiple="multiple" name="select-rca-indicators" size="5" id="selectRCAIndicators">
-			<option value="0010" selected="selected">0010</option>
-			<option value="0011">0011</option>
+			<option value="0010">0010</option>
+			<option value="0011" selected="selected">0011</option>
 			<option value="0012">0012</option>
 			<option value="0013">0013</option>
 			</select>

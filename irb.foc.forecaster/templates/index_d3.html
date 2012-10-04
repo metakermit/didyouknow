@@ -97,6 +97,84 @@
 		
 		$( "#year" ).val( $( "#slider" ).slider( "value" ));
 		
+		$("#rules-textarea").live("keyup", 
+			function(d) {
+				$('#rules-display').empty();
+				// Extract all rules of the form:
+				//	(var1=0.1) (var2<=-0.2) etc. for floating variables
+				//	(var1=True) (var2#red) etc. for cathegorical (and boolean) variables 
+				var rulesList = $(this).val().match(/\(\s*(\w+\s*(<|>|=|<=|>=)\s*(-?(0|([1-9]\d*))(\.\d+)?)|\w+\s*(=|#)\s*(\w+))\s*\)/g);
+				
+				//if (rulesList==undefined)
+				//{
+					d3.selectAll(".cell circle").classed("hidden",0);
+				//}
+				
+				for (i in rulesList)
+				{
+					// Extract variable, operator and value from each matched rules.
+					var parsedRule = rulesList[i].match(/\(\s*(?:(\w+)\s*(<|>|=|<=|>=)\s*(-?(?:0|(?:[1-9]\d*))(?:\.\d+)?)|(\w+)\s*(=|#)\s*(\w+))\s*\)/);
+					parsedRule = parsedRule.filter(function(d){return d!=undefined;});
+					$('#rules-display').append( "(" + 
+												"<span class=\"variable\">" + parsedRule[1] + "</span>" +
+												"<span class=\"operator\">" + parsedRule[2] + "</span>" +
+												"<span class=\"value\">" + parsedRule[3] + "</span>" +
+												")" );
+					var filterData;
+					
+					/*
+					switch (parsedRule[2])
+					{
+						case "<":
+							filterData = function(d){ return (d[parsedRule[1]] < parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">":
+							filterData = function(d){ return (d[parsedRule[1]] > parsedRule[3]) ? 0 : 1; };
+							break;
+						case "<=":
+							filterData = function(d){ return (d[parsedRule[1]] <= parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">=":
+							filterData = function(d){ return (d[parsedRule[1]] >= parsedRule[3]) ? 0 : 1; };
+							break;
+						case "=":
+							filterData = function(d){ return (d[parsedRule[1]] = parsedRule[3]) ? 0 : 1; };
+							break;
+						default:
+							filterData = function(d){ return 0; };
+							break;
+					}					
+					d3.selectAll(".cell circle").classed("hidden",filterData);
+					*/
+					
+					switch (parsedRule[2])
+					{
+						case "<":
+							filterData = function(d){ return (d[parsedRule[1]] < parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">":
+							filterData = function(d){ return (d[parsedRule[1]] > parsedRule[3]) ? 0 : 1; };
+							break;
+						case "<=":
+							filterData = function(d){ return (d[parsedRule[1]] <= parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">=":
+							filterData = function(d){ return (d[parsedRule[1]] >= parsedRule[3]) ? 0 : 1; };
+							break;
+						case "=":
+							filterData = function(d){ return (d[parsedRule[1]] == parsedRule[3]) ? 0 : 1; };
+							break;
+						case "#":
+							filterData = function(d){ return (d[parsedRule[1]] != parsedRule[3]) ? 0 : 1; };
+							break;
+						default:
+							filterData = function(d){ return 0; };
+							break;
+					}					
+					d3.selectAll(".cell circle").filter(filterData).classed("hidden",1);
+				}
+				
+				});
 		
 	});
 	</script>
@@ -139,16 +217,23 @@
 			while RCA data is retrieved locally from file that is available on C. Hidalgo's <a href="http://www.chidalgo.com/productspace/data.htm">page</a>. </p>
 			</span>
 			
-			<div id="chart">  <div id="screen"></div>
-			<div id="placeholder" style="height:400px;width:600px;border:1px dashed;border-radius:5px;border-color:gray;padding:20px;"> 
-			<p style="color:gray;font-family:Courier;margin:0;">Select some countries and indicators...</p>
-			</div> 
+			<div id="chart">  
+				<div id="screen"></div>
+				<div id="placeholder" style="height:400px;width:600px;border:1px dashed;border-radius:5px;border-color:gray;padding:20px;"> 
+					<p style="color:gray;font-family:Courier;margin:0;">Select some countries and indicators...</p>
+				</div> 
 			</div>
 			
 			<!-- <link type="text/css" rel="stylesheet" href="/static/css/splom.css"> -->
 			<script type="text/javascript" src="/static/js/scatter-matrix.js"></script>
 		
-			<!-- <h3>Select countries and indicators:</h3> -->
+		
+			<p class="select-description">Write some rules: <span class="tooltip" title="Rules should be in format (var1<=-0.43)(Var_2=0)...">(how?)</span></p>
+			<textarea id="rules-textarea" wrap="off" cols="75" rows="1"></textarea>
+			<p class="select-description">Matched rules:</p>
+			<div id="rules-display"></div>
+		
+			
 			
 			<table style="margin-top:20px">
 			<tr class="select-description"> <td>Countries:</td> <td>World Bank indicators:</td> <td>RCA indicators:</td> <td></td> </tr>
@@ -250,6 +335,7 @@
 				<textarea id="data-textarea" readonly="yes" wrap="off" cols="80" rows="20"></textarea>
 			</div>
 			</div>
+			
 			
 			
 			

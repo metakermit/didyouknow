@@ -231,7 +231,8 @@ function drawScatterMatrix(focData) {
         domain = [d3.min(data.values, value), d3.max(data.values, value)],
         range = [padding / 2, size - padding / 2];
         x[indicator] = d3.scale.linear().domain(domain).range(range);
-        y[indicator] = d3.scale.linear().domain(domain).range(range.reverse());
+        //y[indicator] = d3.scale.linear().domain(domain).range(range.reverse());
+		y[indicator] = d3.scale.linear().domain(domain).range(range.slice().reverse());
     });
 	
 	  // Axes.

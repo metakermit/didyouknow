@@ -168,7 +168,7 @@ body > svg {
 
 #chart {
 	position: relative;
-	overflow: overlay;
+	/*overflow: overlay;*/
 	margin-top:20px;
 }
 
@@ -182,3 +182,4 @@ body > svg {
 	font-size: 14px;
 	font-weight: bold;
 }
+

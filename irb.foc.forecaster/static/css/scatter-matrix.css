@@ -196,6 +196,19 @@ circle {
 	overflow:auto;
 }
 
+.animated-description {
+	font-family:"Courier New", Courier, monospace;
+	font-size: 11px;
+	border:1px dashed;
+	border-radius:3px;
+	border-color:gray;
+	padding:10px;
+	width:600px;
+	overflow:auto;
+	background: powderblue;
+	margin-bottom:5px;
+}
+
 .tooltip {
 	font-family: Trebuchet MS,Tahoma,Verdana,Arial,sans-serif;
 	color: rgb(28, 148, 196);

@@ -103,17 +103,18 @@
 				// Extract all rules of the form:
 				//	(var1=0.1) (var2<=-0.2) etc. for floating variables
 				//	(var1=True) (var2#red) etc. for cathegorical (and boolean) variables 
-				var rulesList = $(this).val().match(/\(\s*(\w+\s*(<|>|=|<=|>=)\s*(-?(0|([1-9]\d*))(\.\d+)?)|\w+\s*(=|#)\s*(\w+))\s*\)/g);
+				//var rulesList = $(this).val().match(/\(\s*(\w+\s*(<|>|=|<=|>=)\s*(-?(0|([1-9]\d*))(\.\d+)?)|\w+\s*(=|#)\s*(\w+))\s*\)/g); // no dots in variable name
+				var rulesList = $(this).val().match(/\(\s*(\w+[\w\.]*\s*(<|>|=|<=|>=)\s*(-?(0|([1-9]\d*))(\.\d+)?)|\w+\s*(=|#)\s*(\w+))\s*\)/g); // dots in variable name
 				
-				//if (rulesList==undefined)
-				//{
-					d3.selectAll(".cell circle").classed("hidden",0);
-				//}
+				d3.selectAll(".cell circle").classed("hidden",0);
+				d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",0);
+				d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",0);
 				
 				for (i in rulesList)
 				{
 					// Extract variable, operator and value from each matched rules.
-					var parsedRule = rulesList[i].match(/\(\s*(?:(\w+)\s*(<|>|=|<=|>=)\s*(-?(?:0|(?:[1-9]\d*))(?:\.\d+)?)|(\w+)\s*(=|#)\s*(\w+))\s*\)/);
+					//var parsedRule = rulesList[i].match(/\(\s*(?:(\w+)\s*(<|>|=|<=|>=)\s*(-?(?:0|(?:[1-9]\d*))(?:\.\d+)?)|(\w+)\s*(=|#)\s*(\w+))\s*\)/); // no dots in variable name  
+					var parsedRule = rulesList[i].match(/\(\s*(?:(\w+[\w\.]*)\s*(<|>|=|<=|>=)\s*(-?(?:0|(?:[1-9]\d*))(?:\.\d+)?)|(\w+)\s*(=|#)\s*(\w+))\s*\)/); // dots in variable name
 					parsedRule = parsedRule.filter(function(d){return d!=undefined;});
 					$('#rules-display').append( "(" + 
 												"<span class=\"variable\">" + parsedRule[1] + "</span>" +
@@ -122,7 +123,6 @@
 												")" );
 					var filterData;
 					
-					/*
 					switch (parsedRule[2])
 					{
 						case "<":
@@ -138,43 +138,43 @@
 							filterData = function(d){ return (d[parsedRule[1]] >= parsedRule[3]) ? 0 : 1; };
 							break;
 						case "=":
-							filterData = function(d){ return (d[parsedRule[1]] = parsedRule[3]) ? 0 : 1; };
-							break;
-						default:
-							filterData = function(d){ return 0; };
-							break;
-					}					
-					d3.selectAll(".cell circle").classed("hidden",filterData);
-					*/
-					
-					switch (parsedRule[2])
-					{
-						case "<":
-							filterData = function(d){ return (d[parsedRule[1]] < parsedRule[3]) ? 0 : 1; };
-							break;
-						case ">":
-							filterData = function(d){ return (d[parsedRule[1]] > parsedRule[3]) ? 0 : 1; };
-							break;
-						case "<=":
-							filterData = function(d){ return (d[parsedRule[1]] <= parsedRule[3]) ? 0 : 1; };
-							break;
-						case ">=":
-							filterData = function(d){ return (d[parsedRule[1]] >= parsedRule[3]) ? 0 : 1; };
-							break;
-						case "=":
-							filterData = function(d){ return (d[parsedRule[1]] == parsedRule[3]) ? 0 : 1; };
+							filterData = function(d){ return (d[parsedRule[1]].toString() == parsedRule[3]) ? 0 : 1; };
 							break;
 						case "#":
-							filterData = function(d){ return (d[parsedRule[1]] != parsedRule[3]) ? 0 : 1; };
+							filterData = function(d){ return (d[parsedRule[1]].toString() != parsedRule[3]) ? 0 : 1; };
 							break;
 						default:
 							filterData = function(d){ return 0; };
 							break;
 					}					
 					d3.selectAll(".cell circle").filter(filterData).classed("hidden",1);
+					d3.selectAll("#data-table > tr:not(:first-child)").filter(filterData).classed("hidden-row",1);
+					d3.selectAll("#data-list > p:not(:first-child)").filter(filterData).classed("hidden-row",1);
+
 				}
 				
 				});
+				
+		$(".animated-description#rules-description").hide();
+		$(".tooltip#rules-tooltip").live("click",function(){
+			if ($(".animated-description#rules-description").is(":visible")) {
+				$(".animated-description#rules-description").hide(200);
+			}
+			else {
+				$(".animated-description#rules-description").show(200);
+			}
+		});
+		
+		$(".animated-description#matched-description").hide();
+		$(".tooltip#matched-tooltip").live("click",function(){
+			if ($(".animated-description#matched-description").is(":visible")) {
+				$(".animated-description#matched-description").hide(200);
+			}
+			else {
+				$(".animated-description#matched-description").show(200);
+			}
+		});
+		
 		
 	});
 	</script>
@@ -228,9 +228,23 @@
 			<script type="text/javascript" src="/static/js/scatter-matrix.js"></script>
 		
 		
-			<p class="select-description">Write some rules: <span class="tooltip" title="Rules should be in format (var1<=-0.43)(Var_2=0)...">(how?)</span></p>
+			<p class="select-description">Write some rules: <span class="tooltip" id="rules-tooltip">(how?)</span></p>
+			<div class="animated-description" id="rules-description">
+			Rules should be expressed as sequential (variableName operator value) clauses where:
+			<ul>
+				<li>variableName: case sensitive, all ususal characters (including '_' and '.'), '.' not allowed as first character</li>
+				<li>operator (numerical): <, >, <=, >=, =</li>
+				<li>operator (string): =, #</li>
+				<li>value: numerical (decimal format) or string (without "")</li>
+			</ul>
+			Example: (crises=true) (country#USA) (indicator1<=-2.34)
+			</div>
+			
 			<textarea id="rules-textarea" wrap="off" cols="75" rows="1"></textarea>
-			<p class="select-description">Matched rules:</p>
+			<p class="select-description">Matched rules: <span class="tooltip" id="matched-tooltip">(?)</span></p>
+			<div class="animated-description" id="matched-description">
+			Only rules that match the format will be recognized. Make sure to use variables that actually exist in the current dataset (use text output bellow as reference), otherwise rule will exclude all points!
+			</div>
 			<div id="rules-display"></div>
 		
 			

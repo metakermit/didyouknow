@@ -8,7 +8,6 @@ import copy
 import time
 
 import wb.api
-import local_storage.rca.api
 from cacher import Cacher
 
 
@@ -41,19 +40,25 @@ class Extractor(object):
         rca_indicators = []
         wb_indicators = []
         
-        # Check if indicator is in RCA dataset, if not then it must be in WB.
-        # TODO: Make indicator type checking universal.
-        available_rca_indicators = set(local_storage.rca.api.all_indicators()) 
-        for indicator_code in arg["indicator_codes"]:
-            if indicator_code in available_rca_indicators:
-                rca_indicators.append(indicator_code)
-            else:
-                wb_indicators.append(indicator_code)
-        
-        # Grab RCA data.        
-        rca_arg = copy.deepcopy(arg)
-        rca_arg["indicator_codes"] = rca_indicators
-        rca_countries = self._grab_from_api(rca_arg, local_storage.rca.api)
+        try:
+            import local_storage.rca.api
+            # Check if indicator is in RCA dataset, if not then it must be in WB.
+            # TODO: Make indicator type checking universal.
+            available_rca_indicators = set(local_storage.rca.api.all_indicators()) 
+            for indicator_code in arg["indicator_codes"]:
+                if indicator_code in available_rca_indicators:
+                    rca_indicators.append(indicator_code)
+                else:
+                    wb_indicators.append(indicator_code)
+            
+            # Grab RCA data.        
+            rca_arg = copy.deepcopy(arg)
+            rca_arg["indicator_codes"] = rca_indicators
+            rca_countries = self._grab_from_api(rca_arg, local_storage.rca.api)
+        except ImportError:
+            print("Can't import local_storage.rca.api! Will assume there aren't any indicators from there")
+            rca_countries = []
+            wb_indicators = arg["indicator_codes"]
         
         # Grab WB data.
         wb_arg = copy.deepcopy(arg)

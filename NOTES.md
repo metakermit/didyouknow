@@ -35,6 +35,8 @@ On the server side do a:
 
 (or install the push-and-update plugin as explained [here](http://wiki.bazaar.canonical.com/BazaarForWebDevs))
 
+*Note: worth investigating [this document](http://wiki.bazaar.canonical.com/BazaarUploadForWebDev) about bzr-upload (available in the Linux repository).*
+
 Old location, unused atm:
 
         bzr+ssh://john@lis.irb.hr//var/www/foc/

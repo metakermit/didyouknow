@@ -8,6 +8,8 @@ dracula/__init__.py
 dracula/cacher.py
 dracula/exceptions.py
 dracula/extractor.py
+dracula/model.py
 dracula/test/__init__.py
 dracula/test/extractor.py
+dracula/test/rca.py
 dracula/test/wb.py

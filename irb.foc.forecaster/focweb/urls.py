@@ -2,9 +2,15 @@ from django.conf.urls import patterns, include, url
 from views import foc, multiselect, d3, foc_d3
 from api.complete_multigroup_api import get_data, get_data_scatter
 
+import dracula.local_storage.rca.api as rca_api
+
 # Uncomment the next two lines to enable the admin:
 # from django.contrib import admin
 # admin.autodiscover()
+
+def one_time_startup():
+    print rca_api._data
+    pass
 
 urlpatterns = patterns('',
     # Examples:
@@ -25,3 +31,5 @@ urlpatterns = patterns('',
     url(r'^multiselect/', multiselect),
     url(r'^d3/', d3),
 )
+
+one_time_startup()

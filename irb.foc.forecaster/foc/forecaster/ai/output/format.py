@@ -30,10 +30,14 @@ class Format(object):
     def _add_extension(self, pth):
         return pth+".txt"
     
-    def write_whole_set(self, samples_set, output_location):
-        self.write(samples_set.metadata, samples_set.test_samples,
-                   self._add_extension(output_location+"-test"))
-        self.write(samples_set.metadata, samples_set.train_samples,
-                   self._add_extension(output_location+"-train"))
+    def write_whole_set(self, samples_set, output_location, separate_train_test=True):
+        if separate_train_test:
+            self.write(samples_set.metadata, samples_set.test_samples,
+                       self._add_extension(output_location+"-test"))
+            self.write(samples_set.metadata, samples_set.train_samples,
+                       self._add_extension(output_location+"-train"))
+        else:
+            self.write(samples_set.metadata, samples_set.train_samples,
+                       self._add_extension(output_location))
 
     

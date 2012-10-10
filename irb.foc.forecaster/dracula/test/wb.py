@@ -5,7 +5,7 @@ Created on 15. 12. 2011.
 '''
 import unittest
 
-from dracula.wb.model import Indicator, Country
+from dracula.model import Indicator, Country
 from dracula.wb import parser
 from dracula.wb import api
 

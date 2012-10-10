@@ -14,10 +14,22 @@ function requestData() {
 		url: "../getdatascatter/", 
 		data: {
 			countries: $("#selectCountries").val(),
-			indicators: $("#selectIndicators").val()
+			wbIndicators: $("#selectWBIndicators").val(),
+			rcaIndicators: $("#selectRCAIndicators").val()
+		},
+		beforeSend: function() {
+			$("#screen").empty();
+			$("#screen").removeClass("error");
+			$("#screen").addClass("loading");
+		},
+		error: function(jqXHR) {
+			$("#screen").addClass("error");
+			$("#screen").append("<p>Sorry, there was an error in processing your request.</p>")
 		},
 		success: function(focData) {
 			data = focData;
+			
+			$("#screen").removeClass("loading");
 			
 			drawScatterMatrix(data);
 			updateTextarea(data);
@@ -203,7 +215,8 @@ function changeMode()
 
 function drawScatterMatrix(focData) {
 	
-	d3.selectAll("svg").remove();
+	// Remove all elements from chart except screen used for display while loading.
+	$("#chart > *:not(#screen)").remove();
 	
 	// Size parameters.
     var size = 150,
@@ -218,7 +231,8 @@ function drawScatterMatrix(focData) {
         domain = [d3.min(data.values, value), d3.max(data.values, value)],
         range = [padding / 2, size - padding / 2];
         x[indicator] = d3.scale.linear().domain(domain).range(range);
-        y[indicator] = d3.scale.linear().domain(domain).range(range.reverse());
+        //y[indicator] = d3.scale.linear().domain(domain).range(range.reverse());
+		y[indicator] = d3.scale.linear().domain(domain).range(range.slice().reverse());
     });
 	
 	  // Axes.
@@ -237,14 +251,14 @@ function drawScatterMatrix(focData) {
 	      .attr("width", size * n + padding + 150)
 	      .attr("height", size * n + padding + 60)
 	      .append("svg:g")
-	      .attr("transform", "translate(130,0)");
+	      .attr("transform", "translate(90,0)");
 	
 	  // Legend.
 	  var legend = svg.selectAll("g.legend")
 	      .data(data.countries)
 	    .enter().append("svg:g")
 	      .attr("class", "legend")
-	      .attr("transform", function(d, i) { return "translate(-120," + (i * 20 + (size * n - (m+1)*20) + padding) + ")"; });
+	      .attr("transform", function(d, i) { return "translate(-80," + (i * 20 + (size * n - (m+1)*20) + padding) + ")"; });
 
 
 	  legend.append("svg:circle")

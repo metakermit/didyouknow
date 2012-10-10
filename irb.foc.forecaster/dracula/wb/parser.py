@@ -4,7 +4,7 @@ Created on 5. 4. 2012.
 @author: kermit
 '''
 
-from model import Indicator, Country
+from dracula.model import Indicator, Country
 #TODO: Maybe transfer parsing logic to this class
 
 '''
@@ -74,6 +74,7 @@ def parse_multiple_countries_alone(data_list):
         current_id_iso2 = get_country_id_iso2(item)
         country = Country(current_id)
         country.code_iso2 = current_id_iso2
+        country.name = item['name']
         countries.append(country)
     return countries
 

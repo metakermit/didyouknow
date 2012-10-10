@@ -19,7 +19,9 @@ from pprint import pprint
 
 from foc.visualiser.data_organiser.complete_multigroup import CompleteMultigroupOrganiser
 from foc.visualiser.data_organiser.scatter_matrix import ScatterMatrixOrganiser
+#from foc.visualiser.data_organiser.rca_data import RCADataOrganiser
 from foc.forecaster.common import conf
+
 
 def get_data(request): 
     organiser = CompleteMultigroupOrganiser()
@@ -45,15 +47,23 @@ def get_data(request):
 
 
 def get_data_scatter(request):
+    
+    # TODO: Loadin RCA data will take too long! This should be initialized before and only once!
     organiser = ScatterMatrixOrganiser()
+    #organiserRCA = RCADataOrganiser()
     
     if request.is_ajax():
-        if 'countries[]' in request.GET and 'indicators[]' in request.GET: # We should check that we got exactly two indicators!
+        #if 'countries[]' in request.GET and 'wbIndicators[]' in request.GET: # We should check that we got exactly two indicators!
+        if 'countries[]' in request.GET:
             countries = request.GET.getlist('countries[]')
-            indicators = request.GET.getlist('indicators[]')
+            wbIndicators = request.GET.getlist('wbIndicators[]')
+            rcaIndicators = request.GET.getlist('rcaIndicators[]')
             conf.countries = countries 
-            conf.indicators = indicators 
+            conf.indicators = wbIndicators 
+            conf.indicators.extend(rcaIndicators)
+            #conf.rcaIndicators = rcaIndicators
             representation = organiser.get_representation(conf)
+            #representation = dict(representationWB.items() + representationRCA.items())
             print("representation is:")
             print(representation)
         # If no countries are required return empty json.
@@ -62,6 +72,6 @@ def get_data_scatter(request):
     # For fetching json from /getdata/ url directly.
     else:
         conf.countries = ["HRV","USA"]
-        representation = organiser.get_representation(conf)
+        representationWB = organiser.get_representation(conf)
 
     return HttpResponse(simplejson.dumps(representation), mimetype="application/json")

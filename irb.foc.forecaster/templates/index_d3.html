@@ -19,7 +19,8 @@
 	<script type="text/javascript">
 	$(function(){
 		$("#selectCountries").multiselect().multiselectfilter();
-		$("#selectIndicators").multiselect().multiselectfilter();
+		$("#selectWBIndicators").multiselect().multiselectfilter();
+		$("#selectRCAIndicators").multiselect().multiselectfilter();
 		$("#send-request").button();
 		$("#send-request").click( requestData );
 		
@@ -96,6 +97,84 @@
 		
 		$( "#year" ).val( $( "#slider" ).slider( "value" ));
 		
+		$("#rules-textarea").live("keyup", 
+			function(d) {
+				$('#rules-display').empty();
+				// Extract all rules of the form:
+				//	(var1=0.1) (var2<=-0.2) etc. for floating variables
+				//	(var1=True) (var2#red) etc. for cathegorical (and boolean) variables 
+				var rulesList = $(this).val().match(/\(\s*(\w+\s*(<|>|=|<=|>=)\s*(-?(0|([1-9]\d*))(\.\d+)?)|\w+\s*(=|#)\s*(\w+))\s*\)/g);
+				
+				//if (rulesList==undefined)
+				//{
+					d3.selectAll(".cell circle").classed("hidden",0);
+				//}
+				
+				for (i in rulesList)
+				{
+					// Extract variable, operator and value from each matched rules.
+					var parsedRule = rulesList[i].match(/\(\s*(?:(\w+)\s*(<|>|=|<=|>=)\s*(-?(?:0|(?:[1-9]\d*))(?:\.\d+)?)|(\w+)\s*(=|#)\s*(\w+))\s*\)/);
+					parsedRule = parsedRule.filter(function(d){return d!=undefined;});
+					$('#rules-display').append( "(" + 
+												"<span class=\"variable\">" + parsedRule[1] + "</span>" +
+												"<span class=\"operator\">" + parsedRule[2] + "</span>" +
+												"<span class=\"value\">" + parsedRule[3] + "</span>" +
+												")" );
+					var filterData;
+					
+					/*
+					switch (parsedRule[2])
+					{
+						case "<":
+							filterData = function(d){ return (d[parsedRule[1]] < parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">":
+							filterData = function(d){ return (d[parsedRule[1]] > parsedRule[3]) ? 0 : 1; };
+							break;
+						case "<=":
+							filterData = function(d){ return (d[parsedRule[1]] <= parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">=":
+							filterData = function(d){ return (d[parsedRule[1]] >= parsedRule[3]) ? 0 : 1; };
+							break;
+						case "=":
+							filterData = function(d){ return (d[parsedRule[1]] = parsedRule[3]) ? 0 : 1; };
+							break;
+						default:
+							filterData = function(d){ return 0; };
+							break;
+					}					
+					d3.selectAll(".cell circle").classed("hidden",filterData);
+					*/
+					
+					switch (parsedRule[2])
+					{
+						case "<":
+							filterData = function(d){ return (d[parsedRule[1]] < parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">":
+							filterData = function(d){ return (d[parsedRule[1]] > parsedRule[3]) ? 0 : 1; };
+							break;
+						case "<=":
+							filterData = function(d){ return (d[parsedRule[1]] <= parsedRule[3]) ? 0 : 1; };
+							break;
+						case ">=":
+							filterData = function(d){ return (d[parsedRule[1]] >= parsedRule[3]) ? 0 : 1; };
+							break;
+						case "=":
+							filterData = function(d){ return (d[parsedRule[1]] == parsedRule[3]) ? 0 : 1; };
+							break;
+						case "#":
+							filterData = function(d){ return (d[parsedRule[1]] != parsedRule[3]) ? 0 : 1; };
+							break;
+						default:
+							filterData = function(d){ return 0; };
+							break;
+					}					
+					d3.selectAll(".cell circle").filter(filterData).classed("hidden",1);
+				}
+				
+				});
 		
 	});
 	</script>
@@ -119,13 +198,45 @@
 		
 		<div class="content">
 			
-			<div id="chart"> </div>
+			<div class="topbar">
+			<a href="http://lis.irb.hr/foc/index.html">Home</a>
+			<a href="http://lis.irb.hr/foc/methods/methods.html">Methods</a>
+			<a href="http://lis.irb.hr:8080/focd3/">Widgets</a>
+			<!-- <a href="http://127.0.0.1:8080/focd3/">Widgets</a> -->
+			<a href="http://lis.irb.hr/foc/sources/sources.html">Data Sources</a>
+			<a href="http://lis.irb.hr/foc/data/data.html">Datasets Download</a>
+			<a href="http://lis.irb.hr/foc/publications/publications.html">Publications</a>
+			<a href="http://lis.irb.hr/foc/people/people.html">People</a>
+			</div>
+			
+			<h1>Scatterplot matrix</h1>
+			
+			<span class="description">
+			<p>This is the visualization of World Bank and RCA data on a scatter plot matrix. 
+			World Bank data is retrieved directly from the <a href="http://data.worldbank.org">data.worldbank.org</a>,
+			while RCA data is retrieved locally from file that is available on C. Hidalgo's <a href="http://www.chidalgo.com/productspace/data.htm">page</a>. </p>
+			</span>
+			
+			<div id="chart">  
+				<div id="screen"></div>
+				<div id="placeholder" style="height:400px;width:600px;border:1px dashed;border-radius:5px;border-color:gray;padding:20px;"> 
+					<p style="color:gray;font-family:Courier;margin:0;">Select some countries and indicators...</p>
+				</div> 
+			</div>
+			
 			<!-- <link type="text/css" rel="stylesheet" href="/static/css/splom.css"> -->
 			<script type="text/javascript" src="/static/js/scatter-matrix.js"></script>
 		
-			<!-- <h3>Select countries and indicators:</h3> -->
+		
+			<p class="select-description">Write some rules: <span class="tooltip" title="Rules should be in format (var1<=-0.43)(Var_2=0)...">(how?)</span></p>
+			<textarea id="rules-textarea" wrap="off" cols="75" rows="1"></textarea>
+			<p class="select-description">Matched rules:</p>
+			<div id="rules-display"></div>
+		
 			
-			<table>
+			
+			<table style="margin-top:20px">
+			<tr class="select-description"> <td>Countries:</td> <td>World Bank indicators:</td> <td>RCA indicators:</td> <td></td> </tr>
 			<tr><td>	
 			<select title="Select countries" multiple="multiple" name="select-countries" size="5" id="selectCountries">
 			<!-- {% for v in countries %}
@@ -145,17 +256,25 @@
 			<option value="NOR">NOR</option>
 			<option value="SAU">SAU</option>
 			<option value="SWE">SWE</option>
-			<option value="TUR">TUR</option>
-			<option value="USA">USA</option>
+			<option value="TUR" selected="selected">TUR</option>
+			<option value="USA" selected="selected">USA</option>
 			</select>
 			</td>
 			<td>	
-			<select title="Select indicators" multiple="multiple" name="select-indicators" size="5" id="selectIndicators">
+			<select title="Select WB indicators" multiple="multiple" name="select-wb-indicators" size="5" id="selectWBIndicators">
 			<option value="FR.INR.RINR" selected="selected">FR.INR.RINR</option>
 			<option value="SL.UEM.TOTL.ZS" selected="selected">SL.UEM.TOTL.ZS</option>
 			<option value="SP.POP.TOTL">SP.POP.TOTL</option>
 			<option value="NY.GDP.PCAP.KD">NY.GDP.PCAP.KD</option>
 			<option value="NY.GDP.MKTP.KD.ZG">NY.GDP.MKTP.KD.ZG</option>
+			</select>
+			</td>
+			<td>	
+			<select title="Select RCA indicators" multiple="multiple" name="select-rca-indicators" size="5" id="selectRCAIndicators">
+			<option value="0010">0010</option>
+			<option value="0011" selected="selected">0011</option>
+			<option value="0012">0012</option>
+			<option value="0013">0013</option>
 			</select>
 			</td>
 			<td>
@@ -216,6 +335,7 @@
 				<textarea id="data-textarea" readonly="yes" wrap="off" cols="80" rows="20"></textarea>
 			</div>
 			</div>
+			
 			
 			
 			

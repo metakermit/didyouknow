@@ -45,4 +45,36 @@ If you don't like entering your password every time, you can copy your ssh keys 
 
         ssh-copy-id john@lis.irb.hr
 
+Pushing from your server to the main LP repo
+=============================================
 
+To be able to code on your server you need a key there. Either copy your local ~/.ssh/id_rsa and id_rsa.pub to the server (if you trust the folks who have admin rights with your private key) or generate a new key (explained in the link below) and upload them to Launchpad by going to https://launchpad.net/~YOURUSERNAMEHERE/+editsshkeys (substitute YOURUSERNAMEHERE with... your user name).
+
+The instructions on setting up keychain (and generating a key from scratch) can be found [here](http://www.cyberciti.biz/faq/ssh-passwordless-login-with-keychain-for-scripts/).
+
+
+A quick version
+---------------
+Generate key
+
+    ssh-keygen -t rsa
+
+Upload to Launchpad by going to https://launchpad.net/~YOURUSERNAMEHERE/+editsshkeys (substitute YOURUSERNAMEHERE with... your user name) and copying the ~/.ssh/id_rsa.pub data inside the "add key" form.
+
+Install keychain
+
+    sudo apt-get install keychain
+
+Add this to the end of your ~/.bashrc file
+
+    if type keychain >/dev/null 2>/dev/null; then
+      keychain --nogui -q id_rsa
+      [ -f ~/.keychain/${HOSTNAME}-sh ] && . ~/.keychain/${HOSTNAME}-sh
+      [ -f ~/.keychain/${HOSTNAME}-sh-gpg ] && . ~/.keychain/${HOSTNAME}-sh-gpg
+    fi
+
+Log in to your server once more or source your .bashrc file
+
+    . .bashrc
+
+Done.

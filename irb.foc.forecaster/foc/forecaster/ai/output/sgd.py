@@ -48,7 +48,7 @@ class SGDFormat(Format):
                 # ordinal number
                 out.write("%d%s" % (i, separator))
                 # description in a separate file
-                desc.write("%d%s%s\n" % (i, separator, sample.description))
+                desc.write("%d%s%s\n" % (i, separator, sample.description.lower()))
                 i = i + 1
                 # value
                 for value in sample.features:

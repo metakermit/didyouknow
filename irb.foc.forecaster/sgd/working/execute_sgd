@@ -1,0 +1,15 @@
+../prepare $1 -c -S -1$2
+../prepare $1 -S
+../gelit $1 -S
+../getab $1 -S
+../gerules $1 -S -X5 -g3
+
+rm ./$1.aa
+rm ./$1.aaa
+rm ./$1.all
+rm ./$1.ee
+rm ./$1.l
+rm ./$1.ll
+#rm ./$1.r
+rm ./$1.s
+rm ./$1.t

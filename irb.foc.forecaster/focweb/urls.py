@@ -1,6 +1,6 @@
 from django.conf.urls import patterns, include, url
 from views import foc, multiselect, d3, foc_d3
-from api.complete_multigroup_api import get_data, get_data_scatter
+from api.complete_multigroup_api import get_data, get_data_scatter, execute_sgd
 
 import dracula.local_storage.rca.api as rca_api
 
@@ -27,6 +27,8 @@ urlpatterns = patterns('',
     url(r'^focd3/', foc_d3),
     url(r'^getdata/', get_data),
     url(r'^getdatascatter/', get_data_scatter),
+    
+    url(r'^executesgd/', execute_sgd),
     
     url(r'^multiselect/', multiselect),
     url(r'^d3/', d3),

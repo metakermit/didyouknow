@@ -15,6 +15,7 @@ from random import randint
 # ----------
 import sys
 from pprint import pprint
+from subprocess import check_output, Popen, PIPE
 #pprint(sys.path)
 
 from foc.visualiser.data_organiser.complete_multigroup import CompleteMultigroupOrganiser
@@ -75,3 +76,42 @@ def get_data_scatter(request):
         representationWB = organiser.get_representation(conf)
 
     return HttpResponse(simplejson.dumps(representation), mimetype="application/json")
+
+def execute_sgd(request):
+    
+    if request.is_ajax():
+        sgd = request.GET.getlist('sgd')
+
+        fileName = "file.sgd"
+        user = "#########" # HIDE USER NAME!
+        
+        # WINDOWS (connecting to remote Linux machine to run subgroup discovery)
+        
+        proc1 = Popen(['plink',user+"@zel.lis.lo","cat > /home/"+user+"/sgd/working/" + fileName], stdout=PIPE, stdin=PIPE, universal_newlines=True)
+        proc1.stdin.write(sgd[0])
+
+        proc2 = Popen(['plink',user+"@zel.lis.lo","cd /home/"+user+"/sgd/test2/; /home/"+user+"/sgd/working/execute_sgd " + fileName + " true"])
+        proc2.communicate()
+
+        proc3 = Popen(['plink',user+"@zel.lis.lo","cat /home/"+user+"/sgd/working/" + fileName + ".rr"], stdout=PIPE, stdin=PIPE, universal_newlines=True)
+        output = proc3.communicate()[0]
+        
+        
+        # LINUX (running subgroup discovery locally)
+        #
+        #proc1 = Popen(["cat > /home/"+user+"/sgd/working/" + fileName], stdout=PIPE, stdin=PIPE, universal_newlines=True)
+        #proc1.stdin.write(sgd[0])
+        #
+        #proc2 = Popen(["cd /home/"+user+"/sgd/test2/; /home/"+user+"/sgd/working/execute_sgd " + fileName + " true"])
+        #proc2.communicate()
+        #
+        #proc3 = Popen(["cat /home/"+user+"/sgd/working/" + fileName + ".rr"], stdout=PIPE, stdin=PIPE, universal_newlines=True)
+        #output = proc3.communicate()[0]
+
+    else:
+        pass
+    
+    #output = check_output('python -c \"print 4*5\"',shell=True)
+    #output = "(crisis=true) (gdp<=-0.342) asd asd (trunk>0.34545)"
+    return HttpResponse(output)
+    

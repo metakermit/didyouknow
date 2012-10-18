@@ -146,7 +146,7 @@ circle {
 }
 
 
-#tabs-1, #tabs-2, #tabs-3 {
+#tabs-1, #tabs-2, #tabs-3, #tabs-4 {
 	height: 350px;
 	padding: 0.4em 0.4em; 
 	font-family:"Courier New", Courier, monospace;
@@ -159,7 +159,11 @@ circle {
 	border-collapse:collapse;
 }
 
-#data-table tr td {
+#data-table > tbody > tr td {
+	border:1px solid orange;
+}
+
+#data-table > thead > tr th {
 	border:1px solid orange;
 }
 
@@ -168,7 +172,7 @@ circle {
 }
 
 
-#data-table > tr:hover , #data-list > p:hover , #years-table > p > span:hover
+#data-table tr:hover , #data-list > p:hover , #years-table > p > span:hover
 {
 	color:red;
 	cursor:default;
@@ -179,10 +183,11 @@ circle {
 	font-family:"Courier New", Courier, monospace;
 	font-size: 11px;
 	width: 600px;
+	/*color: rgba( 0, 0, 0, .5 );*/
 }
 
-.highlighted-year {
-	color:red;
+.hidden-year {
+	color: rgba( 0, 0, 0, .3 );
 }
 
 #rules-display {
@@ -194,6 +199,8 @@ circle {
 	padding:10px;
 	width:600px;
 	overflow:auto;
+	position: relative;
+	height: 20px;
 }
 
 .animated-description {

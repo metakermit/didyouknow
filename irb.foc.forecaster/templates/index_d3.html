@@ -24,6 +24,8 @@
 		$("#send-request").button();
 		$("#send-request").click( requestData );
 		
+		$("#send-request-test").button();
+		$("#send-request-test").click( requestSGD );
 		
 		//$("#selectIndicators").multiselect({ 
 		//   header: "Select only TWO indicators!",
@@ -53,7 +55,8 @@
 				  .classed("hidden",function(d){
 				  	         			return (d.date>=lowValue) && (d.date<=highValue) ? 0 : 1;});
 										
-				d3.selectAll("#data-table > tr:not(:first-child)")				  
+				//d3.selectAll("#data-table > tr:not(:first-child)")
+				d3.selectAll("#data-table > tbody > tr")				  
 				  .classed("hidden-row",function(d,i){
 				  	         			return (d.date>=lowValue) && (d.date<=highValue) ? 0 : 1;});
 										
@@ -62,8 +65,8 @@
 				  	         			return ((d.date>=lowValue) && (d.date<=highValue)) ? 0 : 1;});
 										
 				d3.selectAll("#years-table > p > span")				  
-				  .classed("highlighted-year",function(d){ 
-				  						return ((d>=lowValue) && (d<=highValue)) ? 1 : 0;});
+				  .classed("hidden-year",function(d){ 
+				  						return ((d>=lowValue) && (d<=highValue)) ? 0 : 1;});
 				  
 			}
 		});
@@ -83,14 +86,15 @@
 				d3.selectAll(".cell circle")
 				  .classed("hidden",function(d){ return (d.date==ui.value) ? 0 : 1; });
 										
-				d3.selectAll("#data-table > tr:not(:first-child)")				  
+				//d3.selectAll("#data-table > tr:not(:first-child)")	
+				d3.selectAll("#data-table > tbody > tr")				  
 				  .classed("hidden-row",function(d,i){ return (d.date==ui.value) ? 0 : 1; });
 										
 				d3.selectAll("#data-list > p:not(:first-child)")				  
 				  .classed("hidden-row",function(d){ return (d.date==ui.value) ? 0 : 1; });
 				  
 				d3.selectAll("#years-table > p > span")				  
-				  .classed("highlighted-year",function(d){ return (d==ui.value) ? 1 : 0; });
+				  .classed("hidden-year",function(d){ return (d==ui.value) ? 0 : 1; });
 				  
 			}
 		});
@@ -98,62 +102,13 @@
 		$( "#year" ).val( $( "#slider" ).slider( "value" ));
 		
 		$("#rules-textarea").live("keyup", 
-			function(d) {
-				$('#rules-display').empty();
-				// Extract all rules of the form:
-				//	(var1=0.1) (var2<=-0.2) etc. for floating variables
-				//	(var1=True) (var2#red) etc. for cathegorical (and boolean) variables 
-				//var rulesList = $(this).val().match(/\(\s*(\w+\s*(<|>|=|<=|>=)\s*(-?(0|([1-9]\d*))(\.\d+)?)|\w+\s*(=|#)\s*(\w+))\s*\)/g); // no dots in variable name
-				var rulesList = $(this).val().match(/\(\s*(\w+[\w\.]*\s*(<|>|=|<=|>=)\s*(-?(0|([1-9]\d*))(\.\d+)?)|\w+\s*(=|#)\s*(\w+))\s*\)/g); // dots in variable name
-				
-				d3.selectAll(".cell circle").classed("hidden",0);
-				d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",0);
-				d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",0);
-				
-				for (i in rulesList)
-				{
-					// Extract variable, operator and value from each matched rules.
-					//var parsedRule = rulesList[i].match(/\(\s*(?:(\w+)\s*(<|>|=|<=|>=)\s*(-?(?:0|(?:[1-9]\d*))(?:\.\d+)?)|(\w+)\s*(=|#)\s*(\w+))\s*\)/); // no dots in variable name  
-					var parsedRule = rulesList[i].match(/\(\s*(?:(\w+[\w\.]*)\s*(<|>|=|<=|>=)\s*(-?(?:0|(?:[1-9]\d*))(?:\.\d+)?)|(\w+)\s*(=|#)\s*(\w+))\s*\)/); // dots in variable name
-					parsedRule = parsedRule.filter(function(d){return d!=undefined;});
-					$('#rules-display').append( "(" + 
-												"<span class=\"variable\">" + parsedRule[1] + "</span>" +
-												"<span class=\"operator\">" + parsedRule[2] + "</span>" +
-												"<span class=\"value\">" + parsedRule[3] + "</span>" +
-												")" );
-					var filterData;
-					
-					switch (parsedRule[2])
-					{
-						case "<":
-							filterData = function(d){ return (d[parsedRule[1]] < parsedRule[3]) ? 0 : 1; };
-							break;
-						case ">":
-							filterData = function(d){ return (d[parsedRule[1]] > parsedRule[3]) ? 0 : 1; };
-							break;
-						case "<=":
-							filterData = function(d){ return (d[parsedRule[1]] <= parsedRule[3]) ? 0 : 1; };
-							break;
-						case ">=":
-							filterData = function(d){ return (d[parsedRule[1]] >= parsedRule[3]) ? 0 : 1; };
-							break;
-						case "=":
-							filterData = function(d){ return (d[parsedRule[1]].toString() == parsedRule[3]) ? 0 : 1; };
-							break;
-						case "#":
-							filterData = function(d){ return (d[parsedRule[1]].toString() != parsedRule[3]) ? 0 : 1; };
-							break;
-						default:
-							filterData = function(d){ return 0; };
-							break;
-					}					
-					d3.selectAll(".cell circle").filter(filterData).classed("hidden",1);
-					d3.selectAll("#data-table > tr:not(:first-child)").filter(filterData).classed("hidden-row",1);
-					d3.selectAll("#data-list > p:not(:first-child)").filter(filterData).classed("hidden-row",1);
-
-				}
-				
-				});
+			function() {
+				$("#rules-textarea").removeClass("inactive-rules");
+				//parseAndApplyRules($(this).val());
+				var parsedRules = parseRules($(this).val());
+				applyRules(parsedRules);
+			}
+				);
 				
 		$(".animated-description#rules-description").hide();
 		$(".tooltip#rules-tooltip").live("click",function(){
@@ -172,6 +127,16 @@
 			}
 			else {
 				$(".animated-description#matched-description").show(200);
+			}
+		});
+		
+		$(".animated-description#mode-description").hide();
+		$(".tooltip#mode-tooltip").live("click",function(){
+			if ($(".animated-description#mode-description").is(":visible")) {
+				$(".animated-description#mode-description").hide(200);
+			}
+			else {
+				$(".animated-description#mode-description").show(200);
 			}
 		});
 		
@@ -218,7 +183,7 @@
 			</span>
 			
 			<div id="chart">  
-				<div id="screen"></div>
+				<div class="screen"></div>
 				<div id="placeholder" style="height:400px;width:600px;border:1px dashed;border-radius:5px;border-color:gray;padding:20px;"> 
 					<p style="color:gray;font-family:Courier;margin:0;">Select some countries and indicators...</p>
 				</div> 
@@ -239,13 +204,13 @@
 			</ul>
 			Example: (crises=true) (country#USA) (indicator1<=-2.34)
 			</div>
-			
 			<textarea id="rules-textarea" wrap="off" cols="75" rows="1"></textarea>
+			
 			<p class="select-description">Matched rules: <span class="tooltip" id="matched-tooltip">(?)</span></p>
 			<div class="animated-description" id="matched-description">
 			Only rules that match the format will be recognized. Make sure to use variables that actually exist in the current dataset (use text output bellow as reference), otherwise rule will exclude all points!
 			</div>
-			<div id="rules-display"></div>
+			<div id="rules-display"><div class="screen"></div><span class=rules-content></span></div>
 		
 			
 			
@@ -257,20 +222,20 @@
 				<option value="{{v}}">{{v}}</option>
 			{% endfor %} -->
 			<option value="ALB">ALB</option>
-			<option value="ARG">ARG</option>
+			<option value="ARG" selected="selected">ARG</option>
 			<option value="AUT">AUT</option>
 			<option value="BRA">BRA</option>
 			<option value="ESP">ESP</option>
 			<option value="GBR">GBR</option>
 			<option value="GRC">GRC</option>
 			<option value="HRV">HRV</option>
-			<option value="ITA">ITA</option>
+			<option value="ITA" selected="selected">ITA</option>
 			<option value="JPN">JPN</option>
 			<option value="MEX">MEX</option>
 			<option value="NOR">NOR</option>
 			<option value="SAU">SAU</option>
 			<option value="SWE">SWE</option>
-			<option value="TUR" selected="selected">TUR</option>
+			<option value="TUR">TUR</option>
 			<option value="USA" selected="selected">USA</option>
 			</select>
 			</td>
@@ -292,12 +257,21 @@
 			</select>
 			</td>
 			<td>
-			<button id="send-request">Send request</button>
+			<button id="send-request">Get data</button>
+			</td>
+			<td>
+			<button id="send-request-test">Execute SGD</button>
 			</td></tr>
 			</table>
 			
-			<!-- <textarea id="data-table" readonly="yes" wrap="off" cols="74" rows="5"></textarea> -->
-			
+			<p class="select-description">Visualization modes: <span class="tooltip" id="mode-tooltip">(?)</span></p>
+			<div class="animated-description" id="mode-description">
+			Coloring schemes used for visualization:
+			<ul>
+				<li>Normal: Coloring by countries.</li>
+				<li>Crisis: Coloring by crisis events - crises red, non crises are gray.</li>
+			</ul>
+			</div>
 			<div id="change-mode">
 				<input type="radio" id="radio1" name="radio" value="normal" checked="checked" /><label for="radio1">Normal mode</label>
 				<input type="radio" id="radio2" name="radio" value="crisis" /><label for="radio2">Crisis mode</label>
@@ -308,10 +282,6 @@
 				<input type="text" id="amount" style="border:0; color:#f6931f; font-weight:bold;" />
 			</p>
 			<div id="slider-years"></div>
-			
-			
-			
-			
 			
 			<div style="width:500px; height:20px"></div>
 			
@@ -338,6 +308,7 @@
 				<li><a href="#tabs-1">Table</a></li>
 				<li><a href="#tabs-2">Text</a></li>
 				<li><a href="#tabs-3">Raw text</a></li>
+				<li><a href="#tabs-4">SGD</a></li>
 			</ul>
 			<div id="tabs-1">
 				<table id="data-table"> </table>	
@@ -347,6 +318,9 @@
 			</div>
 			<div id="tabs-3">
 				<textarea id="data-textarea" readonly="yes" wrap="off" cols="80" rows="20"></textarea>
+			</div>
+			<div id="tabs-4">
+				<textarea id="data-textarea-sgd" readonly="yes" wrap="off" cols="80" rows="20"></textarea>
 			</div>
 			</div>
 			

@@ -183,5 +183,7 @@ body > svg {
 	font-weight: bold;
 }
 
-
+.inactive-rules{
+	color: rgba( 0, 0, 0, .5 );;
+}
 

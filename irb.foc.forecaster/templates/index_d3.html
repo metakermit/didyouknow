@@ -24,9 +24,11 @@
 		$("#send-request").button();
 		$("#send-request").click( requestData );
 		
+		
 		$("#send-request-test").button();
 		$("#send-request-test").click( requestSGD );
 		
+
 		//$("#selectIndicators").multiselect({ 
 		//   header: "Select only TWO indicators!",
 		//   click: function(e){
@@ -60,7 +62,8 @@
 				  .classed("hidden-row",function(d,i){
 				  	         			return (d.date>=lowValue) && (d.date<=highValue) ? 0 : 1;});
 										
-				d3.selectAll("#data-list > p:not(:first-child)")				  
+				//d3.selectAll("#data-list > p:not(:first-child)")	
+				d3.selectAll("#data-list > p:not(.columnNames)")				  
 				  .classed("hidden-row",function(d){
 				  	         			return ((d.date>=lowValue) && (d.date<=highValue)) ? 0 : 1;});
 										
@@ -90,7 +93,8 @@
 				d3.selectAll("#data-table > tbody > tr")				  
 				  .classed("hidden-row",function(d,i){ return (d.date==ui.value) ? 0 : 1; });
 										
-				d3.selectAll("#data-list > p:not(:first-child)")				  
+				//d3.selectAll("#data-list > p:not(:first-child)")	
+				d3.selectAll("#data-list > p:not(.columnNames)")					  
 				  .classed("hidden-row",function(d){ return (d.date==ui.value) ? 0 : 1; });
 				  
 				d3.selectAll("#years-table > p > span")				  
@@ -259,9 +263,12 @@
 			<td>
 			<button id="send-request">Get data</button>
 			</td>
+			
 			<td>
 			<button id="send-request-test">Execute SGD</button>
-			</td></tr>
+			</td>
+			
+			</tr>
 			</table>
 			
 			<p class="select-description">Visualization modes: <span class="tooltip" id="mode-tooltip">(?)</span></p>

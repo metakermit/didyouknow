@@ -15,7 +15,8 @@ from random import randint
 # ----------
 import sys
 from pprint import pprint
-from subprocess import check_output, Popen, PIPE
+#from subprocess import check_output, Popen, PIPE
+from subprocess import Popen, PIPE # check_output is avaliable only in python 2.7!
 #pprint(sys.path)
 
 from foc.visualiser.data_organiser.complete_multigroup import CompleteMultigroupOrganiser
@@ -87,31 +88,36 @@ def execute_sgd(request):
         
         # WINDOWS (connecting to remote Linux machine to run subgroup discovery)
         
-        proc1 = Popen(['plink',user+"@zel.lis.lo","cat > /home/"+user+"/sgd/working/" + fileName], stdout=PIPE, stdin=PIPE, universal_newlines=True)
-        proc1.stdin.write(sgd[0])
+        #proc1 = Popen(['plink',user+"@zel.lis.lo","cat > /home/"+user+"/sgd/working/" + fileName], stdout=PIPE, stdin=PIPE, universal_newlines=True)
+        #proc1.stdin.write(sgd[0])
 
-        proc2 = Popen(['plink',user+"@zel.lis.lo","cd /home/"+user+"/sgd/test2/; /home/"+user+"/sgd/working/execute_sgd " + fileName + " true"])
-        proc2.communicate()
+        #proc2 = Popen(['plink',user+"@zel.lis.lo","cd /home/"+user+"/sgd/working/; /home/"+user+"/sgd/working/execute_sgd " + fileName + " true"])
+        #proc2.communicate()
 
-        proc3 = Popen(['plink',user+"@zel.lis.lo","cat /home/"+user+"/sgd/working/" + fileName + ".rr"], stdout=PIPE, stdin=PIPE, universal_newlines=True)
-        output = proc3.communicate()[0]
+        #proc3 = Popen(['plink',user+"@zel.lis.lo","cat /home/"+user+"/sgd/working/" + fileName + ".rr"], stdout=PIPE, stdin=PIPE, universal_newlines=True)
+        #output = proc3.communicate()[0]
         
         
         # LINUX (running subgroup discovery locally)
-        #
-        #proc1 = Popen(["cat > /home/"+user+"/sgd/working/" + fileName], stdout=PIPE, stdin=PIPE, universal_newlines=True)
-        #proc1.stdin.write(sgd[0])
-        #
-        #proc2 = Popen(["cd /home/"+user+"/sgd/test2/; /home/"+user+"/sgd/working/execute_sgd " + fileName + " true"])
-        #proc2.communicate()
-        #
-        #proc3 = Popen(["cat /home/"+user+"/sgd/working/" + fileName + ".rr"], stdout=PIPE, stdin=PIPE, universal_newlines=True)
-        #output = proc3.communicate()[0]
+        
+        f1 = open("./sgd/working/" + fileName,"w")
+        f1.write(sgd[0])
+        f1.close()
+ 
+        proc = Popen(["cd ./sgd/working/; ./execute_sgd " + fileName + " true"],shell=True)
+        proc.communicate()
+        
+        f2 = open("./sgd/working/" + fileName + ".rr","r")
+        output = f2.read()
+        f2.close()
 
     else:
         pass
     
+    # check_output is available from Python 2.7!
     #output = check_output('python -c \"print 4*5\"',shell=True)
     #output = "(crisis=true) (gdp<=-0.342) asd asd (trunk>0.34545)"
-    return HttpResponse(output)
+    #output = check_output('pwd',shell=True)
+    
+    return HttpResponse(output, mimetype="text/plain; charset=utf-8")
     

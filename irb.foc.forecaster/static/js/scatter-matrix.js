@@ -150,8 +150,10 @@ function applyRules(rules) {
 	
 	$('#rules-display > .rules-content').empty();
 	d3.selectAll(".cell circle").classed("hidden",0);
-	d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",0);
-	d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",0);
+	//d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",0);
+	//d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",0);
+	d3.selectAll("#data-table > tbody > tr").classed("hidden-row",0);
+	d3.selectAll("#data-list > p:not(.columnNames)").classed("hidden-row",0);
 	
 	for (i in rules)
 	{
@@ -194,8 +196,10 @@ function applyRules(rules) {
 				break;
 		}					
 		d3.selectAll(".cell circle").filter(filterData).classed("hidden",1);
-		d3.selectAll("#data-table > tr:not(:first-child)").filter(filterData).classed("hidden-row",1);
-		d3.selectAll("#data-list > p:not(:first-child)").filter(filterData).classed("hidden-row",1);
+		//d3.selectAll("#data-table > tr:not(:first-child)").filter(filterData).classed("hidden-row",1);
+		//d3.selectAll("#data-list > p:not(:first-child)").filter(filterData).classed("hidden-row",1);
+		d3.selectAll("#data-table > tbody > tr").filter(filterData).classed("hidden-row",1);
+		d3.selectAll("#data-list > p:not(columnNames)").filter(filterData).classed("hidden-row",1);
 	}
 }
 
@@ -219,8 +223,10 @@ function updateYearsTable(data)
 	.enter().append("span").on("click",
 		function(date){
 			d3.selectAll(".cell circle").classed("hidden",function(d){return (date==d.date) ? 0 : 1;}); 
-			d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
-			d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			//d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			//d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			d3.selectAll("#data-table > tbody > tr").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
+			d3.selectAll("#data-list > p:not(.columnNames)").classed("hidden-row",function(d){return (date==d.date) ? 0 : 1;}); 
 			$( "#slider" ).slider( "option", "value", date );
 			$( "#year" ).val( $( "#slider" ).slider( "value" ));
 			d3.selectAll("#years-table > p > span").classed("highlighted-year",function(d){ return (date==d) ? 1 : 0; });
@@ -649,8 +655,10 @@ function drawScatterMatrix(focData) {
 	  function brushend() {
 	    if (brush.empty()) {
 			svg.selectAll(".cell circle").classed("hidden", 0);
-			d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row", 0);
-			d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row", 0);
+			//d3.selectAll("#data-table > tr:not(:first-child)").classed("hidden-row", 0);
+			d3.selectAll("#data-table > tbody > tr").classed("hidden-row", 0);
+			//d3.selectAll("#data-list > p:not(:first-child)").classed("hidden-row", 0);
+			d3.selectAll("#data-list > p:not(.columnNames)").classed("hidden-row", 0);
 		}
 		
 	  }

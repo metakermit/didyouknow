@@ -1,8 +1,0 @@
-MANIFEST.in
-README
-pypissh.pth
-pypissh.py
-pip-egg-info/pypissh.egg-info/PKG-INFO
-pip-egg-info/pypissh.egg-info/SOURCES.txt
-pip-egg-info/pypissh.egg-info/dependency_links.txt
-pip-egg-info/pypissh.egg-info/top_level.txt

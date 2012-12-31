@@ -1,3 +1,14 @@
+Welcome to Python's source of knowledge - DidYouKnow? (formerly Dracula)
+
+Key features (to be added):
+
+ - easy access to data APIs (for starters the World Bank API)
+ - user-friendly data selection (through smart argument parsing)
+ - data represented as Pandas DataFrames
+ - caching
+
+Deprecated stuf:
+
 Installation
 ===========
 

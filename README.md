@@ -7,6 +7,9 @@ Key features (to be added):
  - data represented as Pandas DataFrames
  - caching
 
+*Note:* if this project ever gets popular it might be interesting to note that its current shape got pushed 
+on January the 1st 2013 around 5:38 AM (I just got back from a party at my friend's place).
+
 Deprecated stuf:
 
 Installation

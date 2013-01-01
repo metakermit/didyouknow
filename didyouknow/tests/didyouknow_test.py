@@ -1,6 +1,10 @@
-import didyouknow as dyk
-country1 = dyk.wb("Croatia")
-country2 = dyk.wb("USA")
-country1.plot()
-country2.plot()
-show()
+import unittest
+
+from didyouknow import wb
+
+class Test(unittest.TestCase):
+	cro = wb.Country("Croatia")
+	usa = wb.Country("USA")
+	cro.plot()
+	usa.plot()
+	self.assertEqual(True, False)

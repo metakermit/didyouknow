@@ -39,6 +39,9 @@ class Extractor(object):
     def grab(self, arg=None):
         rca_indicators = []
         wb_indicators = []
+
+        if arg == None:
+            arg = self.arg()
         
         try:
             import local_storage.rca.api
@@ -56,7 +59,7 @@ class Extractor(object):
             rca_arg["indicator_codes"] = rca_indicators
             rca_countries = self._grab_from_api(rca_arg, local_storage.rca.api)
         except ImportError:
-            print("Can't import local_storage.rca.api! Will assume there aren't any indicators from there")
+            #print("Can't import local_storage.rca.api! Will assume there aren't any indicators from there")
             rca_countries = []
             wb_indicators = arg["indicator_codes"]
         

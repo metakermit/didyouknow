@@ -4,6 +4,7 @@ Created on 22. 8. 2012.
 @author: kermit
 '''
 import copy
+import pandas as pd
 
 class Country(object):
     '''
@@ -29,6 +30,13 @@ class Country(object):
 
     def get_indicator(self, code):
         return self.indicators[code]
+
+    def get_indicator_pandas(self, code):
+        ind = self.indicators[code]
+        # TODO: ovo je shekano, treba vidjeti gdje pretvoriti u pd
+        data = pd.Series(ind.values, index=ind.dates)
+        return data
+
 
     def set_indicator(self, indicator):
         self.indicators[indicator.code] = indicator
@@ -63,8 +71,8 @@ class Country(object):
         me.code_iso2=country_repr["code_iso2"]
         return me
         
-from dracula.exceptions import NonExistentDataError
-from foc.forecaster.ai.preprocessor import Preprocessor
+from didyouknow.exceptions import NonExistentDataError
+#from foc.forecaster.ai.preprocessor import Preprocessor
 
 class Indicator(object):
     '''
